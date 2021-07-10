@@ -1,17 +1,13 @@
 import Vue from "vue";
 import App from "@/App.vue";
 
-import Vuesax from 'vuesax'
-import 'vuesax/dist/vuesax.css'
-import 'boxicons/css/boxicons.css'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
 
 import router from "@/router"
 Vue.config.productionTip = false;
 
-Vue.use(Vuesax, {
-	colors: {
-	}
-})
+Vue.use(Buefy)
 
 new Vue({
 	router,

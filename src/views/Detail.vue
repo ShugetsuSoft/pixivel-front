@@ -1,20 +1,17 @@
 <template>
-	<section>
-		
-	</section>
+  <section></section>
 </template>
 
 <script>
-	export default {
-		name: "Detail",
-		data: () => ({
-			id: 0
-		}),
-		created() {
-			this.id = this.$route.params.id
-		}
-	}
+export default {
+  name: "Detail",
+  data: () => ({
+    id: 0,
+  }),
+  created() {
+    this.id = this.$route.params.id;
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>
