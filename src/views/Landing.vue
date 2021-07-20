@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       backgroundImg:
-        "https://i.pixiv.cat/img-original/img/2014/04/18/00/09/15/42947917_p0.jpg",
+        "",
     };
   },
 };
