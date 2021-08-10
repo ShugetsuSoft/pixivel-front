@@ -13,7 +13,12 @@ const routes = [
 		path: "/illust/:id",
 		name: "Detail",
 		component: () => import("@/views/Detail.vue"),
-	}
+	},
+	{
+		path: "/illustrator/:id",
+		name: "User",
+		component: () => import("@/views/User.vue"),
+	},
 ];
 
 const router = new VueRouter({

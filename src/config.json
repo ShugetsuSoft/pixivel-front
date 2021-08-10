@@ -1,0 +1,6 @@
+{
+	"IMAGE_PROXY_HOSTS":["http://localhost:8080/"],
+	"DOWNLOAD_IMAGE_PROXY_HOST":"https://pximg.boxpaper.workers.dev/",
+	"API_HOST":"http://localhost:8080/v1/pixiv/",
+	"RAND_IMG":"https://api.daihan.top/api/acg"
+}
