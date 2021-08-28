@@ -1,6 +1,6 @@
 <template>
 	<div class="waterfall" ref="waterfall">
-		<VirtualMasonry :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="4" :itemHeightGetter="heightGetter" :gap="20" class="waterfall-container">
+		<VirtualMasonry :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="gap" class="waterfall-container">
 			<template slot-scope="illust">
 				<ImgCard :illust="illust.data" />
 			</template>
@@ -28,6 +28,8 @@
 				width: this.maxWidth,
 				containerWidth: 0,
 				parentObserver: null,
+        gap: 25,
+        cols: 4,
 			}
 		},
 		created() {

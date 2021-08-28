@@ -4,10 +4,10 @@ module.exports = {
 	productionSourceMap: false,
 	devServer: {
 		host: 'localhost',
-		port: 8080,
+		port: 8888,
 		proxy: {
 			'/v1/pixiv/': {
-				target: 'http://104.194.227.168:8000',
+				target: 'http://104.194.227.168:8080',
 				changeOrigin: true,
 			},
 			'/img-master/': {

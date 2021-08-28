@@ -58,10 +58,10 @@
 		opacity: 0;
 		transform: translateY(100px);
 
-		box-shadow: 0 0 8px rgba(0, 0, 0, .175);
+		box-shadow: 0 0 8px rgba(0, 0, 0, .18);
 
 		border: {
-			radius: 10px;
+			radius: 12px;
 		}
 
 		.title-container {

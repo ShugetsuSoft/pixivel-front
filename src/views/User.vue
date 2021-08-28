@@ -1,7 +1,7 @@
 <template>
 	<section class="default-full-screen-top" v-if="user">
 		<section class="hero user-banner is-medium">
-			<LoadImg :src="user.image.background ? user.image.background : ''" />
+			<LoadImg :src="background" />
 		</section>
 		<section class="hero profile">
 			<div class="hero-body container is-widescreen">
@@ -31,6 +31,7 @@
 					</div>
 				</div>
 			</infinite-loading>
+      <LongLoadingBadage ref="longloading_badage">可能是第一次加载..需要获取全部插画请耐心等待</LongLoadingBadage>
 		</div>
 	</section>
 </template>
@@ -39,12 +40,14 @@
 	import CONFIG from '@/config.json'
 	import WaterFall from '@/components/waterfall'
 	import LoadImg from '@/components/load_img.vue'
+  import LongLoadingBadage from '@/components/longloading_badage'
 
 	export default {
 		name: 'User',
 		components: {
 			WaterFall,
-			LoadImg
+			LoadImg,
+      LongLoadingBadage
 		},
 		data() {
 			return {
@@ -80,6 +83,7 @@
 				})
 			},
 			illustsPageNext($state) {
+        this.$refs.longloading_badage.start()
 				this.axios
 					.get(CONFIG.API_HOST + `user/${this.id}/illusts`, {
 						params: {
@@ -87,6 +91,7 @@
 						}
 					})
 					.then((response) => {
+            this.$refs.longloading_badage.stop()
 						if (response.data.error) {
 							this.error(response.data.message)
 							$state.error()
@@ -98,9 +103,25 @@
 						this.userIllusts = this.userIllusts.concat(response.data.data.illusts)
 						this.illustsPage += 1
 						$state.loaded()
-					})
+					}).catch((error)=>{
+          this.error(error.response.data.message)
+          this.$refs.longloading_badage.stop()
+        })
 			}
 		},
+    computed: {
+      background() {
+        if (this.user.image.background) {
+          return this.user.image.background
+        } else{
+          if (this.userIllusts.length > 0) {
+            return this.calcImg(this.userIllusts[0].id, 0, this.userIllusts[0].image, "regular")
+          } else {
+            return ''
+          }
+        }
+      }
+    }
 	}
 </script>
 
