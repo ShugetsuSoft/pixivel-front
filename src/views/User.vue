@@ -13,7 +13,7 @@
 					{{ user.name }}
 				</h1>
 				<hr>
-				<p class="subtitle is-6 break-raw-text">
+				<p class="subtitle is-6 bio-container break-raw-text">
 					{{ user.bio }}
 				</p>
 			</div>
@@ -72,7 +72,10 @@
 					}
 					this.user = response.data.data
 					this.loading.close()
-				})
+				}).catch((error)=>{
+        this.error(error.response.data.message)
+        this.loading.close()
+      })
 		},
 		methods: {
 			error(message) {
@@ -105,6 +108,7 @@
 						$state.loaded()
 					}).catch((error)=>{
           this.error(error.response.data.message)
+          $state.error()
           this.$refs.longloading_badage.stop()
         })
 			}
@@ -115,6 +119,11 @@
           return this.user.image.background
         } else{
           if (this.userIllusts.length > 0) {
+            for (let i = 0; i < this.userIllusts.length; i++) {
+              if (this.userIllusts[i].width > this.userIllusts[i].height) {
+                return this.calcImg(this.userIllusts[i].id, 0, this.userIllusts[i].image, "regular")
+              }
+            }
             return this.calcImg(this.userIllusts[0].id, 0, this.userIllusts[0].image, "regular")
           } else {
             return ''
@@ -146,5 +155,19 @@
 				box-shadow: 0 0 8px rgba(0, 0, 0, .175);
 			}
 		}
+
+    .bio-container {
+      max-height: 14rem;
+      min-width: 47.5rem;
+      overflow-y: auto;
+    }
 	}
+
+  @media screen and (max-width: 790px) {
+    .profile {
+      .bio-container {
+        min-width: auto !important;
+      }
+    }
+  }
 </style>

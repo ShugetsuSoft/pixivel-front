@@ -72,7 +72,10 @@
 					}
 					this.illust = response.data.data
 					this.loading.close()
-				})
+				}).catch((error)=>{
+        this.error(error.response.data.message)
+        this.loading.close()
+      })
 		},
 		methods: {
 			error(message) {
