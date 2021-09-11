@@ -28,6 +28,7 @@
 						<div class="buttons">
 							<b-button type="is-primary" inverted @click="trigger">重试</b-button>
 						</div>
+            {{ errorMsg }}
 					</div>
 				</div>
 			</infinite-loading>
@@ -53,6 +54,7 @@
 			return {
 				id: 0,
 				loading: null,
+        errorMsg: "",
 				user: null,
 				userIllusts: [],
 				illustsPage: 0
@@ -84,6 +86,7 @@
 					message: message,
 					type: 'is-danger',
 				})
+        this.errorMsg = message
 			},
 			illustsPageNext($state) {
         this.$refs.longloading_badage.start()
@@ -121,7 +124,11 @@
           if (this.userIllusts.length > 0) {
             for (let i = 0; i < this.userIllusts.length; i++) {
               if (this.userIllusts[i].width > this.userIllusts[i].height) {
+                if (this.userIllusts[i].height < 820) {
+                  return this.calcImg(this.userIllusts[i].id, 0, this.userIllusts[i].image, "original")
+                }
                 return this.calcImg(this.userIllusts[i].id, 0, this.userIllusts[i].image, "regular")
+
               }
             }
             return this.calcImg(this.userIllusts[0].id, 0, this.userIllusts[0].image, "regular")
@@ -136,15 +143,15 @@
 
 <style lang="scss">
 	.user-banner {
-		height: 15rem;
+		height: 18rem;
 	}
 	
 	.profile {
 		box-shadow: 1px -8px 8px rgba(0, 0, 0, .175);
 		
 		.profile-ava {
-			height: 150px;
-			width: 150px;
+			height: 170px;
+			width: 170px;
 			margin-top: -8rem;
 			margin-left: auto;
 			margin-right: auto;

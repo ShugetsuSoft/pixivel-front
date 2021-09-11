@@ -24,7 +24,11 @@ export default {
 			url += `${Y}/${M}/${D}/${h}/${m}/${s}`
 			url += `/${id}_p${page}`
 			url += convertList[reso][1]
-			url += ".jpg"
+			if (reso == "original") {
+				url += ".png"
+			} else {
+				url += ".jpg"
+			}
 			return url
 		}
 		
