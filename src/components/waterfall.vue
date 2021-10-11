@@ -1,6 +1,6 @@
 <template>
 	<div class="waterfall" ref="waterfall">
-		<VirtualMasonry :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="gap" class="waterfall-container">
+		<VirtualMasonry ref="masonry" :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="gap" class="waterfall-container">
 			<template slot-scope="illust">
 				<ImgCard :illust="illust.data" />
 			</template>
@@ -35,6 +35,9 @@
 		components: {
 			ImgCard
 		},
+    watch: {
+		  "illusts": "illustsChange"
+    },
 		data() {
 			return {
 				width: this.expectWidth,
@@ -77,6 +80,11 @@
       }
     },
 		methods: {
+		  illustsChange() {
+		    if (this.illusts.length==0) {
+		      this.$refs.masonry.displayItems = []
+        }
+      },
 			heightGetter(item) {
 				return (item.height / item.width) * this.width
 			},

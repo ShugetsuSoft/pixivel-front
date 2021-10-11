@@ -22,6 +22,7 @@ const routes = [
 	{
 		path: "/search/:keyword",
 		name: "Search",
+		alias: '/search',
 		component: () => import("@/views/Search.vue"),
 	},
 ];
