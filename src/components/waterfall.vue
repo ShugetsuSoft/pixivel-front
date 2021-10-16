@@ -28,7 +28,7 @@
         type: Number
       },
       'gap-mobile': {
-        default: 5,
+        default: 18,
         type: Number
       }
 		},
