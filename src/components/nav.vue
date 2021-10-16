@@ -58,6 +58,7 @@
 			background: rgb(255, 255, 255);
 			display: flex;
 			align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
 			border: {
 				radius: 1.5rem;
@@ -125,13 +126,10 @@
 			z-index: 100;
 			background: rgb(255, 255, 255);
 			transition: hover .2s ease-in-out;
-
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
 			border: {
 				radius: 2rem;
-				color: rgb(230, 230, 230);
-				width: 1px;
-				style: solid
 			}
 
 			.nav-circle {

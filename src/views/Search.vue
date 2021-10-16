@@ -1,8 +1,8 @@
 <template>
   <section class="default-full-screen-top">
     <div class="container search-form">
-      <div class="columns is-mobile">
-        <div class="column is-narrow">
+      <b-field>
+        <p class="control">
           <b-dropdown v-model="mode">
             <template #trigger>
               <b-button
@@ -17,27 +17,38 @@
               标签搜索插画
             </b-dropdown-item>
           </b-dropdown>
-        </div>
-        <div class="column">
-          <b-autocomplete
-            v-model="keyword"
-            :data="suggestList"
-            placeholder="试着输入些内容吧.."
-            @select="searchonselect"
-            icon="magnify"
-            @typing="suggestdebu"
-            @keyup.enter.native="finalKeyword=keyword"
-            open-on-focus
-            clearable>
-            <template #empty>No results found</template>
-          </b-autocomplete>
-        </div>
-      </div>
+        </p>
+        <b-autocomplete
+          v-model="keyword"
+          :data="suggestList"
+          placeholder="试着输入些内容吧.."
+          @select="searchonselect"
+          icon="magnify"
+          @typing="suggestdebu"
+          @keyup.enter.native="search()"
+          open-on-focus
+          clearable>
+          <template #empty>No results found</template>
+        </b-autocomplete>
+        <p class="control">
+          <b-button class="button is-info" @click="search()">Search</b-button>
+        </p>
+      </b-field>
+      <b-field>
+        <b-checkbox-button v-model="queryFeatures" native-value="sortpop" type="is-danger" size="is-small">
+          <b-icon icon="sort-descending" size="is-small"></b-icon>
+          <span>热门度排序</span>
+        </b-checkbox-button>
+        <b-checkbox-button v-model="queryFeatures" native-value="sortdate" type="is-success" size="is-small">
+          <b-icon icon="sort-clock-descending-outline" size="is-small"></b-icon>
+          <span>时间排序</span>
+        </b-checkbox-button>
+      </b-field>
     </div>
     <section>
       <div class="container">
         <WaterFall :illusts="illusts" />
-        <infinite-loading @infinite="illustsPageNext" spinner="spiral" v-if="finalKeyword!=''" :identifier="loadid">
+        <infinite-loading @infinite="illustsPageNext" spinner="spiral" v-if="finalKeyword!=''" :identifier="loadid" ref="infload">
           <div slot="no-more">加载完毕</div>
           <div slot="no-results">没结果</div>
           <div slot="error" slot-scope="{ trigger }">
@@ -73,20 +84,37 @@ export default {
       illustsPage: 0,
       illusts: [],
       loadid: +new Date(),
+      queryFeatures: [],
     }
   },
   watch: {
-    "finalKeyword": function(){
+    finalKeyword(){
       this.refresh(false)
     },
-    //"mode": "()=>refresh(true)"
+    mode(){
+      this.refresh(true)
+    },
+    queryFeatures(){
+      this.refresh(false)
+    },
+    $route() {
+      this.keyword = this.$route.params.keyword
+      this.finalKeyword = this.$route.params.keyword
+    }
   },
   created() {
+    this.keyword = this.$route.params.keyword
+    this.finalKeyword = this.$route.params.keyword
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.keyword != "") {
         this.suggest()
       }
     },800)
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.infload.$emit('$InfiniteLoading:reset')
+    })
   },
   methods: {
     refresh(total=false) {
@@ -101,9 +129,13 @@ export default {
       }
     },
     searchonselect(keywd) {
-      console.log(keywd)
       if(keywd!=''&&keywd!=null){
-        this.finalKeyword=keywd
+        this.$router.push({ name: 'Search', params: { keyword: keywd }})
+      }
+    },
+    search() {
+      if (this.keyword != this.$route.params.keyword) {
+        this.$router.push({ name: 'Search', params: { keyword: this.keyword }})
       }
     },
     suggest() {
@@ -121,11 +153,15 @@ export default {
     },
     illustsPageNext($state) {
       if (this.mode == "illust") {
+        let params = {
+          page: this.illustsPage,
+          sortpop: this.queryFeatures.includes("sortpop"),
+          sortdate: this.queryFeatures.includes("sortdate"),
+        }
+        let keyword = this.finalKeyword
         this.axios
-          .get(CONFIG.API_HOST + `illust/search/${this.finalKeyword}`,{
-            params: {
-              page: this.illustsPage
-            }
+          .get(CONFIG.API_HOST + `illust/search/${keyword}`,{
+            params
           })
           .then((response) => {
             if (response.data.error) {
@@ -133,10 +169,27 @@ export default {
               $state.error()
               return;
             }
+            console.log(params["sortpop"])
+            if (!(keyword === this.finalKeyword && params["sortpop"] === this.queryFeatures.includes("sortpop") && params["sortdate"] === this.queryFeatures.includes("sortdate"))) {
+              return;
+            }
             if (!response.data.data.has_next) {
               $state.complete()
             }
-            this.illusts = this.illusts.concat(response.data.data.illusts)
+            this.illusts = this.illusts.concat(response.data.data.illusts.map(illust => {
+
+              let punct = '\\['+ '\\!'+ '\\"'+ '\\#'+ '\\$'+   // since javascript does not
+                '\\%'+ '\\&'+ '\\\''+ '\\('+ '\\)'+  // support POSIX character
+                '\\*'+ '\\+'+ '\\,'+ '\\\\'+ '\\-'+  // classes, we'll need our
+                '\\.'+ '\\/'+ '\\:'+ '\\;'+ '\\<'+   // own version of [:punct:]
+                '\\='+ '\\>'+ '\\?'+ '\\@'+ '\\['+
+                '\\]'+ '\\^'+ '\\_'+ '\\`'+ '\\{'+
+                '\\|'+ '\\}'+ '\\~'+ '\\]'
+              let ks = keyword.trim().split(new RegExp("\\s|[" + punct + "]"))
+              let highlighted_title = illust["title"].replace(new RegExp("(" + ks.join("|") + ")", 'ig'),"<em>$1</em>");
+              console.log(highlighted_title)
+              return illust
+            }))
             this.illustsPage += 1
             $state.loaded()
           }).catch((error)=>{
@@ -161,7 +214,15 @@ export default {
   padding: {
     top: 2rem;
     bottom: 2rem;
+    left: 0.75rem;
+    right: 0.75rem;
   };
+  .field {
+    min-width: 20rem;
+    .autocomplete {
+      flex: 1;
+    }
+  }
   //min-width: 30rem;
 }
 </style>

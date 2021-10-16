@@ -2,7 +2,7 @@
 	<div class="waterfall" ref="waterfall">
 		<VirtualMasonry ref="masonry" :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="gap" class="waterfall-container">
 			<template slot-scope="illust">
-				<ImgCard :illust="illust.data" />
+				<ImgCard :illust="illust.data"/>
 			</template>
 		</VirtualMasonry>
 	</div>

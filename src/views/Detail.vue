@@ -21,7 +21,7 @@
 							</v-clamp>
 						</div>
 						<b-taglist class="little-top-margin">
-							<b-tag type="is-info is-light" class="clickable-tag" v-for="tag in illust.tags" :key="tag.name">{{ tag.name }} | {{ tag.translation }}</b-tag>
+							<b-tag type="is-info is-light" class="clickable-tag" v-for="tag in illust.tags" :key="tag.name">{{ tag.name }} {{ tag.translation ? "|" : "" }} {{ tag.translation }}</b-tag>
 						</b-taglist>
 
 						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})">
