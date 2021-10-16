@@ -46,7 +46,7 @@
 			}
 			
 			position: fixed;
-			bottom: 13px;
+			bottom: 20px;
 			margin:0 auto;
 			text-align: center;
 			width: 70%;

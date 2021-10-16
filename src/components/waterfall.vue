@@ -1,6 +1,6 @@
 <template>
 	<div class="waterfall" ref="waterfall">
-		<VirtualMasonry ref="masonry" :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="gap" class="waterfall-container">
+		<VirtualMasonry ref="masonry" :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="nowGap" class="waterfall-container">
 			<template slot-scope="illust">
 				<ImgCard :illust="illust.data"/>
 			</template>
@@ -71,6 +71,13 @@
 			}
 		},
     computed: {
+		  nowGap() {
+        if (this.containerWidth > 435) {
+          return this.gap
+        } else {
+          return this.gapMobile
+        }
+      },
       expWidth() {
         if (this.containerWidth > 435) {
           return this.expectWidth + this.gap

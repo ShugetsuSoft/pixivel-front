@@ -82,9 +82,7 @@
 			transform: translateY(50%);
 
       em {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10%;
-        color: rgba(0, 0, 0, 0.7);
+        color: rgb(111, 255, 229);
         font-style: normal;
       }
 		}
