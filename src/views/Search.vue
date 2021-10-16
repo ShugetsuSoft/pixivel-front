@@ -187,7 +187,7 @@ export default {
                 '\\|'+ '\\}'+ '\\~'+ '\\]'
               let ks = keyword.trim().split(new RegExp("\\s|[" + punct + "]"))
               let highlighted_title = illust["title"].replace(new RegExp("(" + ks.join("|") + ")", 'ig'),"<em>$1</em>");
-              console.log(highlighted_title)
+              illust["title"] = (highlighted_title)
               return illust
             }))
             this.illustsPage += 1

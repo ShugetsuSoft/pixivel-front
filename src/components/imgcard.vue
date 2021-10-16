@@ -6,7 +6,7 @@
 			<div class="loading-icon"></div>
 		</div>
 		<div class="title-container">
-			<h5 class="title is-5 has-text-white">{{ illust.title }}</h5>
+			<h5 class="title is-5 has-text-white" v-html="illust.title"></h5>
 		</div>
 	</RouterA>
 </template>
@@ -80,6 +80,13 @@
 			opacity: 0;
 			bottom: 50%;
 			transform: translateY(50%);
+
+      em {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10%;
+        color: rgba(0, 0, 0, 0.7);
+        font-style: normal;
+      }
 		}
 
 		&:hover {

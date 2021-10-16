@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = {
 	productionSourceMap: false,
+	/*
 	devServer: {
 		host: 'localhost',
 		port: 8888,
@@ -24,6 +25,7 @@ module.exports = {
 			},
 		},
 	},
+	*/
 	configureWebpack: () => ({
 		devtool: "source-map",
 		resolve: {
