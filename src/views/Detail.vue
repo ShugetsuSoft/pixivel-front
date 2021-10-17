@@ -27,7 +27,7 @@
 						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})">
 							<div class="media-left">
 								<figure class="image is-64x64">
-									<img :src="imgProxy(illust.user.image.url)" class="is-rounded full-hw">
+									<img :src="imgProxy(illust.user.image.url, id)" class="is-rounded full-hw">
 								</figure>
 							</div>
 							<div>

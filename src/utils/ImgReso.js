@@ -1,4 +1,5 @@
 import CONFIG from '@/config.json'
+import CRC32 from 'crc-32'
 
 const convertList = {
 	original: ["img-original/img/", ""],
@@ -7,7 +8,12 @@ const convertList = {
 	thumb_mini: ["c/128x128/img-master/img/", "_square1200"]
 }
 
-const proxyList = CONFIG.IMAGE_PROXY_HOSTS//["https://proxy.pixivel.moe/"]
+const proxyList = CONFIG.IMAGE_PROXY_HOSTS
+
+const loadBalance = (list, id) => {
+	var hash = CRC32.str(JSON.stringify(id))
+	return list[Math.abs(hash) % list.length]
+}
 
 export default {
 	install(Vue) {
@@ -19,7 +25,7 @@ export default {
 			var h = (date.getHours()).toString().padStart(2, '0')
 			var m = date.getMinutes().toString().padStart(2, '0')
 			var s = date.getSeconds().toString().padStart(2, '0')
-			var url = proxyList[parseInt(Math.random() * proxyList.length)]
+			var url = loadBalance(proxyList, {"id": id, "page": page})
 			url += convertList[reso][0]
 			url += `${Y}/${M}/${D}/${h}/${m}/${s}`
 			url += `/${id}_p${page}`
@@ -32,8 +38,8 @@ export default {
 			return url
 		}
 		
-		Vue.prototype.imgProxy = function(original) {
-			return original.replace("https://i.pximg.net/", proxyList[parseInt(Math.random() * proxyList.length)])
+		Vue.prototype.imgProxy = function(original, id) {
+			return original.replace("https://i.pximg.net/", loadBalance(proxyList, id))
 		}
 	}
 }

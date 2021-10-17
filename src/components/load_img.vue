@@ -12,7 +12,10 @@
 	export default {
 		name: "LoadImg",
 		props: {
-			src: String
+			src: String,
+      key: {
+			  default: "",
+      },
 		},
 		components: {
 			LazyImg
@@ -27,7 +30,7 @@
 		},
 		computed: {
 			url() {
-				return this.imgProxy(this.src)
+				return this.imgProxy(this.src, this.key)
 			}
 		},
 		methods: {

@@ -1,12 +1,12 @@
 <template>
 	<section class="default-full-screen-top" v-if="user">
 		<section class="hero user-banner is-medium">
-			<LoadImg :src="background" />
+			<LoadImg :src="background" :key="id"/>
 		</section>
 		<section class="hero profile">
 			<div class="hero-body container is-widescreen">
 				<figure class="image profile-ava is-rounded">
-					<LoadImg :src="user.image.bigUrl" class="full-hw" />
+					<LoadImg :src="user.image.bigUrl" class="full-hw" :key="id"/>
 				</figure>
 
 				<h1 class="title is-2 has-text-centered">
@@ -148,7 +148,12 @@
 	
 	.profile {
 		box-shadow: 1px -8px 8px rgba(0, 0, 0, .175);
-		
+    @media screen and (max-width: 790px) {
+      .profile-ava {
+        height: 130px;
+        width: 130px;
+      }
+    }
 		.profile-ava {
 			height: 170px;
 			width: 170px;

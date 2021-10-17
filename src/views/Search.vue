@@ -169,25 +169,15 @@ export default {
               $state.error()
               return;
             }
-            console.log(params["sortpop"])
             if (!(keyword === this.finalKeyword && params["sortpop"] === this.queryFeatures.includes("sortpop") && params["sortdate"] === this.queryFeatures.includes("sortdate"))) {
               return;
             }
             if (!response.data.data.has_next) {
               $state.complete()
             }
-            this.illusts = this.illusts.concat(response.data.data.illusts.map(illust => {
-
-              let punct = '\\['+ '\\!'+ '\\"'+ '\\#'+ '\\$'+   // since javascript does not
-                '\\%'+ '\\&'+ '\\\''+ '\\('+ '\\)'+  // support POSIX character
-                '\\*'+ '\\+'+ '\\,'+ '\\\\'+ '\\-'+  // classes, we'll need our
-                '\\.'+ '\\/'+ '\\:'+ '\\;'+ '\\<'+   // own version of [:punct:]
-                '\\='+ '\\>'+ '\\?'+ '\\@'+ '\\['+
-                '\\]'+ '\\^'+ '\\_'+ '\\`'+ '\\{'+
-                '\\|'+ '\\}'+ '\\~'+ '\\]'
-              let ks = keyword.trim().split(new RegExp("\\s|[" + punct + "]"))
-              let highlighted_title = illust["title"].replace(new RegExp("(" + ks.join("|") + ")", 'ig'),"<em>$1</em>");
-              illust["title"] = (highlighted_title)
+            this.illusts = this.illusts.concat(response.data.data.illusts.map((illust, i) => {
+              if (response.data.data.highlight[i] != null)
+                illust["title"] = response.data.data.highlight[i]
               return illust
             }))
             this.illustsPage += 1
