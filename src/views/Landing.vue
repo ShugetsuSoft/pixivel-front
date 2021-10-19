@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      backgroundImg: "",
+      backgroundImg: "https://api.daihan.top/api/acg",
     };
   },
 };
