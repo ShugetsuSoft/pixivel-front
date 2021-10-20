@@ -1,6 +1,6 @@
 <template>
-	<section class="section default-full-screen-top no-padding-phone">
-		<div class="container is-fluid no-padding-phone" v-if="illust">
+	<section class="section default-full-screen-top no-padding-phone" v-if="illust">
+		<div class="container is-fluid no-padding-phone">
 			<div class="columns">
 				<div class="column is-three-quarters no-padding-phone">
 					<Presentation :id="illust.id" :initial-width="illust.width" :initial-height="illust.height" :image="illust.image"
@@ -38,6 +38,20 @@
 				</div>
 			</div>
 		</div>
+    <div class="container huge-top-margin">
+      <WaterFall :illusts="recommendIllusts" :identifier="recommendIllustsIdentifier" />
+      <infinite-loading @infinite="recommendIllustsPageNext" spinner="spiral">
+        <div slot="no-more">加载完毕</div>
+        <div slot="no-results">没结果</div>
+        <div slot="error" slot-scope="{ trigger }">
+          <div class="notification is-danger">
+            <div class="buttons">
+              <b-button type="is-primary" inverted @click="trigger">重试</b-button>
+            </div>
+          </div>
+        </div>
+      </infinite-loading>
+    </div>
 	</section>
 </template>
 
@@ -45,37 +59,39 @@
 	import Presentation from '@/components/presentation.vue'
 	import CONFIG from '@/config.json'
 	import VClamp from 'vue-clamp'
+  import WaterFall from '@/components/waterfall'
 
 	export default {
 		name: "Detail",
 		components: {
 			Presentation,
-			VClamp
+			VClamp,
+      WaterFall
 		},
 		data: () => ({
 			id: 0,
 			current: 1,
 			loading: null,
-			illust: null
+			illust: null,
+      recommendIllusts: [],
+      recommendIllustsPage: 0,
+      recommendIllustsIdentifier: +new Date()
 		}),
+    watch: {
+      $route() {
+        this.id = this.$route.params.id
+        this.loading = this.$buefy.loading.open()
+        this.load()
+        this.refreshRecommend()
+      }
+    },
 		created() {
 			this.id = this.$route.params.id
 			this.loading = this.$buefy.loading.open()
 		},
 		mounted() {
-			this.axios
-				.get(CONFIG.API_HOST + `illust/${this.id}`)
-				.then((response) => {
-					if (response.data.error) {
-						this.error(response.data.message)
-						return;
-					}
-					this.illust = response.data.data
-					this.loading.close()
-				}).catch((error)=>{
-        this.error(error.response.data.message)
-        this.loading.close()
-      })
+			this.load()
+      this.refreshRecommend()
 		},
 		methods: {
 			error(message) {
@@ -84,7 +100,51 @@
 					message: message,
 					type: 'is-danger',
 				})
-			}
+			},
+      load() {
+        this.axios
+          .get(CONFIG.API_HOST + `illust/${this.id}`)
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.illust = response.data.data
+            this.loading.close()
+          }).catch((error)=>{
+          this.error(error.response.data.message)
+          this.loading.close()
+        })
+      },
+      refreshRecommend() {
+        this.recommendIllusts = []
+        this.recommendIllustsPage = 0
+        this.recommendIllustsIdentifier += 1
+      },
+      recommendIllustsPageNext($state) {
+        this.axios
+          .get(CONFIG.API_HOST + `illust/${this.id}/recommend`, {
+            params: {
+              page: this.recommendIllustsPage
+            }
+          })
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              $state.error()
+              return;
+            }
+            if (!response.data.data.has_next) {
+              $state.complete()
+            }
+            this.recommendIllusts = this.recommendIllusts.concat(response.data.data.illusts)
+            this.recommendIllustsPage += 1
+            $state.loaded()
+          }).catch((error)=>{
+          this.error(error.response.data.message)
+          $state.error()
+        })
+      }
 		},
 		filters: {
 			htmlFilter: function(val) {
@@ -138,4 +198,12 @@
 	.little-top-margin {
 		margin-top: 1rem !important;
 	}
+
+  .huge-top-margin {
+    margin-top: 5rem;
+  }
+
+  .is-vertical-centered {
+    align-items: center !important;
+  }
 </style>
