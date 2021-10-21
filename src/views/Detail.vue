@@ -70,7 +70,6 @@
 		},
 		data: () => ({
 			id: 0,
-			current: 1,
 			loading: null,
 			illust: null,
       recommendIllusts: [],
@@ -81,6 +80,7 @@
       $route() {
         this.id = this.$route.params.id
         this.loading = this.$buefy.loading.open()
+        this.illust = null
         this.load()
         this.refreshRecommend()
       }
