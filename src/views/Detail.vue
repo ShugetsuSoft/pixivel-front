@@ -7,7 +7,7 @@
 					 :page-count="illust.pageCount" />
 				</div>
 				<div class="column">
-					<div class="container is-fluid no-padding-comp top-padding-phone">
+					<div class="container is-fluid no-padding-comp top-padding-phone img-info">
 						<div class="content">
 							<h1 class="title is-2 no-bottom-margin">{{ illust.title }}</h1>
 							<small>{{ illust.altTitle }}</small>
@@ -185,6 +185,11 @@
 		.no-padding-comp {
 			padding: 0 !important;
 		}
+
+    .img-info {
+      position: sticky;
+      top: 2rem;
+    }
 	}
 
 	.section {
