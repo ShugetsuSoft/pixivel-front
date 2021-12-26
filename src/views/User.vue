@@ -1,24 +1,31 @@
 <template>
-	<section class="default-full-screen-top" v-if="user">
+	<section class="default-full-screen-top">
 		<section class="hero user-banner is-medium">
-			<LoadImg :src="background" :key="id"/>
+			<LoadImg :src="background" :imgkey="id" v-if="user"/>
 		</section>
 		<section class="hero profile">
 			<div class="hero-body container is-widescreen">
 				<figure class="image profile-ava is-rounded">
-					<LoadImg :src="user.image.bigUrl" class="full-hw" :key="id"/>
+          <b-skeleton circle v-if="!user"></b-skeleton>
+					<LoadImg :src="user.image.bigUrl" class="full-hw" :imgkey="id" v-else/>
 				</figure>
 
 				<h1 class="title is-2 has-text-centered">
-					{{ user.name }}
+					{{ user ? user.name : "" }}
+          <b-skeleton width="20%" height="2rem" v-if="!user" position="is-centered"></b-skeleton>
 				</h1>
 				<hr>
 				<p class="subtitle is-6 bio-container break-raw-text">
-					{{ user.bio }}
+          <template v-if="!user">
+            <b-skeleton width="20%"></b-skeleton>
+            <b-skeleton width="40%"></b-skeleton>
+            <b-skeleton width="80%"></b-skeleton>
+          </template>
+          {{ user ? user.bio : "" }}
 				</p>
 			</div>
 		</section>
-		<div class="container">
+		<div class="container" v-if="user">
 			<WaterFall :illusts="userIllusts" />
 			<infinite-loading @infinite="illustsPageNext" spinner="spiral">
 				<div slot="no-more">加载完毕</div>
@@ -78,6 +85,7 @@
         this.error(error.response.data.message)
         this.loading.close()
       })
+
 		},
 		methods: {
 			error(message) {
@@ -162,7 +170,14 @@
 			margin-right: auto;
 			margin-bottom: 2rem;
 			overflow: hidden;
-			
+			.b-skeleton {
+        height: 100%;
+        width: 100%;
+        .b-skeleton-item {
+          height: 100%;
+          width: 100%;
+        }
+      }
 			.lazyimg {
 				box-shadow: 0 0 8px rgba(0, 0, 0, .175);
 			}

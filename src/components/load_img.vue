@@ -13,7 +13,7 @@
 		name: "LoadImg",
 		props: {
 			src: String,
-      key: {
+      imgkey: {
 			  default: "",
       },
 		},
@@ -30,7 +30,7 @@
 		},
 		computed: {
 			url() {
-				return this.imgProxy(this.src, this.key)
+				return this.imgProxy(this.src, this.imgkey)
 			}
 		},
 		methods: {

@@ -1,30 +1,43 @@
 <template>
-	<section class="section default-full-screen-top no-padding-phone" v-if="illust">
+	<section class="section default-full-screen-top no-padding-phone">
 		<div class="container is-fluid no-padding-phone">
 			<div class="columns">
 				<div class="column is-three-quarters no-padding-phone">
 					<Presentation :id="illust.id" :initial-width="illust.width" :initial-height="illust.height" :image="illust.image"
-					 :page-count="illust.pageCount" />
+					 :page-count="illust.pageCount" v-if="illust"/>
 				</div>
 				<div class="column">
 					<div class="container is-fluid no-padding-comp top-padding-phone img-info">
 						<div class="content">
-							<h1 class="title is-2 no-bottom-margin">{{ illust.title }}</h1>
-							<small>{{ illust.altTitle }}</small>
+              <template v-if="illust">
+							  <h1 class="title is-2 no-bottom-margin">{{ illust.title }}</h1>
+							  <small>{{ illust.altTitle }}</small>
+              </template>
+              <template v-else>
+                <b-skeleton width="20%" height="2rem"></b-skeleton>
+                <b-skeleton width="40%" height=".875em"></b-skeleton>
+              </template>
 							<hr>
-							<v-clamp class="subtitle is-6 break-raw-text" autoresize :max-lines="5" tag="p">
+							<v-clamp class="subtitle is-6 break-raw-text" autoresize :max-lines="5" tag="p" v-if="illust">
 								<template slot="default">{{ illust.description | htmlFilter }}</template>
 								<template #after="{ toggle, expanded, clamped }">
 									<b-tag type="is-success is-light" v-if="expanded || clamped" class="clickable-tag expand-tag-button" size="is-small"
 									 @click.native="toggle">{{ expanded ? "收起" : "展开" }}</b-tag>
 								</template>
 							</v-clamp>
+              <template v-else>
+                <b-skeleton width="100%" height="15px" :count="3"></b-skeleton>
+                <b-skeleton width="30%" height="15px"></b-skeleton>
+              </template>
 						</div>
-						<b-taglist class="little-top-margin">
-							<b-tag type="is-info is-light" class="clickable-tag" v-for="tag in illust.tags" :key="tag.name">{{ tag.name }} {{ tag.translation ? "|" : "" }} {{ tag.translation }}</b-tag>
+						<b-taglist class="little-top-margin" v-if="illust">
+              <template v-for="tag in illust.tags">
+							  <b-tag type="is-info is-light" class="clickable-tag" :key="tag.name" @click.native="searchtag(tag.name)">{{ tag.name }}</b-tag>
+                <b-tag type="is-link is-light" class="clickable-tag" v-if="tag.translation" :key="tag.translation">{{ tag.translation }}</b-tag>
+              </template>
 						</b-taglist>
 
-						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})">
+						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})" v-if="illust">
 							<div class="media-left">
 								<figure class="image is-64x64">
 									<img :src="imgProxy(illust.user.image.url, id)" class="is-rounded full-hw">
@@ -34,11 +47,12 @@
 								<h1 class="title is-4">{{ illust.user.name }}</h1>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
 		</div>
-    <div class="container huge-top-margin">
+    <div class="container huge-top-margin" v-if="illust">
       <WaterFall :illusts="recommendIllusts" :identifier="recommendIllustsIdentifier" />
       <infinite-loading @infinite="recommendIllustsPageNext" spinner="spiral">
         <div slot="no-more">加载完毕</div>
@@ -144,6 +158,9 @@
           this.error(error.response.data.message)
           $state.error()
         })
+      },
+      searchtag(name) {
+        this.$router.push({ name: 'Search', params: { keyword: name }})
       }
 		},
 		filters: {

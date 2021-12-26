@@ -85,6 +85,7 @@ export default {
       illusts: [],
       loadid: +new Date(),
       queryFeatures: [],
+      requestCancel: { }
     }
   },
   watch: {
@@ -100,9 +101,11 @@ export default {
     $route() {
       this.keyword = this.$route.params.keyword
       this.finalKeyword = this.$route.params.keyword
+
     }
   },
   created() {
+    console.log(this.$route.query)
     this.keyword = this.$route.params.keyword
     this.finalKeyword = this.$route.params.keyword
     this.suggestdebu = this.Lodash.debounce(() => {
@@ -127,9 +130,12 @@ export default {
         this.finalKeyword = ""
         this.keyword = ""
       }
+      for (let i in this.requestCancel) {
+        this.requestCancel[i].cancel()
+      }
     },
     searchonselect(keywd) {
-      if(keywd!=''&&keywd!=null){
+      if(keywd){
         this.$router.push({ name: 'Search', params: { keyword: keywd }})
       }
     },
@@ -158,18 +164,19 @@ export default {
           sortpop: this.queryFeatures.includes("sortpop"),
           sortdate: this.queryFeatures.includes("sortdate"),
         }
+        let cancel = this.axios.CancelToken.source()
         let keyword = this.finalKeyword
+        this.requestCancel[[keyword, JSON.stringify(params)].join(".")] = cancel
         this.axios
           .get(CONFIG.API_HOST + `illust/search/${keyword}`,{
-            params
+            params,
+            cancelToken: cancel.token
           })
           .then((response) => {
+            delete this.requestCancel[[keyword, JSON.stringify(params)].join(".")]
             if (response.data.error) {
               this.error(response.data.message)
               $state.error()
-              return;
-            }
-            if (!(keyword === this.finalKeyword && params["sortpop"] === this.queryFeatures.includes("sortpop") && params["sortdate"] === this.queryFeatures.includes("sortdate"))) {
               return;
             }
             if (!response.data.data.has_next) {
@@ -183,6 +190,7 @@ export default {
             this.illustsPage += 1
             $state.loaded()
           }).catch((error)=>{
+          delete this.requestCancel[[keyword, JSON.stringify(params)].join(".")]
           this.error(error.response.data.message)
         })
       }
