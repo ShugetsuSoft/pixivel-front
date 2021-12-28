@@ -3,7 +3,9 @@ import App from "@/App.vue";
 
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import '@/assets/fonts/font.scss'
 import '@/assets/css/bulmaswatch.min.css'
+import '@/assets/sass/dark.sass'
 
 import axios from "axios";
 import VueAxios from "vue-axios";

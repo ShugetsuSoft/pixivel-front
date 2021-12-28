@@ -29,13 +29,44 @@ export default {
   props: {
     'illusts': Array,
   },
+  data() {
+    return {
+      scrollPos: 0,
+      scrollStartTime: 0,
+      duration: 800,
+    }
+  },
   methods: {
     url(illust) {
       return this.calcImg(illust.id, 0, illust.image, 'small')
     },
+    scroll(timeCurrent) {
+      let timeElapsed = timeCurrent - this.scrollStartTime
+      let next = this.easeOut(timeElapsed, this.$refs.scroll.scrollLeft, this.scrollPos - this.$refs.scroll.scrollLeft, this.duration)
+      this.$refs.scroll.scrollLeft = next
+      if (timeElapsed < this.duration - 1) {
+        window.requestAnimationFrame(this.scroll)
+      } else {
+        this.$refs.scroll.scrollLeft = this.scrollPos
+        this.scrollStartTime = 0
+      }
+    },
+    easeOut(t, b, c, d) {
+      return b + c * Math.sin(((t/d) * Math.PI) / 2)
+    },
     wheel(event) {
       event.preventDefault()
-      this.$refs.scroll.scrollLeft += event.deltaY
+      if (this.scrollPos < 0) this.scrollPos = 0
+      if (this.scrollPos > this.$refs.scroll.scrollWidth) this.scrollPos = this.$refs.scroll.scrollWidth
+      if (this.scrollPos >= 0 && event.deltaY > 0 || this.scrollPos <= this.$refs.scroll.scrollWidth && event.deltaY < 0) {
+        this.scrollPos += event.deltaY
+        if (this.scrollStartTime == 0) {
+          this.scrollStartTime = performance.now()
+          window.requestAnimationFrame(this.scroll)
+        } else {
+          this.scrollStartTime = performance.now() - 90
+        }
+      }
     }
   }
 };

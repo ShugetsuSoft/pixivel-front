@@ -11,7 +11,6 @@
 <script>
 	import Nav from '@/components/nav'
 	import Footer from '@/components/footer.vue'
-	import '@/assets/fonts/font.scss'
 
 	export default {
 		name: 'App',
@@ -36,7 +35,7 @@
 
 	html,
 	body {
-		background-color: #fdfdfd;
+		//background-color: #fdfdfd;
 	}
 
 	h1,
@@ -106,8 +105,8 @@
 		cursor: pointer;
 		user-select: none !important;
 	}
-
-	.loading-overlay-custom {
+  
+	.loading-overlay {
 		-webkit-box-align: center;
 		align-items: center;
 		-webkit-box-pack: center;
@@ -115,11 +114,11 @@
 		overflow: hidden;
 		z-index: 999;
 		display: flex;
-		background: rgba(255, 255, 255, 0.5);
+		background-color: rgba(255, 255, 255, 0.5);
 		width: 100%;
 		height: 100%;
 
-		.loading-icon-custom {
+		.loading-icon {
 			position: relative;
 
 			&::after {
@@ -142,4 +141,14 @@
 			}
 		}
 	}
+
+  @media (prefers-color-scheme: dark) {
+    .loading-overlay {
+      background-color: rgba(0, 0, 0, 0.2) !important;
+
+      .loading-background {
+        background-color: rgba(0, 0, 0, 0.2) !important;
+      }
+    }
+  }
 </style>
