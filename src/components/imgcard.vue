@@ -1,5 +1,5 @@
 <template>
-	<RouterA ref="imgCard" :to="{'name':'Detail', 'params':{'id': illust.id}}">
+	<RouterA :to="{'name':'Detail', 'params':{'id': illust.id}}">
 		<LazyImg :src="url" @loaded="loaded" @preloaded="loaded" />
 		<div class="loading-overlay" :class="{'is-active': loading}">
 			<div class="loading-background"></div>

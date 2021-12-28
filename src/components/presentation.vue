@@ -33,7 +33,7 @@
 		},
 		data() {
 			return {
-				MaxPercent: 0.90,
+				MaxPercent: 0.94,
 				CurrentImgUrl: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
 				CurrentPage: 1,
 				width: 0,
@@ -166,7 +166,7 @@
 				width: 100%;
 				height: 100%;
 			}
-
+      box-shadow: 0 0 8px rgba(0, 0, 0, .18);
       border: {
         radius: 10px;
       }

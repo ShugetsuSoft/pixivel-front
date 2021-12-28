@@ -2,13 +2,13 @@
 	<section class="section default-full-screen-top no-padding-phone">
 		<div class="container is-fluid no-padding-phone">
 			<div class="columns">
-				<div class="column is-three-quarters no-padding-phone">
+				<div class="column no-padding-phone">
 					<Presentation :id="illust.id" :initial-width="illust.width" :initial-height="illust.height" :image="illust.image"
 					 :page-count="illust.pageCount" v-if="illust"/>
 				</div>
-				<div class="column">
+				<div class="column is-one-quarter">
 					<div class="container is-fluid no-padding-comp top-padding-phone img-info">
-						<div class="content">
+						<div>
               <template v-if="illust">
 							  <h1 class="title is-2 no-bottom-margin">{{ illust.title }}</h1>
 							  <small>{{ illust.altTitle }}</small>
@@ -33,21 +33,36 @@
 						<b-taglist class="little-top-margin" v-if="illust">
               <template v-for="tag in illust.tags">
 							  <b-tag type="is-info is-light" class="clickable-tag" :key="tag.name" @click.native="searchtag(tag.name)">{{ tag.name }}</b-tag>
-                <b-tag type="is-link is-light" class="clickable-tag" v-if="tag.translation" :key="tag.translation">{{ tag.translation }}</b-tag>
+                <b-tag type="is-link is-light" class="clickable-tag" v-if="tag.translation" :key="tag.translation" @click.native="searchtag(tag.translation)">{{ tag.translation }}</b-tag>
               </template>
 						</b-taglist>
-
 						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})" v-if="illust">
 							<div class="media-left">
 								<figure class="image is-64x64">
-									<img :src="imgProxy(illust.user.image.url, id)" class="is-rounded full-hw">
+									<img :src="imgProxy(illust.user.image.url, id)" class="is-rounded full-hw obj-cover">
 								</figure>
 							</div>
 							<div>
 								<h1 class="title is-4">{{ illust.user.name }}</h1>
 							</div>
 						</div>
+            <HScroll :illusts="userIllusts" v-if="illust"></HScroll>
 
+            <div class="statistic" v-if="illust">
+              <div class="statistic-item">
+                <b-icon pack="uil" icon="uil-eye" size="is-small"></b-icon> {{ illust.statistic.views }}
+              </div>
+              <div class="statistic-item">
+                <b-icon pack="uil" icon="uil-thumbs-up" size="is-small"></b-icon> {{ illust.statistic.likes }}
+              </div>
+              <div class="statistic-item">
+                <b-icon pack="uil" icon="uil-heart" size="is-small"></b-icon> {{ illust.statistic.bookmarks }}
+              </div>
+              <div class="statistic-item">
+                <b-icon pack="uil" icon="uil-comment" size="is-small"></b-icon> {{ illust.statistic.comments }}
+              </div>
+              <div class="content">{{ illust.createDate | dateFormat("LL") }}</div>
+            </div>
 					</div>
 				</div>
 			</div>
@@ -74,13 +89,15 @@
 	import CONFIG from '@/config.json'
 	import VClamp from 'vue-clamp'
   import WaterFall from '@/components/waterfall'
+  import HScroll from '@/components/horizontal_scroll'
 
 	export default {
 		name: "Detail",
 		components: {
 			Presentation,
 			VClamp,
-      WaterFall
+      WaterFall,
+      HScroll
 		},
 		data: () => ({
 			id: 0,
@@ -88,13 +105,15 @@
 			illust: null,
       recommendIllusts: [],
       recommendIllustsPage: 0,
-      recommendIllustsIdentifier: +new Date()
+      recommendIllustsIdentifier: +new Date(),
+      userIllusts: []
 		}),
     watch: {
       $route() {
         this.id = this.$route.params.id
         this.loading = this.$buefy.loading.open()
         this.illust = null
+        this.userIllusts = []
         this.load()
         this.refreshRecommend()
       }
@@ -124,10 +143,28 @@
               return;
             }
             this.illust = response.data.data
+            this.loadUserIllusts(this.illust.user.id)
             this.loading.close()
           }).catch((error)=>{
           this.error(error.response.data.message)
           this.loading.close()
+        })
+      },
+      loadUserIllusts(uid) {
+        this.axios
+          .get(CONFIG.API_HOST + `user/${uid}/illusts`, {
+            params: {
+              page: 0
+            }
+          })
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.userIllusts = response.data.data.illusts
+          }).catch((error)=>{
+          this.error(error.response.data.message)
         })
       },
       refreshRecommend() {
@@ -180,6 +217,17 @@
 		}
 	}
 
+  .statistic {
+    margin: {
+      top: 14px;
+    }
+    font-size: small;
+    .statistic-item {
+      display: inline-block;
+      margin-right: 8px;
+    }
+  }
+
 	@media screen and (max-width: 790px) {
 		.section {
 			padding: 0;
@@ -227,5 +275,9 @@
 
   .is-vertical-centered {
     align-items: center !important;
+  }
+
+  .obj-cover {
+    object-fit: cover;
   }
 </style>

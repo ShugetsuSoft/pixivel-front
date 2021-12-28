@@ -133,6 +133,7 @@ export default {
       for (let i in this.requestCancel) {
         this.requestCancel[i].cancel()
       }
+      this.requestCancel = {}
     },
     searchonselect(keywd) {
       if(keywd){

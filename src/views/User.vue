@@ -151,7 +151,7 @@
 
 <style lang="scss">
 	.user-banner {
-		height: 18rem;
+		height: 27rem;
 	}
 	
 	.profile {

@@ -11,8 +11,14 @@ import VirtualMasonry from 'vue-virtual-masonry'
 import InfiniteLoading from 'vue-infinite-loading'
 import Lodash from 'lodash'
 Vue.prototype.Lodash = Lodash
+import moment from 'moment'
+moment.locale('zh-cn')
+Vue.prototype.moment = moment
+Vue.filter('dateFormat', function (daraStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+	return moment(daraStr).format(pattern)
+})
 
-import "@mdi/font/css/materialdesignicons.min.css"
+import "@iconscout/unicons/css/line.css"
 
 import router from "@/router"
 Vue.config.productionTip = false;
