@@ -6,15 +6,18 @@
           <b-dropdown v-model="mode">
             <template #trigger>
               <b-button
-                label="插画"
+                :label="{'illust':'插画', 'tag': '标签', 'user': '作者'}[mode]"
                 type="is-success"
-                icon-right="menu-down" />
+                icon-right="uil uil-angle-down" />
             </template>
             <b-dropdown-item value="illust">
               关键字搜索插画
             </b-dropdown-item>
             <b-dropdown-item value="tag">
               标签搜索插画
+            </b-dropdown-item>
+            <b-dropdown-item value="user">
+              搜索作者
             </b-dropdown-item>
           </b-dropdown>
         </p>
@@ -23,7 +26,7 @@
           :data="suggestList"
           placeholder="试着输入些内容吧.."
           @select="searchonselect"
-          icon="magnify"
+          icon="uil uil-search"
           @typing="suggestdebu"
           @keyup.enter.native="search()"
           open-on-focus
@@ -31,24 +34,24 @@
           <template #empty>No results found</template>
         </b-autocomplete>
         <p class="control">
-          <b-button class="button is-info" @click="search()">Search</b-button>
+          <b-button class="button is-info" @click="search()">搜索</b-button>
         </p>
       </b-field>
-      <b-field>
+      <b-field v-if="mode=='illust'||mode=='tag'">
         <b-checkbox-button v-model="queryFeatures" native-value="sortpop" type="is-danger" size="is-small">
-          <b-icon icon="sort-descending" size="is-small"></b-icon>
+          <b-icon pack="uil" icon="uil-sort-amount-down" size="is-small"></b-icon>
           <span>热门度排序</span>
         </b-checkbox-button>
         <b-checkbox-button v-model="queryFeatures" native-value="sortdate" type="is-success" size="is-small">
-          <b-icon icon="sort-clock-descending-outline" size="is-small"></b-icon>
+          <b-icon pack="uil" icon="uil-clock" size="is-small"></b-icon>
           <span>时间排序</span>
         </b-checkbox-button>
       </b-field>
     </div>
-    <section>
+    <section v-if="finalKeyword">
       <div class="container">
         <WaterFall :illusts="illusts" />
-        <infinite-loading @infinite="illustsPageNext" spinner="spiral" v-if="finalKeyword!=''" :identifier="loadid" ref="infload">
+        <infinite-loading @infinite="illustsPageNext" spinner="spiral" :identifier="loadid" ref="infload">
           <div slot="no-more">加载完毕</div>
           <div slot="no-results">没结果</div>
           <div slot="error" slot-scope="{ trigger }">
@@ -99,24 +102,25 @@ export default {
       this.refresh(false)
     },
     $route() {
-      this.keyword = this.$route.params.keyword
-      this.finalKeyword = this.$route.params.keyword
+      this.keyword = this.$route.query.keyword
+      this.finalKeyword = this.$route.query.keyword
+      this.mode = this.$route.query.mode
+      if (!this.mode) this.mode = "illust"
     }
   },
   created() {
-    this.$route.query
-    this.keyword = this.$route.params.keyword
-    this.finalKeyword = this.$route.params.keyword
+    this.mode = this.$route.query.mode
+    if (!this.mode) this.mode = "illust"
+    this.keyword = this.$route.query.keyword
+    this.finalKeyword = this.$route.query.keyword
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.keyword != "") {
         this.suggest()
       }
     },800)
+    console.log(this.keyword)
   },
   mounted() {
-    this.$nextTick(() => {
-      this.$refs.infload.$emit('$InfiniteLoading:reset')
-    })
   },
   methods: {
     refresh(total=false) {
@@ -136,12 +140,12 @@ export default {
     },
     searchonselect(keywd) {
       if(keywd){
-        this.$router.push({ name: 'Search', params: { keyword: keywd }})
+        this.$router.push({ name: 'Search', query: { keyword: keywd, mode: this.mode }})
       }
     },
     search() {
-      if (this.keyword != this.$route.params.keyword) {
-        this.$router.push({ name: 'Search', params: { keyword: this.keyword }})
+      if (this.keyword != this.$route.query.keyword) {
+        this.$router.push({ name: 'Search', query: { keyword: this.keyword, mode: this.mode }})
       }
     },
     suggest() {

@@ -1,17 +1,17 @@
 <template>
 	<div class="nav nav-hori">
-		<div class="nav-circle" @click="routerChange('')">
-			<b-icon pack="uil" icon="account"></b-icon>
-		</div>
-		<div class="nav-circle" @click="routerChange('')">
-			<b-icon pack="uil" icon="home"></b-icon>
+    <div class="nav-circle" @click="routerChange('Rank')">
+      <b-icon pack="uil" icon="uil-list-ul"></b-icon>
+    </div>
+		<div class="nav-circle" @click="routerChange('Search')">
+			<b-icon pack="uil" icon="uil-search"></b-icon>
 		</div>
 		<div class="nav-circle nav-center" @click="routerChange('Landing')">
 			<img class="icon" src="../assets/images/favicon.png" />
 		</div>
-		<div class="nav-circle" @click="routerChange('Rank')">
-			<b-icon pack="uil" icon="uil-list-ul"></b-icon>
-		</div>
+    <div class="nav-circle" @click="routerChange('')">
+      <b-icon pack="uil" icon="alert-rhombus-outline"></b-icon>
+    </div>
 		<div class="nav-circle" @click="routerChange('')">
 			<b-icon pack="uil" icon="alert-rhombus-outline"></b-icon>
 		</div>

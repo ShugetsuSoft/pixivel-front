@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
 		<Nav />
+    <FloatClose />
 		<transition name="fade">
 			<router-view />
 		</transition>
@@ -11,12 +12,14 @@
 <script>
 	import Nav from '@/components/nav'
 	import Footer from '@/components/footer.vue'
+  import FloatClose from '@/components/float_close'
 
 	export default {
 		name: 'App',
 		components: {
 			Nav,
-			Footer
+			Footer,
+      FloatClose
 		}
 	}
 </script>
