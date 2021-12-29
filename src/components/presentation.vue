@@ -170,6 +170,14 @@
       border: {
         radius: 10px;
       }
+      @media screen and (max-width: 790px) {
+        border: {
+          top-left-radius: 0;
+          top-right-radius: 0;
+          bottom-left-radius: 3px;
+          bottom-right-radius: 3px;
+        }
+      }
       overflow: hidden;
 		}
 	}

@@ -12,7 +12,7 @@
 
 				<h1 class="title is-2 has-text-centered">
 					{{ user ? user.name : "" }}
-          <b-skeleton width="20%" height="2rem" v-if="!user" position="is-centered"></b-skeleton>
+          <b-skeleton width="130px" height="2rem" v-if="!user" position="is-centered"></b-skeleton>
 				</h1>
 				<hr>
 				<p class="subtitle is-6 bio-container break-raw-text">

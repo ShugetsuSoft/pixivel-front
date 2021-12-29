@@ -33,10 +33,12 @@
 		font-family: 'M PLUS 1p Light', 'M PLUS 1c Light' !important;
 	}
 
-	html,
-	body {
-		//background-color: #fdfdfd;
-	}
+  @media (prefers-color-scheme: light) {
+    html,
+    body {
+      background-color: #fdfdfd;
+    }
+  }
 
 	h1,
 	h2,
@@ -61,8 +63,9 @@
 	}
 
 	::selection {
-		background: rgba(37, 100, 255, .15);
+		background: rgba(0, 0, 0, .15);
 	}
+
 
 	::-webkit-scrollbar-thumb {
 		background: #8c8c8c;
@@ -71,6 +74,7 @@
 
 	::-webkit-scrollbar-track {
 		background: #ededed;
+    border-radius: 5px;
 	}
 
 	::-webkit-scrollbar {
@@ -78,7 +82,25 @@
 		height: 5px;
 		display: block;
 		background: #fff;
+    border-radius: 5px;
 	}
+
+  @media (prefers-color-scheme: dark) {
+    ::selection {
+      background: rgba(255, 255, 255, .15);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ededed;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgb(26,26,26);
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar {
+      background: #000;
+    }
+  }
 
 	.default-full-screen-top {
 		min-height: 100vh;

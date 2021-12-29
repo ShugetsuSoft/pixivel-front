@@ -5,8 +5,14 @@
 			<div class="loading-background"></div>
 			<div class="loading-icon"></div>
 		</div>
+    <div class="page-count" v-show="illust.pageCount > 1">
+      <b-tag type="is-info">
+        <b-icon pack="uil" icon="uil-layers" size="is-small"></b-icon>
+        {{ illust.pageCount }}
+      </b-tag>
+    </div>
 		<div class="title-container">
-			<h5 class="title is-5 has-text-white" v-html="illust.title"></h5>
+			<h5 class="title is-5 has-text-white">{{ illust.title }}</h5>
 		</div>
 	</RouterA>
 </template>
@@ -64,11 +70,25 @@
 			radius: 12px;
 		}
 
+    .page-count {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+
+      .is-info {
+        opacity: 0.7;
+
+        .icon {
+          padding-right: 3px;
+          padding-left: 1px;
+        }
+      }
+    }
+
 		.title-container {
 			position: absolute;
 			right: 0;
 			left: 0;
-			z-index: 1000;
 			display: flex;
 			-webkit-box-pack: center;
 			justify-content: center;

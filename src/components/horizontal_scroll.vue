@@ -1,18 +1,20 @@
 <template>
-  <div class="horizontal-scroll" @wheel="wheel" ref="scroll">
-    <template v-if="illusts.length > 0">
+  <div class="horizontal-scroll" @wheel="wheel" ref="scroll" @scroll="onscroll">
       <RouterA :to="{'name':'Detail', 'params':{'id': illust.id}}" class="scroll-item" v-for="illust in illusts" :key="illust.id">
         <LazyImg :src="url(illust)" />
         <div class="title-container">
           <h5 class="has-text-white" v-html="illust.title"></h5>
         </div>
+        <div class="page-count" v-show="illust.pageCount > 1">
+          <b-tag type="is-info">
+            <b-icon pack="uil" icon="uil-layers" size="is-small"></b-icon>
+            {{ illust.pageCount }}
+          </b-tag>
+        </div>
       </RouterA>
-    </template>
-    <template v-else>
-      <div class="scroll-item" v-for="i in 5" :key="i">
+      <div class="scroll-item" v-for="i in 5" :key="i" ref="loadSpan">
         <b-skeleton height="11rem"></b-skeleton>
       </div>
-    </template>
   </div>
 </template>
 
@@ -34,13 +36,55 @@ export default {
       scrollPos: 0,
       scrollStartTime: 0,
       duration: 800,
+      loadingObserver: null,
+    }
+  },
+  mounted() {
+    let triggerEle = this.$refs.loadSpan[0]
+    this.loadingObserver = new window.IntersectionObserver(entries => {
+      let entry = entries[0]
+      this.onloading(entry)
+    })
+    this.loadingObserver.observe(triggerEle)
+  },
+  beforeDestroy() {
+    if (this.loadingObserver) {
+      this.loadingObserver.disconnect()
+      this.loadingObserver = null
     }
   },
   methods: {
+    scrollTo(pos) {
+      this.scrollPos = pos
+      if (this.scrollPos < 0) this.scrollPos = 0
+      if (this.scrollPos > this.$refs.scroll.scrollWidth) this.scrollPos = this.$refs.scroll.scrollWidth
+      this.$refs.scroll.scrollTo({
+        left: this.scrollPos,
+      })
+      if (this.$refs.loadSpan[0].offsetLeft - this.$refs.scroll.scrollLeft <= this.$refs.scroll.clientWidth) {
+       this.onloading({
+         intersectionRatio: 1
+       })
+      }
+      this.scrollStartTime = 0
+    },
+    onloading(entry) {
+      if (entry.intersectionRatio <= 0) return
+      this.$emit('load')
+    },
+    onscroll() {
+      if (this.scrollStartTime == 0) {
+        this.scrollPos = this.$refs.scroll.scrollLeft
+      }
+    },
     url(illust) {
       return this.calcImg(illust.id, 0, illust.image, 'small')
     },
     scroll(timeCurrent) {
+      if (!this.$refs.scroll) {
+        this.scrollStartTime = 0
+        return
+      }
       let timeElapsed = timeCurrent - this.scrollStartTime
       let next = this.easeOut(timeElapsed, this.$refs.scroll.scrollLeft, this.scrollPos - this.$refs.scroll.scrollLeft, this.duration)
       this.$refs.scroll.scrollLeft = next
@@ -90,6 +134,22 @@ export default {
       margin-right: 8px;
       border-radius: 10px;
       overflow: hidden;
+
+      .page-count {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+
+        .is-info {
+          opacity: 0.7;
+
+          .icon {
+            padding-right: 3px;
+            padding-left: 1px;
+          }
+        }
+      }
+
       &:hover {
         .lazyimg {
           transform: scale(1.2);

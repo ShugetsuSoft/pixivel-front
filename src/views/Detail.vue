@@ -33,7 +33,7 @@
 						<b-taglist class="little-top-margin" v-if="illust">
               <template v-for="tag in illust.tags">
 							  <b-tag type="is-info is-light" class="clickable-tag" :key="tag.name" @click.native="searchtag(tag.name)">{{ tag.name }}</b-tag>
-                <b-tag type="is-link is-light" class="clickable-tag" v-if="tag.translation" :key="tag.translation" @click.native="searchtag(tag.translation)">{{ tag.translation }}</b-tag>
+                <b-tag type="is-link is-light" class="clickable-tag" v-if="tag.translation" :key="tag.translation+Math.random()" @click.native="searchtag(tag.translation)">{{ tag.translation }}</b-tag>
               </template>
 						</b-taglist>
 						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})" v-if="illust">
@@ -46,8 +46,7 @@
 								<h1 class="title is-4">{{ illust.user.name }}</h1>
 							</div>
 						</div>
-            <HScroll :illusts="userIllusts" v-if="illust"></HScroll>
-
+            <HScroll :illusts="userIllusts" v-if="illust" @load="loadUserIllusts" ref="userIllusts"></HScroll>
             <div class="statistic" v-if="illust">
               <div class="statistic-item">
                 <b-icon pack="uil" icon="uil-eye" size="is-small"></b-icon> {{ illust.statistic.views }}
@@ -106,7 +105,9 @@
       recommendIllusts: [],
       recommendIllustsPage: 0,
       recommendIllustsIdentifier: +new Date(),
-      userIllusts: []
+      userIllusts: [],
+      userIllustsPage: 0,
+      userIllustsLoading: false,
 		}),
     watch: {
       $route() {
@@ -114,6 +115,8 @@
         this.loading = this.$buefy.loading.open()
         this.illust = null
         this.userIllusts = []
+        this.userIllustsPage = 0
+        this.userIllustsLoading = false
         this.load()
         this.refreshRecommend()
       }
@@ -143,18 +146,19 @@
               return;
             }
             this.illust = response.data.data
-            this.loadUserIllusts(this.illust.user.id)
             this.loading.close()
           }).catch((error)=>{
           this.error(error.response.data.message)
           this.loading.close()
         })
       },
-      loadUserIllusts(uid) {
+      loadUserIllusts() {
+        if (this.userIllustsLoading == true) return
+        this.userIllustsLoading = true
         this.axios
-          .get(CONFIG.API_HOST + `user/${uid}/illusts`, {
+          .get(CONFIG.API_HOST + `user/${this.illust.user.id}/illusts`, {
             params: {
-              page: 0
+              page: this.userIllustsPage
             }
           })
           .then((response) => {
@@ -162,8 +166,23 @@
               this.error(response.data.message)
               return;
             }
-            this.userIllusts = response.data.data.illusts
+            this.userIllusts = this.userIllusts.concat(response.data.data.illusts)
+            if (this.userIllustsPage == 0) {
+              this.$nextTick(() => {
+                let targetIndex = this.Lodash.findIndex(this.userIllusts, item => {
+                  return item.id == this.id
+                })
+                let leftDis = targetIndex * 184
+                if (leftDis > this.$refs.userIllusts.$el.clientWidth / 2 - 92) {
+                  leftDis -= this.$refs.userIllusts.$el.clientWidth / 2 - 92
+                }
+                this.$refs.userIllusts.scrollTo(leftDis)
+              })
+            }
+            this.userIllustsPage += 1
+            this.userIllustsLoading = false
           }).catch((error)=>{
+          this.userIllustsLoading = false
           this.error(error.response.data.message)
         })
       },

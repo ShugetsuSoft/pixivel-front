@@ -1,19 +1,19 @@
 <template>
 	<div class="nav nav-hori">
 		<div class="nav-circle" @click="routerChange('')">
-			<b-icon icon="account"></b-icon>
+			<b-icon pack="uil" icon="account"></b-icon>
 		</div>
 		<div class="nav-circle" @click="routerChange('')">
-			<b-icon icon="home"></b-icon>
+			<b-icon pack="uil" icon="home"></b-icon>
 		</div>
 		<div class="nav-circle nav-center" @click="routerChange('Landing')">
 			<img class="icon" src="../assets/images/favicon.png" />
 		</div>
-		<div class="nav-circle" @click="routerChange('')">
-			<b-icon icon="view-dashboard"></b-icon>
+		<div class="nav-circle" @click="routerChange('Rank')">
+			<b-icon pack="uil" icon="uil-list-ul"></b-icon>
 		</div>
 		<div class="nav-circle" @click="routerChange('')">
-			<b-icon icon="alert-rhombus-outline"></b-icon>
+			<b-icon pack="uil" icon="alert-rhombus-outline"></b-icon>
 		</div>
 	</div>
 </template>
@@ -78,7 +78,12 @@
 					top: 0.35rem;
 					bottom: 0.35rem;
 				}
-
+        &:hover {
+          background-color: rgb(240, 240, 240);
+        }
+        &:active {
+          background-color: rgb(240, 240, 240);
+        }
 				display: flex;
 				transition: all .2s ease-in-out;
 				align-content: center;
@@ -154,6 +159,9 @@
 				&:hover {
 					background-color: rgb(240, 240, 240);
 				}
+        &:active {
+          background-color: rgb(240, 240, 240);
+        }
 			}
 
 			.nav-center {
@@ -175,4 +183,21 @@
 			}
 		}
 	}
+
+  @media (prefers-color-scheme: dark) {
+    .nav {
+      background-color: #1c1c1c;
+      .nav-center {
+        background-color: #1f191a;
+      }
+      .nav-circle {
+        &:hover {
+          background-color: #4a4a4a;
+        }
+        &:active {
+          background-color: #4a4a4a;
+        }
+      }
+    }
+  }
 </style>
