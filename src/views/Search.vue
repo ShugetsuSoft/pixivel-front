@@ -101,11 +101,10 @@ export default {
     $route() {
       this.keyword = this.$route.params.keyword
       this.finalKeyword = this.$route.params.keyword
-
     }
   },
   created() {
-    console.log(this.$route.query)
+    this.$route.query
     this.keyword = this.$route.params.keyword
     this.finalKeyword = this.$route.params.keyword
     this.suggestdebu = this.Lodash.debounce(() => {

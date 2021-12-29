@@ -47,9 +47,6 @@
         calcdebu: null,
 			}
 		},
-		created() {
-			
-		},
 		mounted() {
 			let parentNode = this.$refs.waterfall.parentNode
       this.containerWidth = parentNode.offsetWidth

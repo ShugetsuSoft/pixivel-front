@@ -24,6 +24,11 @@ const routes = [
 		name: "Search",
 		component: () => import("@/views/Search.vue"),
 	},
+	{
+		path: "/rank",
+		name: "Rank",
+		component: () => import("@/views/Rank.vue"),
+	}
 ];
 
 const scrollBehavior = (to, from, savedPosition) =>

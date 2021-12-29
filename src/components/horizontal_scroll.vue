@@ -12,9 +12,11 @@
           </b-tag>
         </div>
       </RouterA>
+    <template v-if="hasLoad">
       <div class="scroll-item" v-for="i in 5" :key="i" ref="loadSpan">
         <b-skeleton height="11rem"></b-skeleton>
       </div>
+    </template>
   </div>
 </template>
 
@@ -30,6 +32,7 @@ export default {
   },
   props: {
     'illusts': Array,
+    'has-load': Boolean
   },
   data() {
     return {

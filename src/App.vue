@@ -100,6 +100,10 @@
     ::-webkit-scrollbar {
       background: #000;
     }
+    html,
+    body:after {
+      filter: brightness(0.6);
+    }
   }
 
 	.default-full-screen-top {
@@ -170,6 +174,26 @@
 
       .loading-background {
         background-color: rgba(0, 0, 0, 0.2) !important;
+      }
+    }
+
+    .datepicker {
+      .dropdown-content {
+        background-color: #0a0a0a !important;
+      }
+      .datepicker-table {
+        .datepicker-body {
+          .datepicker-cell.is-selectable {
+            color: #b5b5b5 !important;
+            &:hover {
+              color: #0a0a0a !important;
+            }
+          }
+          
+          .datepicker-cell.is-unselectable {
+            color: #4a4a4a !important;
+          }
+        }
       }
     }
   }

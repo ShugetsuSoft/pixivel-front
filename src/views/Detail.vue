@@ -46,7 +46,7 @@
 								<h1 class="title is-4">{{ illust.user.name }}</h1>
 							</div>
 						</div>
-            <HScroll :illusts="userIllusts" v-if="illust" @load="loadUserIllusts" ref="userIllusts"></HScroll>
+            <HScroll :illusts="userIllusts" v-if="illust" @load="loadUserIllusts" :has-load="userIllustsShowLoading" ref="userIllusts"></HScroll>
             <div class="statistic" v-if="illust">
               <div class="statistic-item">
                 <b-icon pack="uil" icon="uil-eye" size="is-small"></b-icon> {{ illust.statistic.views }}
@@ -68,7 +68,7 @@
 		</div>
     <div class="container huge-top-margin" v-if="illust">
       <WaterFall :illusts="recommendIllusts" :identifier="recommendIllustsIdentifier" />
-      <infinite-loading @infinite="recommendIllustsPageNext" spinner="spiral">
+      <infinite-loading @infinite="recommendIllustsPageNext" spinner="spiral" :identifier="recommendIllustsIdentifier">
         <div slot="no-more">加载完毕</div>
         <div slot="no-results">没结果</div>
         <div slot="error" slot-scope="{ trigger }">
@@ -108,6 +108,7 @@
       userIllusts: [],
       userIllustsPage: 0,
       userIllustsLoading: false,
+      userIllustsShowLoading: true
 		}),
     watch: {
       $route() {
@@ -165,6 +166,9 @@
             if (response.data.error) {
               this.error(response.data.message)
               return;
+            }
+            if (!response.data.data.has_next) {
+              this.userIllustsShowLoading = false
             }
             this.userIllusts = this.userIllusts.concat(response.data.data.illusts)
             if (this.userIllustsPage == 0) {

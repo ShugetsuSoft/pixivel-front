@@ -188,7 +188,7 @@
     .nav {
       background-color: #1c1c1c;
       .nav-center {
-        background-color: #1f191a;
+        background-color: #1c1c1c;
       }
       .nav-circle {
         &:hover {
