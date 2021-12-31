@@ -12,7 +12,7 @@
     <div class="nav-circle" @click="routerChange('')">
       <b-icon pack="uil" icon="alert-rhombus-outline"></b-icon>
     </div>
-		<div class="nav-circle" @click="routerChange('')">
+		<div class="nav-circle" @click="$router.back()">
 			<b-icon pack="uil" icon="alert-rhombus-outline"></b-icon>
 		</div>
 	</div>
