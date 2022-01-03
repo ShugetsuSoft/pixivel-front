@@ -139,7 +139,7 @@
 		justify-content: center;
 		overflow: hidden;
 		z-index: 999;
-		display: flex;
+		display: none;
 		background-color: rgba(255, 255, 255, 0.5);
 		width: 100%;
 		height: 100%;
