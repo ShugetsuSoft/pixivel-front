@@ -1,6 +1,6 @@
 {
 	"IMAGE_PROXY_HOSTS":["https://proxy-jp1.pixivel.moe/"],
 	"DOWNLOAD_IMAGE_PROXY_HOST":"https://pximg.boxpaper.workers.dev/",
-	"API_HOST":"http://localhost:8080/v1/pixiv/",
+	"API_HOST":"https://api-beta.pixivel.moe/v1/pixiv/",
 	"RAND_IMG":"https://api.daihan.top/api/acg"
 }

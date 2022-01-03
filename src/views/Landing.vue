@@ -101,6 +101,6 @@ export default {
 }
 
 .info-dashboard {
-  
+
 }
 </style>
