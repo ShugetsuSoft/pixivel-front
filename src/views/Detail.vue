@@ -3,8 +3,8 @@
 		<div class="container is-fluid no-padding-phone">
 			<div class="columns">
 				<div class="column no-padding-phone">
-					<Presentation :id="illust.id" :initial-width="illust.width" :initial-height="illust.height" :image="illust.image"
-					 :page-count="illust.pageCount" v-if="illust"/>
+					<Presentation :id="illust.id" :initial-width="illust.width" :initial-height="illust.height" :ugoira-frames="ugoiraFrames" :image="illust.image"
+					 :page-count="pageCount" @progress="updateImageLoading" @forcefetch="triggerForceFetchIllust" v-if="illust" ref="present"/>
 				</div>
 				<div class="column is-one-quarter">
 					<div class="container is-fluid no-padding-comp top-padding-phone img-info">
@@ -62,6 +62,12 @@
               </div>
               <div class="content">{{ illust.createDate | dateFormat("LL") }}</div>
             </div>
+            <div class="notification is-primary img-progress" v-if="illust" :style="{'background-image': `linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) ${imgprogress}%, rgb(200, 200, 200) ${imgprogress}%, rgb(200, 200, 200) 100%)`}">
+                  <div class="buttons is-centered">
+                    <b-button type="is-primary" inverted @click="saveDirect">{{ imgprogress == 100 ? "保存" : parseInt(imgprogress) + "%" }}</b-button>
+                    <b-button type="is-primary" inverted outlined v-if="illust.pageCount > 1" @click="saveDirectAll">保存所有</b-button>
+                  </div>
+            </div>
 					</div>
 				</div>
 			</div>
@@ -105,10 +111,12 @@
       recommendIllusts: [],
       recommendIllustsPage: 0,
       recommendIllustsIdentifier: +new Date(),
+      ugoiraFrames: [],
       userIllusts: [],
       userIllustsPage: 0,
       userIllustsLoading: false,
-      userIllustsShowLoading: true
+      userIllustsShowLoading: true,
+      imgprogress: 100
 		}),
     watch: {
       $route() {
@@ -116,6 +124,7 @@
         this.loading = this.$buefy.loading.open()
         this.illust = null
         this.userIllusts = []
+        this.ugoiraFrames = []
         this.userIllustsPage = 0
         this.userIllustsLoading = false
         this.load()
@@ -138,17 +147,46 @@
 					type: 'is-danger',
 				})
 			},
-      load() {
+      loadUgoira(force) {
+        let params = {}
+        if (force) params["forcefetch"] = "true"
         this.axios
-          .get(CONFIG.API_HOST + `illust/${this.id}`)
+          .get(CONFIG.API_HOST + `ugoira/${this.id}`, {
+            params: params
+          })
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.ugoiraFrames = response.data.data.frames
+            this.loading.close()
+          }).catch((error)=>{
+            console.error(error)
+          this.error(error.response.data.message)
+          this.loading.close()
+        })
+      },
+      load(force) {
+        let params = {}
+        if (force) params["forcefetch"] = "true"
+        this.axios
+          .get(CONFIG.API_HOST + `illust/${this.id}`, {
+            params: params
+          })
           .then((response) => {
             if (response.data.error) {
               this.error(response.data.message)
               return;
             }
             this.illust = response.data.data
-            this.loading.close()
+            if (this.illust.type == 2) {
+              this.loadUgoira(force)
+            } else {
+              this.loading.close()
+            }
           }).catch((error)=>{
+          console.error(error)
           this.error(error.response.data.message)
           this.loading.close()
         })
@@ -180,7 +218,9 @@
                 if (leftDis > this.$refs.userIllusts.$el.clientWidth / 2 - 92) {
                   leftDis -= this.$refs.userIllusts.$el.clientWidth / 2 - 92
                 }
-                this.$refs.userIllusts.scrollTo(leftDis)
+                this.$refs.userIllusts.$el.scrollTo({
+                  "left": leftDis
+                })
               })
             }
             this.userIllustsPage += 1
@@ -220,14 +260,72 @@
         })
       },
       searchtag(name) {
-        this.$router.push({ name: 'Search', params: { keyword: name }})
-      }
+        this.$router.push({ name: 'Search', query: { keyword: name, mode: "tag" }})
+      },
+      saveDirect() {
+        if (this.illust.type == 2) {
+          this.$store.commit("Pic/newDownloadTask", {
+            "id": this.id,
+            "page": -1,
+            "type": "ugoira",
+            "ugoiraFrames": this.ugoiraFrames,
+            "image": this.illust.image,
+            "name": this.$store.getters["Settings/get"]("download.filename").format({"id": this.id, "page": 0, "title": this.illust.title})
+          })
+        } else {
+          let page = this.$refs.present.CurrentPage - 1
+          this.$store.commit("Pic/newDownloadTask", {
+            "id": this.id,
+            "page": page,
+            "type": "illust",
+            "image": this.illust.image,
+            "name": this.$store.getters["Settings/get"]("download.filename").format({"id": this.id, "page": page, "title": this.illust.title})
+          })
+        }
+        this.$buefy.notification.open({
+          message: this.getDownloadMessage(),
+          type: 'is-success',
+          duration: 3000
+        })
+      },
+      updateImageLoading(progress) {
+        this.imgprogress = progress * 100
+      },
+      triggerForceFetchIllust() {
+        this.loading = this.$buefy.loading.open()
+        this.illust = null
+        this.load(true)
+      },
+      saveDirectAll() {
+        for (let page = 0; page < this.illust.pageCount; page ++) {
+          this.$store.commit("Pic/newDownloadTask", {
+            "id": this.id,
+            "page": page,
+            "type": "illust",
+            "image": this.illust.image,
+            "name": this.$store.getters["Settings/get"]("download.filename").format({"id": this.id, "page": page, "title": this.illust.title})
+          })
+        }
+        this.$buefy.notification.open({
+          message: this.getDownloadMessage(),
+          type: 'is-success',
+          duration: 3000
+        })
+      },
 		},
 		filters: {
 			htmlFilter: function(val) {
 				return val.replace(/<br \/?>/g, "\r\n").replace(/<.*?>/g, "")
 			}
-		}
+		},
+    computed: {
+      pageCount() {
+        if (this.illust.type == 2) {
+          return -1
+        }
+        return this.illust.pageCount
+      }
+    }
 	}
 </script>
 
@@ -249,6 +347,11 @@
       display: inline-block;
       margin-right: 8px;
     }
+  }
+
+  .img-progress {
+    margin-top: 1rem;
+    transition: background 0.5s ease-out;
   }
 
 	@media screen and (max-width: 790px) {

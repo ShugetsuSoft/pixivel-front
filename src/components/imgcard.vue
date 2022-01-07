@@ -5,10 +5,13 @@
 			<div class="loading-background"></div>
 			<div class="loading-icon"></div>
 		</div>
-    <div class="page-count" v-show="illust.pageCount > 1">
-      <b-tag type="is-info">
+    <div class="page-count">
+      <b-tag type="is-info" v-if="illust.pageCount > 1">
         <b-icon pack="uil" icon="uil-layers" size="is-small"></b-icon>
         {{ illust.pageCount }}
+      </b-tag>
+      <b-tag type="is-primary" v-if="illust.type == 2">
+        <b-icon pack="uil" icon="uil-video" size="is-small"></b-icon>
       </b-tag>
     </div>
 		<div class="title-container">
@@ -45,7 +48,7 @@
 		},
 		computed: {
 			url() {
-				return this.calcImg(this.illust.id, 0, this.illust.image, this.quality)
+				return this.calcImg(this.illust.id, this.illust.type == 2 ? -1 : 0, this.illust.image, this.quality)
 			}
 		},
 		methods: {

@@ -5,10 +5,13 @@
         <div class="title-container">
           <h5 class="has-text-white" v-html="illust.title"></h5>
         </div>
-        <div class="page-count" v-show="illust.pageCount > 1">
-          <b-tag type="is-info">
+        <div class="page-count">
+          <b-tag type="is-info" v-if="illust.pageCount > 1">
             <b-icon pack="uil" icon="uil-layers" size="is-small"></b-icon>
             {{ illust.pageCount }}
+          </b-tag>
+          <b-tag type="is-primary" v-if="illust.type == 2">
+            <b-icon pack="uil" icon="uil-video" size="is-small"></b-icon>
           </b-tag>
         </div>
       </RouterA>
@@ -81,7 +84,7 @@ export default {
       }
     },
     url(illust) {
-      return this.calcImg(illust.id, 0, illust.image, 'small')
+      return this.calcImg(illust.id, illust.type == 2 ? -1 : 0, illust.image, 'small')
     },
     scroll(timeCurrent) {
       if (!this.$refs.scroll) {

@@ -31,6 +31,19 @@
           :max-date="moment().subtract(2, 'days')._d"
           editable>
         </b-datepicker>
+        <p class="control">
+          <b-dropdown v-model="content">
+            <template #trigger>
+              <b-button
+                :label="rankContent[content]"
+                type="'is-light"
+                icon-right="uil uil-angle-double-down" />
+            </template>
+            <b-dropdown-item :value="val" v-for="(item, val) in rankContent" :key="val">
+              <span>{{ item }}</span>
+            </b-dropdown-item>
+          </b-dropdown>
+        </p>
       </b-field>
     </div>
       <div class="container">
@@ -63,6 +76,7 @@ export default {
   data() {
     return {
       mode: 'daily',
+      content: 'all',
       date: this.moment().subtract(2, 'days')._d,
       errorMsg: '',
       illusts: [],
@@ -71,15 +85,24 @@ export default {
       rankLable: {'daily':'日榜','weekly':'周榜','monthly':'月榜','rookie':'新人榜','original':'原创榜','male':'男榜','female':'女榜'},
       rankType: {'daily':'primary','weekly':'success','monthly':'link','rookie':'warning','original':'light','male':'info','female':'danger'},
       rankIcon: {'daily':'sun','weekly':'calendar-alt','monthly':'moon','rookie':'newspaper','original':'images','male':'mars','female':'venus'},
+      rankContent: {'all': '所有类型', 'illust': '仅插画', 'manga': '仅漫画', 'ugoira': '仅动图'},
     }
   },
   watch: {
     mode() {
       this.refresh()
     },
+    content() {
+      this.refresh()
+    },
     date() {
       this.refresh()
     },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.$refs.infload.attemptLoad()
+    }, 500)
   },
   methods: {
     refresh() {
@@ -87,10 +110,12 @@ export default {
       this.loadid += 1
       this.errorMsg = ''
       this.illustsPage = 0
+      this.$store.commit('CancelRequests/clearCancelToken')
     },
     illustsPageNext($state) {
       let params = {
         "mode": this.mode,
+        "content": this.content,
         "date": this.moment(this.date).format('YYYYMMDD'),
         "page": this.illustsPage,
       }

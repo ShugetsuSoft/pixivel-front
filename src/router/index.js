@@ -28,7 +28,12 @@ const routes = [
 		path: "/rank",
 		name: "Rank",
 		component: () => import("@/views/Rank.vue"),
-	}
+	},
+	{
+		path: "/more",
+		name: "More",
+		component: () => import("@/views/More.vue"),
+	},
 ];
 
 const scrollBehavior = (to, from, savedPosition) =>
@@ -47,5 +52,6 @@ const router = new VueRouter({
 	routes,
 	scrollBehavior
 });
+
 
 export default router;

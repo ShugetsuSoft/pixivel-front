@@ -17,8 +17,18 @@
 		components: {
 			Nav,
 			Footer,
-		}
-	}
+		},
+    mounted() {
+      window.addEventListener('beforeunload', (e) => {
+        if (!this.$store.getters["Pic/isDownloadFinish"]) {
+          e.preventDefault()
+          e.returnValue = '未完成的下载任务！'
+          return true
+        }
+        return false
+      })
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -85,27 +95,6 @@
     border-radius: 5px;
 	}
 
-  @media (prefers-color-scheme: dark) {
-    ::selection {
-      background: rgba(255, 255, 255, .15);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #ededed;
-      border-radius: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgb(26,26,26);
-      border-radius: 5px;
-    }
-    ::-webkit-scrollbar {
-      background: #000;
-    }
-    html,
-    body:after {
-      filter: brightness(0.6);
-    }
-  }
-
 	.default-full-screen-top {
 		min-height: 100vh;
 	}
@@ -132,19 +121,19 @@
 		user-select: none !important;
 	}
   
-	.loading-overlay {
+	.loading-overlay-custom {
 		-webkit-box-align: center;
 		align-items: center;
 		-webkit-box-pack: center;
 		justify-content: center;
 		overflow: hidden;
 		z-index: 999;
-		display: none;
+		display: flex;
 		background-color: rgba(255, 255, 255, 0.5);
 		width: 100%;
 		height: 100%;
 
-		.loading-icon {
+		.loading-icon-custom {
 			position: relative;
 
 			&::after {
@@ -167,34 +156,4 @@
 			}
 		}
 	}
-
-  @media (prefers-color-scheme: dark) {
-    .loading-overlay {
-      background-color: rgba(0, 0, 0, 0.2) !important;
-
-      .loading-background {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-      }
-    }
-
-    .datepicker {
-      .dropdown-content {
-        background-color: #0a0a0a !important;
-      }
-      .datepicker-table {
-        .datepicker-body {
-          .datepicker-cell.is-selectable {
-            color: #b5b5b5 !important;
-            &:hover {
-              color: #0a0a0a !important;
-            }
-          }
-          
-          .datepicker-cell.is-unselectable {
-            color: #4a4a4a !important;
-          }
-        }
-      }
-    }
-  }
 </style>

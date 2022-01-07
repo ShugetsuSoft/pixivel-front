@@ -118,9 +118,13 @@ export default {
         this.suggest()
       }
     },800)
-    console.log(this.keyword)
   },
   mounted() {
+    if(this.finalKeyword) {
+      setTimeout(() => {
+        this.$refs.infload.attemptLoad()
+      }, 500)
+    }
   },
   methods: {
     refresh(total=false) {
@@ -130,8 +134,8 @@ export default {
       this.suggestList = []
       this.loadid += 1
       if (total) {
-        this.finalKeyword = ""
-        this.keyword = ""
+        this.finalKeyword = this.$route.query.keyword
+        this.keyword = this.$route.query.keyword
       }
       for (let i in this.requestCancel) {
         this.requestCancel[i].cancel()
