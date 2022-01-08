@@ -36,16 +36,16 @@
                 <b-tag type="is-link is-light" class="clickable-tag" v-if="tag.translation" :key="tag.translation+Math.random()" @click.native="searchtag(tag.translation)">{{ tag.translation }}</b-tag>
               </template>
 						</b-taglist>
-						<div class="media is-vertical-centered" @click="$router.push({'name': 'User', 'params': {'id': illust.user.id}})" v-if="illust">
+						<RouterA class="media is-vertical-centered" :to="{'name': 'User', 'params': {'id': illust.user.id}}" v-if="illust">
 							<div class="media-left">
 								<figure class="image is-64x64">
-									<img :src="imgProxy(illust.user.image.url, id)" class="is-rounded full-hw obj-cover">
+									<img :src="imgProxy(illust.user.image.url, illust.user.id)" class="is-rounded full-hw obj-cover">
 								</figure>
 							</div>
 							<div>
 								<h1 class="title is-4">{{ illust.user.name }}</h1>
 							</div>
-						</div>
+						</RouterA>
             <HScroll :illusts="userIllusts" v-if="illust" @load="loadUserIllusts" :has-load="userIllustsShowLoading" ref="userIllusts"></HScroll>
             <div class="statistic" v-if="illust">
               <div class="statistic-item">
@@ -95,6 +95,7 @@
 	import VClamp from 'vue-clamp'
   import WaterFall from '@/components/waterfall'
   import HScroll from '@/components/horizontal_scroll'
+  import RouterA from '@/components/router_a'
 
 	export default {
 		name: "Detail",
@@ -102,7 +103,8 @@
 			Presentation,
 			VClamp,
       WaterFall,
-      HScroll
+      HScroll,
+      RouterA
 		},
 		data: () => ({
 			id: 0,

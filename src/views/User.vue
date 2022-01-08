@@ -132,11 +132,7 @@
           if (this.userIllusts.length > 0) {
             for (let i = 0; i < this.userIllusts.length; i++) {
               if (this.userIllusts[i].width > this.userIllusts[i].height) {
-                if (this.userIllusts[i].height < 820) {
-                  return this.calcImg(this.userIllusts[i].id, 0, this.userIllusts[i].image, "original")
-                }
                 return this.calcImg(this.userIllusts[i].id, 0, this.userIllusts[i].image, "regular")
-
               }
             }
             return this.calcImg(this.userIllusts[0].id, 0, this.userIllusts[0].image, "regular")

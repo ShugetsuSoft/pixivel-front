@@ -1,6 +1,6 @@
 <template>
   <div class="horizontal-scroll" @wheel="wheel" ref="scroll" @scroll="onscroll">
-      <RouterA :to="{'name':'Detail', 'params':{'id': illust.id}}" class="scroll-item" v-for="illust in illusts" :key="illust.id">
+      <RouterA :to="{'name':'Detail', 'params':{'id': illust.id}}" class="scroll-item" v-for="illust in illusts" :key="illust.id" :style="{'height': wh+'px', 'width': wh+'px'}">
         <LazyImg :src="url(illust)" />
         <div class="title-container">
           <h5 class="has-text-white" v-html="illust.title"></h5>
@@ -16,8 +16,8 @@
         </div>
       </RouterA>
     <template v-if="hasLoad">
-      <div class="scroll-item" v-for="i in 5" :key="i" ref="loadSpan">
-        <b-skeleton height="11rem"></b-skeleton>
+      <div class="scroll-item" v-for="i in mustSkeleton" :key="i" ref="loadSpan">
+        <b-skeleton :height="wh+'px'" :width="wh+'px'"></b-skeleton>
       </div>
     </template>
   </div>
@@ -35,7 +35,11 @@ export default {
   },
   props: {
     'illusts': Array,
-    'has-load': Boolean
+    'has-load': Boolean,
+    "wh": {
+      type: Number,
+      default: 176,
+    }
   },
   data() {
     return {
@@ -52,6 +56,14 @@ export default {
       this.onloading(entry)
     })
     this.loadingObserver.observe(triggerEle)
+  },
+  computed: {
+    mustSkeleton() {
+      if (this.$refs.scroll) {
+        return this.$refs.scroll.clientWidth / this.wh
+      }
+      return 10
+    }
   },
   beforeDestroy() {
     if (this.loadingObserver) {
@@ -135,8 +147,6 @@ export default {
     .scroll-item {
       position: relative;
       display: inline-block;
-      width: 11rem;
-      height: 11rem;
       margin-right: 8px;
       border-radius: 10px;
       overflow: hidden;

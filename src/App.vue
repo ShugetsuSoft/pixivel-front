@@ -59,6 +59,10 @@
 		font-family: 'M PLUS 1p Regular', 'M PLUS 1c Regular' !important;
 	}
 
+  .no-margin-bottom {
+    margin-bottom: 0 !important;
+  }
+
 	.fade-enter-active,
 	.fade-leave-active {
 		transition: opacity .5s;

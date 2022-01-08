@@ -68,8 +68,10 @@ const processDownload = (state) => {
 							file.file(item["file"]).async("blob").then((data) => {
 								let img = new Image()
 								img.src = URL.createObjectURL(data)
+								img.onload = () => {
+									resolve()
+								}
 								ugoiraImages[item["file"]] = img
-								resolve()
 							}).catch(error => {
 								reject(error)
 							})

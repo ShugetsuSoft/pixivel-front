@@ -12,15 +12,15 @@
                 :icon-left="'uil uil-'+rankIcon[mode]"
                 icon-right="uil uil-angle-down" />
             </template>
-            <b-dropdown-item :value="val" v-for="(item, val) in rankLable" :key="val">
+            <b-dropdown-item :value="val" v-for="val in rankContentModes[content]" :key="val">
               <b-icon pack="uil" :icon="'uil-' + rankIcon[val]"></b-icon>
-              <span>{{ item }}</span>
+              <span>{{ rankLable[val] }}</span>
             </b-dropdown-item>
           </b-dropdown>
         </p>
-        <b-radio-button v-model="mode" :native-value="val" :type="'is-' + rankType[val] + ' is-light is-outlined'" v-for="(item, val, index) in rankLable" :key="val" class="hide-p" :class="{'left-border-radius': index == 0}">
+        <b-radio-button v-model="mode" :native-value="val" :type="'is-' + rankType[val] + ' is-light is-outlined'" v-for="(val, index) in rankContentModes[content]" :key="val" class="hide-p" :class="{'left-border-radius': index == 0}">
           <b-icon pack="uil" :icon="'uil-' + rankIcon[val]"></b-icon>
-          <span>{{ item }}</span>
+          <span>{{ rankLable[val] }}</span>
         </b-radio-button>
         <b-datepicker
           v-model="date"
@@ -28,7 +28,7 @@
           icon-prev="uil uil-previous"
           icon-next="uil uil-step-forward"
           icon-right="uil uil-calender"
-          :max-date="moment().subtract(2, 'days')._d"
+          :max-date="moment().subtract(1, 'days')._d"
           editable>
         </b-datepicker>
         <p class="control">
@@ -77,7 +77,7 @@ export default {
     return {
       mode: 'daily',
       content: 'all',
-      date: this.moment().subtract(2, 'days')._d,
+      date: this.moment().subtract(1, 'days')._d,
       errorMsg: '',
       illusts: [],
       loadid: +new Date(),
@@ -86,6 +86,7 @@ export default {
       rankType: {'daily':'primary','weekly':'success','monthly':'link','rookie':'warning','original':'light','male':'info','female':'danger'},
       rankIcon: {'daily':'sun','weekly':'calendar-alt','monthly':'moon','rookie':'newspaper','original':'images','male':'mars','female':'venus'},
       rankContent: {'all': '所有类型', 'illust': '仅插画', 'manga': '仅漫画', 'ugoira': '仅动图'},
+      rankContentModes: {'all': ["daily", "weekly", "monthly", "rookie", "original", "male", "female"], 'illust': ["daily", "weekly", "monthly", "rookie"], 'manga': ["daily", "weekly", "monthly", "rookie"], 'ugoira': ["daily", "weekly"]}
     }
   },
   watch: {
@@ -93,6 +94,7 @@ export default {
       this.refresh()
     },
     content() {
+      this.mode = "daily"
       this.refresh()
     },
     date() {

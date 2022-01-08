@@ -65,8 +65,8 @@
 			}
 
 			.nav-circle {
-				width: 1.6rem;
-				height: 1.6rem;
+        width: 2.3rem;
+        height: 2.3rem;
 				border-radius: 50%;
 				flex: 1;
 				text-align: center;
