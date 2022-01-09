@@ -16,7 +16,7 @@
         </div>
       </RouterA>
     <template v-if="hasLoad">
-      <div class="scroll-item" v-for="i in mustSkeleton" :key="i" ref="loadSpan">
+      <div class="scroll-item" v-for="i in 10" :key="i" ref="loadSpan">
         <b-skeleton :height="wh+'px'" :width="wh+'px'"></b-skeleton>
       </div>
     </template>
@@ -58,12 +58,6 @@ export default {
     this.loadingObserver.observe(triggerEle)
   },
   computed: {
-    mustSkeleton() {
-      if (this.$refs.scroll) {
-        return this.$refs.scroll.clientWidth / this.wh
-      }
-      return 10
-    }
   },
   beforeDestroy() {
     if (this.loadingObserver) {

@@ -95,7 +95,7 @@
 				width: 2.3rem;
 				height: 2.3rem;
 				border-radius: 50%;
-				margin: 0;
+				margin: auto;
 				background-color: rgb(255, 255, 255);
 				flex: 1;
 				text-align: center;
@@ -107,11 +107,6 @@
 					top: 0.23rem;
 					bottom: 0.23rem;
 				}
-			}
-
-			.icon {
-				width: 80%;
-				height: 80%;
 			}
 		}
 	}
@@ -168,7 +163,7 @@
 				width: 2.9rem;
 				height: 2.9rem;
 				border-radius: 1.5rem;
-				margin: 0;
+				margin: auto;
 				background-color: rgb(255, 255, 255);
 
 				margin: {
@@ -178,8 +173,8 @@
 			}
 
 			.icon {
-				width: 80%;
-				height: 80%;
+				width: 60%;
+				height: 60%;
 			}
 		}
 	}

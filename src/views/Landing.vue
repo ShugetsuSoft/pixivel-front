@@ -1,9 +1,39 @@
 <template>
   <section>
-    <div
-      class="background"
-      :style="{ 'background-image': `url(${backgroundImg})` }"
-    ></div>
+    <b-navbar class="landing-navbar">
+      <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/' }">
+          <img src="../assets/images/favicon.png" />
+        </b-navbar-item>
+        <div class="title-container">
+          <h3 class="title is-3"> Pixivel </h3>
+        </div>
+      </template>
+      <template #end>
+        <b-navbar-item tag="div">
+          <b-autocomplete
+            rounded
+            v-model="searchKeyword"
+            :data="searchSuggestList"
+            placeholder="试着输入些内容吧.."
+            icon="uil-search"
+            icon-pack="uil"
+            @typing="suggestdebu"
+            @keyup.enter.native="search()"
+            @select="search"
+            open-on-focus>
+            <template #empty>No results found</template>
+          </b-autocomplete>
+        </b-navbar-item>
+      </template>
+    </b-navbar>
+    <div class="full-screen">
+      <div
+        class="background"
+        :style="{ 'background-image': `url(${backgroundImg})` }"
+      ></div>
+      <img class="logo" src="../assets/images/logo.svg" />
+    </div>
     <div class="container landing-info">
       <div class="columns">
         <div class="column is-two-thirds">
@@ -57,8 +87,30 @@ export default {
       loadid: +new Date(),
       rankIllustsContinue: true,
       rankIllusts: [],
-      rankIllustsPage: 0
+      rankIllustsPage: 0,
+      searchKeyword: "",
+      suggestdebu: null,
+      searchSuggestList: []
     };
+  },
+  created() {
+    this.suggestdebu = this.Lodash.debounce(() => {
+      if (this.searchKeyword != "") {
+        this.axios
+          .get(CONFIG.API_HOST + `illust/search/${this.searchKeyword}/suggest`)
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.searchSuggestList = response.data.data.suggest_words
+          }).catch((error)=>{
+          this.error(error.message)
+        })
+      }
+    },800)
+  },
+  mounted() {
   },
   computed: {
   },
@@ -68,7 +120,6 @@ export default {
         "t": +new Date(),
         "quality": this.$store.getters["Settings/get"]("sample.quality")
       }
-
       this.axios
         .get(CONFIG.API_HOST + `illusts/sample`, {
           params
@@ -84,6 +135,15 @@ export default {
         this.error(error.response.data.message)
         $state.error()
       })
+    },
+    search(keywd) {
+      if(keywd){
+        this.$router.push({ name: 'Search', query: { keyword: keywd, mode: "illust" }})
+        return
+      }
+      if (this.searchKeyword != "") {
+        this.$router.push({ name: 'Search', query: { keyword: this.searchKeyword, mode: "illust" }})
+      }
     },
     loadRankIllusts() {
       let params = {
@@ -121,34 +181,65 @@ export default {
 </script>
 
 <style lang="scss">
-.background {
-  position: relative;
-  height: calc(100vh + 6rem);
-
-  background: {
-    attachment: scroll;
-    repeat: no-repeat;
-    position: 50%;
-    size: cover;
-  }
-
-  &:before {
-    content: "";
+.full-screen {
+  .logo {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    margin-bottom: -19rem;
+    bottom: 25%;
     left: 0;
     right: 0;
-    z-index: 0;
+    z-index: 10;
+    width: 100%;
+    height: 38rem;
+    object-position: center;
+    @media screen and (max-width: 975px) {
+      object-fit: contain;
+    }
+    object-fit: cover;
+    filter: brightness(1.03);
+    opacity: 0;
+    animation: toshow .5s ease-out forwards;
+  }
+
+  @keyframes toshow {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .background {
+    position: relative;
+    height: calc(100vh + 6rem);
 
     background: {
-      attachment: fixed;
-      image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAADAQMAAACDJEzCAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAGUExURQAAAEdwTIDnVscAAAACdFJOUzMAgvioCAAAAA5JREFUCNdjOMBwgIEBAAYGAYE538a8AAAAAElFTkSuQmCC);
+      attachment: scroll;
+      repeat: no-repeat;
+      position: 50%;
+      size: cover;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 0;
+
+      background: {
+        attachment: fixed;
+        image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAADAQMAAACDJEzCAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAGUExURQAAAEdwTIDnVscAAAACdFJOUzMAgvioCAAAAA5JREFUCNdjOMBwgIEBAAYGAYE538a8AAAAAElFTkSuQmCC);
+      }
     }
   }
 }
 
 .landing-info {
+  padding: {
+    left: 0.75rem;
+    right: 0.75rem;
+  }
   margin: {
     top: -2rem;
     bottom: 2rem;
@@ -163,6 +254,35 @@ export default {
       left: 1.5rem;
       right: 1.5rem;
     }
+  }
+}
+
+.landing-navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 4rem;
+  z-index: 100;
+  background: transparent;
+  img {
+    margin-left: 7px;
+  }
+  input {
+    box-shadow: none !important;
+    border: none;
+    background: rgba(255, 255, 255, 0.3) !important;
+    min-width: 20rem;
+    color: #2f2f2f;
+  }
+  .title-container {
+    display: flex;
+    align-items: center;
+    .title {
+      color: #ffffff;
+    }
+  }
+  .icon {
+    color: #4a4a4a !important;
   }
 }
 </style>

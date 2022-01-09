@@ -26,11 +26,11 @@
           :data="suggestList"
           placeholder="试着输入些内容吧.."
           @select="searchonselect"
-          icon="uil uil-search"
+          icon="uil-search"
+          icon-pack="uil"
           @typing="suggestdebu"
           @keyup.enter.native="search()"
-          open-on-focus
-          clearable>
+          open-on-focus>
           <template #empty>No results found</template>
         </b-autocomplete>
         <p class="control">
