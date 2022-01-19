@@ -152,10 +152,10 @@
 	
 	.profile {
 		box-shadow: 1px -8px 8px rgba(0, 0, 0, .175);
-    @media screen and (max-width: 790px) {
+    @media screen and (min-width: 790px) {
       .profile-ava {
-        height: 130px;
-        width: 130px;
+        height: 210px !important;
+        width: 210px !important;
       }
     }
 		.profile-ava {
