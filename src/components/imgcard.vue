@@ -15,7 +15,7 @@
       </b-tag>
     </div>
 		<div class="title-container">
-			<h5 class="title is-5 has-text-white">{{ illust.title }}</h5>
+			<h5 class="title is-5 has-text-white" v-html="illust.title"></h5>
 		</div>
 	</RouterA>
 </template>
