@@ -252,11 +252,7 @@ export default {
             if (!response.data.data.has_next) {
               $state.complete()
             }
-            this.illusts = this.illusts.concat(response.data.data.illusts.map((illust, i) => {
-              if (response.data.data.highlight[i] != null)
-                illust["title"] = response.data.data.highlight[i]
-              return illust
-            }))
+            this.illusts = this.illusts.concat(response.data.data.illusts)
             this.illustsPage += 1
             $state.loaded()
           }).catch((error)=>{
