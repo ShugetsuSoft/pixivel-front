@@ -28,7 +28,7 @@
           icon-prev="uil uil-previous"
           icon-next="uil uil-step-forward"
           icon-right="uil uil-calender"
-          :max-date="moment().subtract(1, 'days')._d"
+          :max-date="moment().subtract(2, 'days')._d"
           editable>
         </b-datepicker>
         <p class="control">
@@ -77,7 +77,7 @@ export default {
     return {
       mode: 'daily',
       content: 'all',
-      date: this.moment().subtract(1, 'days')._d,
+      date: this.moment().subtract(2, 'days')._d,
       errorMsg: '',
       illusts: [],
       loadid: +new Date(),

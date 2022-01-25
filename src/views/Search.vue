@@ -50,19 +50,25 @@
     </div>
     <section v-if="finalKeyword">
       <div class="container">
-        <WaterFall :illusts="illusts" />
-        <infinite-loading @infinite="illustsPageNext" spinner="spiral" :identifier="loadid" ref="infload">
-          <div slot="no-more">加载完毕</div>
-          <div slot="no-results">没结果</div>
-          <div slot="error" slot-scope="{ trigger }">
-            <div class="notification is-danger">
-              <div class="buttons">
-                <b-button type="is-primary" inverted @click="trigger">重试</b-button>
+        <template v-if="mode == 'illust' || mode == 'tag'">
+          <WaterFall :illusts="illusts" />
+          <infinite-loading @infinite="illustsPageNext" spinner="spiral" :identifier="loadid" ref="infload">
+            <div slot="no-more">加载完毕</div>
+            <div slot="no-results">没结果</div>
+            <div slot="error" slot-scope="{ trigger }">
+              <div class="notification is-danger">
+                <div class="buttons">
+                  <b-button type="is-primary" inverted @click="trigger">重试</b-button>
+                </div>
+                {{ errorMsg }}
               </div>
-              {{ errorMsg }}
             </div>
-          </div>
-        </infinite-loading>
+          </infinite-loading>
+        </template>
+        <template v-else-if="mode == 'user'">
+          <UserList :users='users' :has-load="usersLoad" @load="usersPageNext"></UserList>
+          <br>
+        </template>
       </div>
     </section>
   </section>
@@ -71,10 +77,13 @@
 <script>
 import CONFIG from '@/config.json'
 import WaterFall from '@/components/waterfall'
+import UserList from '@/components/user_list'
+
 export default {
   name: "Search",
   components: {
-    WaterFall
+    WaterFall,
+    UserList,
   },
   data: () => {
     return {
@@ -86,9 +95,10 @@ export default {
       mode: "illust",
       illustsPage: 0,
       illusts: [],
+      users: [],
+      usersLoad: true,
       loadid: +new Date(),
       queryFeatures: [],
-      requestCancel: { }
     }
   },
   watch: {
@@ -97,6 +107,7 @@ export default {
     },
     mode(){
       this.refresh(true)
+      this.$router.push({ name: 'Search', query: { keyword: this.keyword, mode: this.mode }})
     },
     queryFeatures(){
       this.refresh(false)
@@ -129,6 +140,8 @@ export default {
   methods: {
     refresh(total=false) {
       this.illusts = []
+      this.users = []
+      this.usersLoad = true
       this.illustsPage = 0
       this.errorMsg = ""
       this.suggestList = []
@@ -137,10 +150,7 @@ export default {
         this.finalKeyword = this.$route.query.keyword
         this.keyword = this.$route.query.keyword
       }
-      for (let i in this.requestCancel) {
-        this.requestCancel[i].cancel()
-      }
-      this.requestCancel = {}
+      this.$store.commit('CancelRequests/clearCancelToken')
     },
     searchonselect(keywd) {
       if(keywd){
@@ -153,17 +163,43 @@ export default {
       }
     },
     suggest() {
-      this.axios
-        .get(CONFIG.API_HOST + `illust/search/${this.keyword}/suggest`)
-        .then((response) => {
-          if (response.data.error) {
-            this.error(response.data.message)
-            return;
-          }
-          this.suggestList = response.data.data.suggest_words
-        }).catch((error)=>{
-        this.error(error.response.data.message)
-      })
+      if (this.mode == "illust") {
+        this.axios
+          .get(CONFIG.API_HOST + `illust/search/${this.keyword}/suggest`)
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.suggestList = response.data.data.suggest_words
+          }).catch((error) => {
+          this.error(error.message)
+        })
+      } else if(this.mode == "tag") {
+        this.axios
+          .get(CONFIG.API_HOST + `tag/search/${this.keyword}/suggest`)
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.suggestList = response.data.data.suggest_words
+          }).catch((error) => {
+          this.error(error.message)
+        })
+      } else if(this.mode == "user") {
+        this.axios
+          .get(CONFIG.API_HOST + `user/search/${this.keyword}/suggest`)
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              return;
+            }
+            this.suggestList = response.data.data.suggest_words
+          }).catch((error) => {
+          this.error(error.message)
+        })
+      }
     },
     illustsPageNext($state) {
       if (this.mode == "illust") {
@@ -172,16 +208,12 @@ export default {
           sortpop: this.queryFeatures.includes("sortpop"),
           sortdate: this.queryFeatures.includes("sortdate"),
         }
-        let cancel = this.axios.CancelToken.source()
         let keyword = this.finalKeyword
-        this.requestCancel[[keyword, JSON.stringify(params)].join(".")] = cancel
         this.axios
           .get(CONFIG.API_HOST + `illust/search/${keyword}`,{
             params,
-            cancelToken: cancel.token
           })
           .then((response) => {
-            delete this.requestCancel[[keyword, JSON.stringify(params)].join(".")]
             if (response.data.error) {
               this.error(response.data.message)
               $state.error()
@@ -198,10 +230,67 @@ export default {
             this.illustsPage += 1
             $state.loaded()
           }).catch((error)=>{
-          delete this.requestCancel[[keyword, JSON.stringify(params)].join(".")]
-          this.error(error.response.data.message)
+          this.error(error.message)
+        })
+      } else if(this.mode == "tag") {
+        let params = {
+          page: this.illustsPage,
+          sortpop: this.queryFeatures.includes("sortpop"),
+          sortdate: this.queryFeatures.includes("sortdate"),
+        }
+        let keyword = this.finalKeyword
+        this.axios
+          .get(CONFIG.API_HOST + `tag/search/${keyword}`,{
+            params,
+          })
+          .then((response) => {
+            if (response.data.error) {
+              this.error(response.data.message)
+              $state.error()
+              return;
+            }
+            if (!response.data.data.has_next) {
+              $state.complete()
+            }
+            this.illusts = this.illusts.concat(response.data.data.illusts.map((illust, i) => {
+              if (response.data.data.highlight[i] != null)
+                illust["title"] = response.data.data.highlight[i]
+              return illust
+            }))
+            this.illustsPage += 1
+            $state.loaded()
+          }).catch((error)=>{
+          this.error(error.message)
         })
       }
+    },
+    usersPageNext() {
+      let params = {
+        page: this.illustsPage,
+      }
+      let keyword = this.finalKeyword
+      this.axios
+        .get(CONFIG.API_HOST + `user/search/${keyword}`,{
+          params,
+        })
+        .then((response) => {
+          if (response.data.error) {
+            this.error(response.data.message)
+            this.usersLoad = false
+            return;
+          }
+          if (!response.data.data.has_next) {
+            this.usersLoad = false
+          }
+          this.users = this.illusts.concat(response.data.data.users.map((user, i) => {
+            if (response.data.data.highlight[i] != null)
+              user["title"] = response.data.data.highlight[i]
+            return user
+          }))
+          this.illustsPage += 1
+        }).catch((error)=>{
+        this.error(error.message)
+      })
     },
     error(message) {
       this.$buefy.notification.open({

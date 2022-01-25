@@ -11,6 +11,19 @@
         <p class="break-raw-text"> {{ user.bio | break }} </p>
       </div>
     </RouterA>
+    <template v-if="hasLoad">
+      <div class="media is-vertical-centered" v-for="i in 10" :key="i" ref="loadSpan">
+        <div class="media-left">
+          <figure class="image is-64x64 is-rounded full-hw obj-cover">
+            <b-skeleton circle height="64px" width="64px"></b-skeleton>
+          </figure>
+        </div>
+        <div style="width: 100%">
+          <b-skeleton width="60%" height="24px"></b-skeleton>
+          <b-skeleton width="90%"></b-skeleton>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -26,16 +39,46 @@ export default {
   components: {
     RouterA
   },
+  watch: {
+    hasLoad: function() {
+      if (this.hasLoad) {
+        let triggerEle = this.$refs.loadSpan[0]
+        this.loadingObserver = new window.IntersectionObserver(entries => {
+          let entry = entries[0]
+          this.onloading(entry)
+        })
+        this.loadingObserver.observe(triggerEle)
+      }
+    }
+  },
   data() {
     return {
-
+      loadingObserver: null,
+    }
+  },
+  mounted() {
+    if (this.hasLoad) {
+      let triggerEle = this.$refs.loadSpan[0]
+      this.loadingObserver = new window.IntersectionObserver(entries => {
+        let entry = entries[0]
+        this.onloading(entry)
+      })
+      this.loadingObserver.observe(triggerEle)
     }
   },
   computed: {
-
+  },
+  beforeDestroy() {
+    if (this.loadingObserver) {
+      this.loadingObserver.disconnect()
+      this.loadingObserver = null
+    }
   },
   methods: {
-
+    onloading(entry) {
+      if (entry.intersectionRatio <= 0) return
+      this.$emit('load')
+    },
   },
   filters: {
     break(content) {

@@ -49,13 +49,27 @@ export default {
       loadingObserver: null,
     }
   },
+  watch: {
+    hasLoad: function() {
+      if(this.hasLoad) {
+        let triggerEle = this.$refs.loadSpan[0]
+        this.loadingObserver = new window.IntersectionObserver(entries => {
+          let entry = entries[0]
+          this.onloading(entry)
+        })
+        this.loadingObserver.observe(triggerEle)
+      }
+    }
+  },
   mounted() {
-    let triggerEle = this.$refs.loadSpan[0]
-    this.loadingObserver = new window.IntersectionObserver(entries => {
-      let entry = entries[0]
-      this.onloading(entry)
-    })
-    this.loadingObserver.observe(triggerEle)
+    if(this.hasLoad) {
+      let triggerEle = this.$refs.loadSpan[0]
+      this.loadingObserver = new window.IntersectionObserver(entries => {
+        let entry = entries[0]
+        this.onloading(entry)
+      })
+      this.loadingObserver.observe(triggerEle)
+    }
   },
   computed: {
   },
