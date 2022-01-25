@@ -152,7 +152,7 @@ export default {
           this.error(response.data.message)
           return;
         }
-        this.sampleUsers = this.sampleUsers.concat(response.data.data.users())
+        this.sampleUsers = this.sampleUsers.concat(response.data.data.users)
         this.sampleUsersPage += 1
       }).catch((error)=>{
         this.error(error.message)
