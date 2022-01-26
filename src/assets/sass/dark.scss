@@ -48,7 +48,13 @@
     background: #000;
   }
   html,
-  body:after {
+  body:before {
     filter: brightness(0.9);
+  }
+  @-moz-document url-prefix() {
+    html,
+    body:before {
+      filter: none !important;
+    }
   }
 }

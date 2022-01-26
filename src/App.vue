@@ -40,7 +40,7 @@
 		margin: 0;
 		color: #111;
 
-		font-family: 'M PLUS 1p Light', 'M PLUS 1c Light' !important;
+		font-family: 'ResourceHanRoundedCN Regular', 'ResourceHanRoundedCN Light' !important;
 	}
 
   @media (prefers-color-scheme: light) {
@@ -56,7 +56,7 @@
 	h4,
 	h5,
 	h6 {
-		font-family: 'M PLUS 1p Regular', 'M PLUS 1c Regular' !important;
+		font-family: 'ResourceHanRoundedCN Medium' !important;
 	}
 
   .no-margin-bottom {
