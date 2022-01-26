@@ -47,14 +47,7 @@
   ::-webkit-scrollbar {
     background: #000;
   }
-  html,
-  body:before {
+  html:before {
     filter: brightness(0.9);
-  }
-  @-moz-document url-prefix() {
-    html,
-    body:before {
-      filter: none !important;
-    }
   }
 }
