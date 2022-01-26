@@ -122,12 +122,11 @@ const processDownload = (state) => {
 			}
 		}).catch(error => {
 			console.error(error)
-			if (error.response && error.response.status == 404) {
-				if (data["type"] != "ugoira" && data["ispng"] == true) {
-					data["ispng"] = false
-					state.download.queue.push(data)
-				}
+			if (data["type"] != "ugoira" && data["ispng"] == true) {
+				data["ispng"] = false
+				state.download.queue.push(data)
 			}
+
 			state.download.errors.push(error.message)
 			Vue.delete(state.download.downloadingQueue, iden)
 			newProcesses()
