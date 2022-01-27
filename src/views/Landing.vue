@@ -136,7 +136,10 @@ export default {
           $state.error()
           return;
         }
-        this.sampleIllusts = this.sampleIllusts.concat(response.data.data.illusts)
+        let sanity = this.$store.getters["Settings/get"]("sample.sanity_filter")
+        this.sampleIllusts = this.sampleIllusts.concat(response.data.data.illusts.filter((item) => {
+          return item.sanity < sanity
+        }))
         $state.loaded()
         this.sampleIllustsPage += 1
       }).catch((error)=>{

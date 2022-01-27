@@ -46,6 +46,11 @@
                 <b-input :value="getdownloadfilename" @blur="setdownloadfilename"></b-input>
               </b-field>
             </div>
+            <div class="column is-one-third-desktop is-full-mobile">
+              <b-field label="首页推荐敏感度过滤">
+                <b-numberinput :controls="false" :value="getsamplesanityfilter" :min="2" :max="8" @blur="setsamplesanityfilter"></b-numberinput>
+              </b-field>
+            </div>
           </div>
         </b-tab-item>
     </b-tabs>
@@ -73,6 +78,9 @@ export default {
     },
     getdownloadfilename() {
       return this.$store.getters['Settings/get']('download.filename')
+    },
+    getsamplesanityfilter() {
+      return this.$store.getters["Settings/get"]("sample.sanity_filter")
     }
   },
   methods: {
@@ -84,6 +92,9 @@ export default {
     },
     setdownloadfilename(e) {
       this.$store.commit('Settings/set', {key:'download.filename',value:e.target.value})
+    },
+    setsamplesanityfilter(e) {
+      this.$store.commit('Settings/set', {key:'sample.sanity_filter',value:parseInt(e.target.value)})
     }
   }
 };

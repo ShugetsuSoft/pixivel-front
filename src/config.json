@@ -8,6 +8,7 @@
 	"SETTINGS_DEFAULT": {
 		"download.filename": "{title}-{id}-{page}",
 		"sample.quality": 15000,
-		"global.viewed": false
+		"global.viewed": false,
+		"sample.sanity_filter": 5
 	}
 }

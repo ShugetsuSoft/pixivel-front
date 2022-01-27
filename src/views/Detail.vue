@@ -141,7 +141,12 @@
 			this.load()
       this.refreshRecommend()
 		},
-		methods: {
+    beforeDestroy() {
+      if (this.loading) {
+        this.loading.close()
+      }
+    },
+    methods: {
 			error(message) {
 				this.$buefy.notification.open({
 					duration: 5000,
