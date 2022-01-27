@@ -42,7 +42,9 @@
               </b-field>
             </div>
             <div class="column is-one-third-desktop is-full-mobile">
-
+              <b-field label="下载文件名格式">
+                <b-input :value="getdownloadfilename" @blur="setdownloadfilename"></b-input>
+              </b-field>
             </div>
           </div>
         </b-tab-item>
@@ -68,6 +70,9 @@ export default {
     },
     getsamplequality() {
       return this.$store.getters['Settings/get']('sample.quality')
+    },
+    getdownloadfilename() {
+      return this.$store.getters['Settings/get']('download.filename')
     }
   },
   methods: {
@@ -76,6 +81,9 @@ export default {
     },
     setsamplequality(e) {
       this.$store.commit('Settings/set', {key:'sample.quality',value:parseInt(e.target.value)})
+    },
+    setdownloadfilename(e) {
+      this.$store.commit('Settings/set', {key:'download.filename',value:e.target.value})
     }
   }
 };
