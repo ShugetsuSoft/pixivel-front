@@ -2,7 +2,9 @@
 	<div id="app">
 		<Nav />
 		<transition name="fade">
-			<router-view />
+      <keep-alive>
+			  <router-view />
+      </keep-alive>
 		</transition>
 		<Footer />
 	</div>
