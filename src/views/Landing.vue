@@ -166,13 +166,31 @@ export default {
       })
     },
     search(keywd) {
-      if(keywd){
-        this.$router.push({ name: 'Search', query: { keyword: keywd, mode: "illust" }})
-        return
-      }
+      let key = ""
       if (this.searchKeyword != "") {
-        this.$router.push({ name: 'Search', query: { keyword: this.searchKeyword, mode: "illust" }})
+        key = this.searchKeyword
+      } else if(keywd){
+        key = keywd
       }
+      if (key != "") {
+        if (/^[\d]+$/.test(key)) {
+          this.$buefy.dialog.confirm({
+            title: '跳转ID',
+            message: '检测到数字的输入，将会跳转到对应的插画或画师界面，请选择',
+            confirmText: '去插画界面',
+            cancelText: '去画师界面',
+            onCancel: () => {
+              this.$router.push({ name: 'User', params: { id: key }})
+            }
+            onConfirm: () => {
+              this.$router.push({ name: 'Detail', params: { id: key }})
+            }
+          })
+          return
+        }
+        this.$router.push({ name: 'Search', query: { keyword: key, mode: "illust" }})
+      }
+      
     },
     loadRankIllusts() {
       let params = {
