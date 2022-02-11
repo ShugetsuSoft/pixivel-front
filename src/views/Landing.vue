@@ -181,7 +181,7 @@ export default {
             cancelText: '去画师界面',
             onCancel: () => {
               this.$router.push({ name: 'User', params: { id: key }})
-            }
+            },
             onConfirm: () => {
               this.$router.push({ name: 'Detail', params: { id: key }})
             }
