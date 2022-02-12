@@ -218,7 +218,11 @@
             this.userIllusts = this.userIllusts.concat(response.data.data.illusts)
             if (this.userIllustsPage == 0) {
               this.$nextTick(() => {
-                let targetIndex = this.Lodash.findIndex(this.userIllusts, item => {
+                let sanity = this.$store.getters["Settings/get"]("global.sanity_filter")
+                let userIllusts = this.userIllusts.filter((item) => {
+                  return item.sanity < sanity
+                })
+                let targetIndex = this.Lodash.findIndex(userIllusts, item => {
                   return item.id == this.id
                 })
                 let leftDis = targetIndex * 184
@@ -258,7 +262,10 @@
             if (!response.data.data.has_next) {
               $state.complete()
             }
-            this.recommendIllusts = this.recommendIllusts.concat(response.data.data.illusts)
+            let quality = this.$store.getters["Settings/get"]("recommend.quality")
+            this.recommendIllusts = this.recommendIllusts.concat(response.data.data.illusts.filter((item) => {
+                  return (item.statistic.bookmarks * 70 + item.statistic.likes * 30) / 100 >= quality
+            }))
             this.recommendIllustsPage += 1
             $state.loaded()
           }).catch((error)=>{

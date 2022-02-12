@@ -1,6 +1,6 @@
 <template>
   <div class="horizontal-scroll" @wheel="wheel" ref="scroll" @scroll="onscroll">
-      <RouterA :to="{'name':'Detail', 'params':{'id': illust.id}}" class="scroll-item" v-for="illust in illusts" :key="illust.id" :style="{'height': wh+'px', 'width': wh+'px'}">
+      <RouterA :to="{'name':'Detail', 'params':{'id': illust.id}}" class="scroll-item" v-for="illust in illustsFiltered" :key="illust.id" :style="{'height': wh+'px', 'width': wh+'px'}">
         <LazyImg :src="url(illust)" />
         <div class="title-container">
           <h5 class="has-text-white" v-html="illust.title"></h5>
@@ -72,6 +72,12 @@ export default {
     }
   },
   computed: {
+    illustsFiltered() {
+      let sanity = this.$store.getters["Settings/get"]("global.sanity_filter")
+      return this.illusts.filter((item) => {
+        return item.sanity < sanity
+      })
+    }
   },
   beforeDestroy() {
     if (this.loadingObserver) {

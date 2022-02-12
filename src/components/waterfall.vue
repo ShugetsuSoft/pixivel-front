@@ -1,6 +1,6 @@
 <template>
 	<div class="waterfall" ref="waterfall">
-		<VirtualMasonry ref="masonry" :items="illusts" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="nowGap" class="waterfall-container">
+		<VirtualMasonry ref="masonry" :items="illustsFiltered" :colWidth="width" :fit="true" :rowPerSection="4" :col="cols" :itemHeightGetter="heightGetter" :gap="nowGap" class="waterfall-container">
 			<template slot-scope="illust">
 				<ImgCard :illust="illust.data"/>
 			</template>
@@ -81,7 +81,13 @@
         } else {
           return this.expectWidthMobile + this.gapMobile
         }
-      }
+      },
+	  illustsFiltered() {
+		let sanity = this.$store.getters["Settings/get"]("global.sanity_filter")
+        return this.illusts.filter((item) => {
+          return item.sanity < sanity
+        })
+	  }
     },
 		methods: {
 		  illustsChange() {

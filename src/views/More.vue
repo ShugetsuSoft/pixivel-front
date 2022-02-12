@@ -52,6 +52,18 @@
               </b-field>
             </div>
           </div>
+          <div class="columns set-list">
+            <div class="column is-one-third-desktop is-full-mobile">
+              <b-field label="全局敏感度过滤">
+                <b-numberinput :controls="false" :value="getglobalsanityfilter" :min="2" :max="8" @blur="setglobalsanityfilter"></b-numberinput>
+              </b-field>
+            </div>
+            <div class="column is-one-third-desktop is-full-mobile">
+              <b-field label="推荐热门度筛选">
+                <b-numberinput :controls="false" :value="getrecommendquality" :min="0" :max="400000" @blur="setrecommendquality"></b-numberinput>
+              </b-field>
+            </div>
+          </div>
         </b-tab-item>
     </b-tabs>
     </div>
@@ -81,6 +93,12 @@ export default {
     },
     getsamplesanityfilter() {
       return this.$store.getters["Settings/get"]("sample.sanity_filter")
+    },
+    getglobalsanityfilter() {
+      return this.$store.getters["Settings/get"]("global.sanity_filter")
+    },
+    getrecommendquality() {
+      return this.$store.getters["Settings/get"]("recommend.quality")
     }
   },
   methods: {
@@ -95,6 +113,12 @@ export default {
     },
     setsamplesanityfilter(e) {
       this.$store.commit('Settings/set', {key:'sample.sanity_filter',value:parseInt(e.target.value)})
+    },
+    setglobalsanityfilter(e) {
+      this.$store.commit('Settings/set', {key:'global.sanity_filter',value:parseInt(e.target.value)})
+    },
+    setrecommendquality(e) {
+      this.$store.commit('Settings/set', {key:'recommend.quality',value:parseInt(e.target.value)})
     }
   }
 };
