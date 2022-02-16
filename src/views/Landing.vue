@@ -45,7 +45,7 @@
         <div class="column">
           <div class="notification">
             <h2>推荐画师</h2>
-            <UserList :users='sampleUsers' :has-load="true" @load="loadSampleUsers"></UserList>
+            <UserList :users='sampleUsers' :has-load="sampleUsersLoadFlag" @load="loadSampleUsers"></UserList>
           </div>
         </div>
       </div>
@@ -94,6 +94,7 @@ export default {
       searchSuggestList: [],
       sampleUsers: [],
       sampleUsersPage: 0,
+      sampleUsersLoadFlag: true
     };
   },
   created() {
@@ -139,6 +140,10 @@ export default {
         this.sampleIllusts = this.sampleIllusts.concat(response.data.data.illusts.filter((item) => {
           return item.sanity < sanity
         }))
+        if (this.sampleIllustsPage >= 20) {
+          $state.complete()
+          return;
+        }
         $state.loaded()
         this.sampleIllustsPage += 1
       }).catch((error)=>{
@@ -159,6 +164,10 @@ export default {
           return;
         }
         this.sampleUsers = this.sampleUsers.concat(response.data.data.users)
+        if (this.sampleIllustsPage >= 20) {
+          this.sampleUsersLoadFlag = false
+          return;
+        }
         this.sampleUsersPage += 1
       }).catch((error)=>{
         this.error(error.message)
