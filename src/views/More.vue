@@ -37,11 +37,6 @@
         <b-tab-item value="settings" label="设置">
           <div class="columns set-list">
             <div class="column is-one-third-desktop is-full-mobile">
-              <b-field label="首页推荐热门度筛选">
-                <b-numberinput :controls="false" :value="getsamplequality" :min="0" :max="400000" @blur="setsamplequality"></b-numberinput>
-              </b-field>
-            </div>
-            <div class="column is-one-third-desktop is-full-mobile">
               <b-field label="下载文件名格式">
                 <b-input :value="getdownloadfilename" @blur="setdownloadfilename"></b-input>
               </b-field>
@@ -51,13 +46,13 @@
                 <b-numberinput :controls="false" :value="getsamplesanityfilter" :min="2" :max="8" @blur="setsamplesanityfilter"></b-numberinput>
               </b-field>
             </div>
-          </div>
-          <div class="columns set-list">
             <div class="column is-one-third-desktop is-full-mobile">
               <b-field label="全局敏感度过滤">
                 <b-numberinput :controls="false" :value="getglobalsanityfilter" :min="2" :max="8" @blur="setglobalsanityfilter"></b-numberinput>
               </b-field>
             </div>
+          </div>
+          <div class="columns set-list">
             <div class="column is-one-third-desktop is-full-mobile">
               <b-field label="推荐热门度筛选">
                 <b-numberinput :controls="false" :value="getrecommendquality" :min="0" :max="400000" @blur="setrecommendquality"></b-numberinput>
@@ -85,9 +80,6 @@ export default {
     downloadingTasks() {
       return this.$store.state.Pic.download.downloadingQueue
     },
-    getsamplequality() {
-      return this.$store.getters['Settings/get']('sample.quality')
-    },
     getdownloadfilename() {
       return this.$store.getters['Settings/get']('download.filename')
     },
@@ -104,9 +96,6 @@ export default {
   methods: {
     removeTask(index) {
       this.$store.commit("Pic/removeDownloadTask", index)
-    },
-    setsamplequality(e) {
-      this.$store.commit('Settings/set', {key:'sample.quality',value:parseInt(e.target.value)})
     },
     setdownloadfilename(e) {
       this.$store.commit('Settings/set', {key:'download.filename',value:e.target.value})

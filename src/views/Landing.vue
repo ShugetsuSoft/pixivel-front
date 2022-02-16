@@ -124,8 +124,7 @@ export default {
   methods: {
     sampleIllustsPageNext($state) {
       let params = {
-        "p": this.sampleIllustsPage,
-        "quality": this.$store.getters["Settings/get"]("sample.quality")
+        "p": this.sampleIllustsPage
       }
       this.axios
         .get(CONFIG.API_HOST + `illusts/sample`, {
