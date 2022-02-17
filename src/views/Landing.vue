@@ -98,10 +98,6 @@ export default {
     };
   },
   created() {
-    if (!this.$store.getters['Settings/get']('global.viewed')) {
-      this.$store.commit('Settings/set', {key:'global.viewed',value:true})
-      this.$router.push({'name': 'Welcome'})
-    }
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.searchKeyword != "") {
         this.axios

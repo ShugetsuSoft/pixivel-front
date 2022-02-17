@@ -7,7 +7,6 @@
 	},
 	"SETTINGS_DEFAULT": {
 		"download.filename": "{title}-{id}-{page}",
-		"global.viewed": false,
 		"sample.sanity_filter": 4,
 		"global.sanity_filter": 5,
 		"recommend.quality": 3000

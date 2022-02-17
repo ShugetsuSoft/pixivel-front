@@ -30,7 +30,7 @@
           console.error(error)
         }
       }
-      adscript.onerror = () => {this.$refs.adbanner.innerText="嘛，我是很了解广告很烦人，但是没办法的嘛，人家也是要恰饭的"}
+      adscript.onerror = () => {this.$refs.adbanner.innerText="o_o ...."}
       adscript["data-ad-client"] = "ca-pub-7564284646329791"
       adscript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7564284646329791"
       document.currentScript.parentNode.insertBefore(adscript, document.currentScript)
