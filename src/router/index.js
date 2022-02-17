@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
+const oldRedirect = () => import("@/views/oldRedirect.vue");
+
 const routes = [
 	{
 		path: "/",
@@ -34,6 +36,15 @@ const routes = [
 		name: "More",
 		component: () => import("@/views/More.vue"),
 	},
+
+	{
+		path: "/user",
+		component: oldRedirect,
+	},
+	{
+		path: "/detail",
+		component: oldRedirect,
+	}
 ];
 
 const scrollBehavior = (to, from, savedPosition) =>
