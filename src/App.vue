@@ -1,163 +1,161 @@
 <template>
-	<div id="app">
-		<Nav />
-		<transition name="fade">
+  <div id="app">
+    <Nav />
+    <transition name="fade">
       <router-view />
-		</transition>
-		<Footer />
-	</div>
+    </transition>
+    <Footer />
+  </div>
 </template>
 
 <script>
-	import Nav from '@/components/nav'
-	import Footer from '@/components/footer.vue'
+import Nav from "@/components/nav";
+import Footer from "@/components/footer.vue";
 
-	export default {
-		name: 'App',
-		components: {
-			Nav,
-			Footer,
-		},
-    mounted() {
-      window.addEventListener('beforeunload', (e) => {
-        if (!this.$store.getters["Pic/isDownloadFinish"]) {
-          e.preventDefault()
-          e.returnValue = '未完成的下载任务！'
-          return true
-        }
-        return false
-      })
-    }
-  }
+export default {
+  name: "App",
+  components: {
+    Nav,
+    Footer,
+  },
+  mounted() {
+    window.addEventListener("beforeunload", (e) => {
+      if (!this.$store.getters["Pic/isDownloadFinish"]) {
+        e.preventDefault();
+        e.returnValue = "未完成的下载任务！";
+        return true;
+      }
+      return false;
+    });
+  },
+};
 </script>
 
 <style lang="scss">
-	html,
-	body {
-		width: 100%;
-		height: auto;
-		padding: 0;
-		margin: 0;
-		color: #111;
+html,
+body {
+  width: 100%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  color: #111;
 
-		font-family: 'ResourceHanRoundedCN Regular', 'ResourceHanRoundedCN Light' !important;
-	}
+  font-family: "ResourceHanRoundedCN Regular", "ResourceHanRoundedCN Light" !important;
+}
 
-  @media (prefers-color-scheme: light) {
-    html,
-    body {
-      background-color: #fdfdfd;
-    }
+@media (prefers-color-scheme: light) {
+  html,
+  body {
+    background-color: #fdfdfd;
   }
+}
 
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		font-family: 'ResourceHanRoundedCN Medium' !important;
-	}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "ResourceHanRoundedCN Medium" !important;
+}
 
-  .no-margin-bottom {
-    margin-bottom: 0 !important;
-  }
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
 
-	.fade-enter-active,
-	.fade-leave-active {
-		transition: opacity .5s;
-	}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
 
-	.fade-enter,
+.fade-enter,
 	.fade-leave-to
 
-	/* .fade-leave-active below version 2.1.8 */
-		{
-		opacity: 0;
-	}
+	/* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
-	::selection {
-		background: rgba(0, 0, 0, .15);
-	}
+::selection {
+  background: rgba(0, 0, 0, 0.15);
+}
 
+::-webkit-scrollbar-thumb {
+  background: #8c8c8c;
+  border-radius: 5px;
+}
 
-	::-webkit-scrollbar-thumb {
-		background: #8c8c8c;
-		border-radius: 5px;
-	}
+::-webkit-scrollbar-track {
+  background: #ededed;
+  border-radius: 5px;
+}
 
-	::-webkit-scrollbar-track {
-		background: #ededed;
-    border-radius: 5px;
-	}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  display: block;
+  background: #fff;
+  border-radius: 5px;
+}
 
-	::-webkit-scrollbar {
-		width: 5px;
-		height: 5px;
-		display: block;
-		background: #fff;
-    border-radius: 5px;
-	}
+.default-full-screen-top {
+  min-height: 100vh;
+}
 
-	.default-full-screen-top {
-		min-height: 100vh;
-	}
+.is-rounded {
+  border-radius: 50%;
+}
 
-	.is-rounded {
-		border-radius: 50%;
-	}
+.is-vertical-centered {
+  align-items: center;
+}
 
-	.is-vertical-centered {
-		align-items: center;
-	}
+.break-raw-text {
+  white-space: pre-wrap;
+}
 
-	.break-raw-text {
-		white-space: pre-wrap;
-	}
+.full-hw {
+  height: 100% !important;
+  width: 100% !important;
+}
 
-	.full-hw {
-		height: 100% !important;
-		width: 100% !important;
-	}
+.clickable-tag {
+  cursor: pointer;
+  user-select: none !important;
+}
 
-	.clickable-tag {
-		cursor: pointer;
-		user-select: none !important;
-	}
-  
-	.loading-overlay-custom {
-		-webkit-box-align: center;
-		align-items: center;
-		-webkit-box-pack: center;
-		justify-content: center;
-		overflow: hidden;
-		z-index: 999;
-		display: flex;
-		background-color: rgba(255, 255, 255, 0.5);
-		width: 100%;
-		height: 100%;
+.loading-overlay-custom {
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 999;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 100%;
 
-		.loading-icon-custom {
-			position: relative;
+  .loading-icon-custom {
+    position: relative;
 
-			&::after {
-				animation: spinAround 500ms infinite linear;
-				border: 2px solid #dbdbdb;
-				border-radius: 9999px;
-				border-right-color: transparent;
-				border-top-color: transparent;
-				content: "";
-				display: block;
-				height: 1em;
-				position: relative;
-				width: 1em;
-				position: absolute;
-				top: calc(50% - 1.5em);
-				left: calc(50% - 1.5em);
-				width: 3em;
-				height: 3em;
-				border-width: 0.25em;
-			}
-		}
-	}
+    &::after {
+      animation: spinAround 500ms infinite linear;
+      border: 2px solid #dbdbdb;
+      border-radius: 9999px;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      content: "";
+      display: block;
+      height: 1em;
+      position: relative;
+      width: 1em;
+      position: absolute;
+      top: calc(50% - 1.5em);
+      left: calc(50% - 1.5em);
+      width: 3em;
+      height: 3em;
+      border-width: 0.25em;
+    }
+  }
+}
 </style>

@@ -1,21 +1,21 @@
 const state = {
-  cancelTokens: []
-}
+  cancelTokens: [],
+};
 
 const mutations = {
   addCancelToken(state, token) {
-    state.cancelTokens.push(token)
+    state.cancelTokens.push(token);
   },
   clearCancelToken(state) {
     state.cancelTokens.forEach((cancel) => {
-      cancel()
-    })
-    state.cancelTokens = []
-  }
-}
+      cancel();
+    });
+    state.cancelTokens = [];
+  },
+};
 
 export default {
   namespaced: true,
   state,
-  mutations
-}
+  mutations,
+};

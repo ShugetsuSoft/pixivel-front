@@ -6,33 +6,31 @@
 export default {
   name: "LongLoadingBadage",
   props: {
-    delay: {type: Number, default: 5000}
+    delay: { type: Number, default: 5000 },
   },
   data() {
     return {
       stoploading: false,
-      loading: false
-    }
+      loading: false,
+    };
   },
   methods: {
     start() {
       setTimeout(() => {
         if (!this.stoploading) {
-          this.loading = true
+          this.loading = true;
         }
-        this.stoploading = false
-      }, this.delay)
+        this.stoploading = false;
+      }, this.delay);
     },
     stop() {
       if (!this.stoploading) {
-        this.stoploading = true
+        this.stoploading = true;
       }
-      this.loading = false
-    }
-  }
+      this.loading = false;
+    },
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
