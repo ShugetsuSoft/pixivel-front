@@ -2,6 +2,11 @@
   <section class="section default-full-screen-top no-padding-phone">
     <div class="container is-fluid no-padding-phone">
       <b-tabs v-model="tab">
+        <b-tab-item value="announcement" label="公告">
+          <b-message>
+            论坛已经上线! 访问 <a href="https://forum.pixivel.moe/" target="_blank">https://forum.pixivel.moe/</a> 到达论坛
+          </b-message>
+        </b-tab-item>
         <b-tab-item value="downloads" label="下载队列">
           <div class="columns set-list">
             <div
@@ -100,7 +105,7 @@ export default {
   name: "More",
   data() {
     return {
-      tab: "downloads",
+      tab: "announcement",
     };
   },
   computed: {
