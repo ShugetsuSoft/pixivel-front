@@ -1,5 +1,8 @@
 {
-	"IMAGE_PROXY_HOSTS":["https://proxy.pixivel.moe/"],
+	"IMAGE_PROXY_HOSTS":[
+		"https://proxy.pixivel.moe/",
+		"https://proxy-jp1.pixivel.moe/"
+	],
 	"API_HOST":"https://api.pixivel.moe/v2/pixiv/",
 	"RAND_IMG":"https://api.daihan.top/api/acg",
 	"DOWNLOAD_DEFAULT": {
