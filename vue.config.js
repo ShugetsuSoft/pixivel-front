@@ -131,7 +131,7 @@ module.exports = {
               statuses: [0, 200],
             },
             expiration: {
-              maxAgeSeconds: 86400 * 7,
+              maxAgeSeconds: 86400 * 1,
               maxEntries: 30000,
             },
           },
