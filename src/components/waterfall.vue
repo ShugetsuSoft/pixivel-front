@@ -12,7 +12,7 @@
       class="waterfall-container"
     >
       <template slot-scope="illust">
-        <AdsCard v-if="illust.type == -1" />
+        <AdsCard v-if="illust.data.type == -1" />
         <ImgCard :illust="illust.data" v-else/>
       </template>
     </VirtualMasonry>
