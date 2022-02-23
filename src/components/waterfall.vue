@@ -58,7 +58,7 @@ export default {
       parentObserver: null,
       cols: 0,
       calcdebu: null,
-      showAd: Math.random() < 0.2 ? parseInt(Math.random() * 4 + 1) : -1,
+      showAd: Math.random() < 0.6 ? parseInt(Math.random() * 4 + 1) : -1,
     };
   },
   mounted() {
@@ -101,7 +101,7 @@ export default {
       let illusts = this.illusts.filter((item) => {
         return item.sanity < sanity;
       });
-      if (this.showAd != -1) {
+      if (this.showAd !== -1) {
         illusts.splice(illusts.length - this.showAd, 0, {
           type: -1,
           height: 439,
