@@ -3,8 +3,8 @@
     <div class="container is-fluid no-padding-phone">
       <b-tabs v-model="tab">
         <b-tab-item value="announcement" label="公告">
-          <b-message>
-            论坛已经上线! 访问 <a href="https://forum.pixivel.moe/" target="_blank">https://forum.pixivel.moe/</a> 到达论坛
+          <b-message v-for="(value, key) in announce" :key="key">
+            <div v-html="value"></div>
           </b-message>
         </b-tab-item>
         <b-tab-item value="downloads" label="下载队列">
@@ -101,11 +101,16 @@
 </template>
 
 <script>
+import storage from "store2";
+
+const AnnounceKey = "announce";
+
 export default {
   name: "More",
   data() {
     return {
       tab: "announcement",
+      announce: window.JSON.parse(storage.get(AnnounceKey, '{}')),
     };
   },
   computed: {

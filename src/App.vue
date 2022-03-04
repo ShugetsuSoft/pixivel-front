@@ -11,6 +11,7 @@
 <script>
 import Nav from "@/components/nav";
 import Footer from "@/components/footer.vue";
+import CheckAnnounce from "@/utils/checkAnnounce";
 
 export default {
   name: "App",
@@ -19,6 +20,23 @@ export default {
     Footer,
   },
   mounted() {
+    CheckAnnounce().then(Anno => {
+      let infoshow = ""
+      Anno[0].forEach((key, index) => {
+        infoshow += Anno[1][key]
+        if (index < Anno[0].length - 1) {
+          infoshow += "<hr>"
+        }
+      })
+      if (infoshow != "") {
+        this.$buefy.notification.open({
+          duration: 60000,
+          message: infoshow,
+          type: 'is-primary',
+        })
+      }
+    })
+
     window.addEventListener("beforeunload", (e) => {
       if (!this.$store.getters["Pic/isDownloadFinish"]) {
         e.preventDefault();
