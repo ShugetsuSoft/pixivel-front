@@ -58,7 +58,7 @@ export default {
       parentObserver: null,
       cols: 0,
       calcdebu: null,
-      showAd: Math.random() < 0.6 ? parseInt(Math.random() * 4 + 1) : -1,
+      showAd: -1,
     };
   },
   mounted() {
