@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "moe.pixivel.twa",
+                     "sha256_cert_fingerprints": ["AE:52:A6:98:78:6B:7F:9F:8A:D2:BD:9E:CB:68:65:69:A3:63:6E:F9:B0:D3:3B:59:C9:BF:25:24:00:FC:C1:DB"] }
+      }
+]
