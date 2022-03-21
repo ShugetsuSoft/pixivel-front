@@ -49,8 +49,22 @@ const routes = [
 
 const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
-    console.log("return");
-    return savedPosition;
+    return new Promise((resolve) => {
+      const check = () => {
+        const nowHeight = document.body.scrollHeight
+        if (nowHeight < savedPosition.y) {
+          window.scrollTo(savedPosition.x, savedPosition.y)
+          setTimeout(() => {
+            check()
+          }, 200)
+        } else {
+          setTimeout(() => {
+            resolve(savedPosition)
+          }, 500)
+        }
+      }
+      check()
+    })
   } else {
     return { x: 0, y: 0 };
   }

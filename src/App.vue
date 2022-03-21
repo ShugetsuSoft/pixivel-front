@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <Nav />
-    <transition name="fade">
-      <router-view />
-    </transition>
+    <keep-alive>
+      <transition name="fade">
+        <router-view />
+      </transition>
+    </keep-alive>
     <Footer />
   </div>
 </template>
