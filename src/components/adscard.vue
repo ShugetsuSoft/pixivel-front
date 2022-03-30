@@ -24,18 +24,6 @@ export default {
 
 <style lang="scss">
 .masonry-item {
-  overflow: hidden;
-  animation: show 0.5s forwards;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(100px);
-
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.18);
-
-  border: {
-    radius: 12px;
-  }
-
   .adcontent {
     height: 100%;
     background: #fff;

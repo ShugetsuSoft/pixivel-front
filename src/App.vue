@@ -178,4 +178,16 @@ h6 {
     }
   }
 }
+
+@media screen and (max-width: 790px) {
+  .hide-on-phone {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 790px) {
+  .hide-on-computer {
+    display: none !important;
+  }
+}
 </style>

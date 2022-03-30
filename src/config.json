@@ -8,10 +8,12 @@
 	"DOWNLOAD_DEFAULT": {
 		"TASK_MESSAGES": ["下载这些对我来说还是小菜一碟嘛！", "存这些图！你肯定会自己偷偷prpr的！", "欸，是我不够好看吗，为什么要去看别的女人", "行！包在我身上！", "阁下，你磁盘空间快不够了呀~", "任务已添加~", "下载这么多，服务器娘会被玩坏的"]
 	},
+	"AUTHUGETSU_API": "https://auth.shugetsu.dev/api/",
 	"SETTINGS_DEFAULT": {
 		"download.filename": "{title}-{id}-{page}",
 		"sample.sanity_filter": 4,
 		"global.sanity_filter": 5,
 		"recommend.quality": 3000
-	}
+	},
+	"CAPTCHA_SITEKEY": "76850985-c948-4b55-8a31-a01af2b85514"
 }

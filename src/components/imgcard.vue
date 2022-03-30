@@ -66,9 +66,7 @@ export default {
 .masonry-item {
   overflow: hidden;
   animation: show 0.5s forwards;
-  visibility: hidden;
   opacity: 0;
-  transform: translateY(100px);
 
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.18);
 
@@ -147,10 +145,15 @@ export default {
 }
 
 @keyframes show {
+  from {
+    visibility: hidden;
+    opacity: 0;
+    margin-top: 40px;
+  }
   to {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0);
+    margin-top: 0px;
   }
 }
 </style>

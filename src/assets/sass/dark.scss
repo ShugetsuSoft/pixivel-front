@@ -1,4 +1,16 @@
 @media (prefers-color-scheme: dark) {
+  .modal-card-body {
+    background-color: #363636;
+  }
+
+  .modal-background {
+    background-color: rgba(10,10,10,.46);
+  }
+
+  a {
+    color: #6d90d6;
+  }
+
   .loading-overlay {
     background-color: rgba(0, 0, 0, 0.2) !important;
 

@@ -135,7 +135,7 @@ export default {
           $state.loaded();
         })
         .catch((error) => {
-          this.error(error.response.data.message);
+          this.error(error);
           $state.error();
           this.$refs.longloading_badage.stop();
         });

@@ -26,6 +26,33 @@
             <template #empty>No results found</template>
           </b-autocomplete>
         </b-navbar-item>
+        <b-navbar-item href="#" class="hide-on-computer has-text-centered">
+          登录
+        </b-navbar-item>
+        <b-navbar-item href="#" class="hide-on-computer has-text-centered">
+          注册
+        </b-navbar-item>
+        <b-navbar-item tag="div" class="hide-on-phone">
+          <b-dropdown aria-role="list" position="is-bottom-left">
+            <template #trigger>
+              <p class="image is-64x64" role="button">
+                <img src="https://gravatar.loli.net/avatar/c7502eca9956377451f2977c0b83f3fc" class="user-ava is-rounded">
+              </p>
+            </template>
+
+            <template v-if="isLoggedIn">
+              <div class="dropdown-item"> <b-tag>{{ userInfo.username }}</b-tag> </div>
+              <b-dropdown-item @click="onDeveloping">账号</b-dropdown-item>
+              <b-dropdown-item @click="onDeveloping">收藏</b-dropdown-item>
+              <b-dropdown-item @click="onDeveloping">关注</b-dropdown-item>
+              <b-dropdown-item @click="deleteToken">退出登录</b-dropdown-item>
+            </template>
+            <template v-else>
+              <div class="dropdown-item"> <b-tag>还没登录呀！</b-tag> </div>
+              <b-dropdown-item @click="showLoginPanel=true">登录或者注册</b-dropdown-item>
+            </template>
+          </b-dropdown>
+        </b-navbar-item>
       </template>
     </b-navbar>
     <div class="full-screen">
@@ -81,6 +108,17 @@
         </div>
       </infinite-loading>
     </div>
+
+    <b-modal
+      :active="showLoginPanel"
+      has-modal-card
+      trap-focus
+      :destroy-on-hide="true"
+      aria-modal>
+      <template>
+        <Login @close="showLoginPanel=false"></Login>
+      </template>
+    </b-modal>
   </section>
 </template>
 
@@ -89,6 +127,8 @@ import CONFIG from "@/config.json";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import UserList from "@/components/user_list";
+import Login from '@/components/login'
+import { getUserInfo, isLoggedIn, deleteToken } from "@/utils/account";
 
 export default {
   name: "Landing",
@@ -96,6 +136,7 @@ export default {
     WaterFall,
     HScroll,
     UserList,
+    Login
   },
   data() {
     return {
@@ -112,6 +153,7 @@ export default {
       sampleUsers: [],
       sampleUsersPage: 0,
       sampleUsersLoadFlag: true,
+      showLoginPanel: false
     };
   },
   created() {
@@ -133,8 +175,35 @@ export default {
     }, 800);
   },
   mounted() {},
-  computed: {},
+  computed: {
+    isLoggedIn() {
+      return isLoggedIn()
+    },
+    userInfo() {
+      return getUserInfo()
+    }
+  },
   methods: {
+    onDeveloping() {
+      this.$buefy.notification.open({
+        duration: 5000,
+        message: "功能还正在开发中...",
+        type: "is-info"
+      })
+    },
+    deleteToken() {
+      this.$buefy.dialog.confirm({
+        title: '确定要退出登录嘛',
+        message: `退出登录后本地将无法访问你的数据，需要重新登录才可以`,
+        cancelText: '算了',
+        confirmText: '嗯',
+        type: 'is-success',
+        onConfirm: () => {
+          deleteToken()
+          this.$router.go(0)
+        }
+      })
+    },
     sampleIllustsPageNext($state) {
       let params = {
         p: this.sampleIllustsPage,
@@ -262,6 +331,20 @@ export default {
 </script>
 
 <style lang="scss">
+.user-ava {
+  object-fit: cover;
+  width: 100%;
+  height: 100% !important;
+  margin: 0 !important;
+  max-height: 100% !important;
+  padding: 8px;
+  transition: transform 0.7s ease-in-out;
+
+  &:hover {
+    transform: rotate(360deg);
+  }
+}
+
 .full-screen {
   .logo {
     position: absolute;
