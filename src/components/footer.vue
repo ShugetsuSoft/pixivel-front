@@ -32,7 +32,7 @@ export default {
       }
     };
     adscript.onerror = () => {
-      this.$refs.adbanner.innerText = "o_o ....";
+      this.$refs.adbanner.innerText = "唔，虽然这里本该有个广告，但是既然阁下不愿意的话，我也就不展示了。可以考虑捐赠支持开发者哦";
     };
     adscript["data-ad-client"] = "ca-pub-7564284646329791";
     adscript.src =

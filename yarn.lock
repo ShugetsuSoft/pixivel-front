@@ -3468,6 +3468,11 @@
   "resolved" "https://registry.nlark.com/detect-node/download/detect-node-2.1.0.tgz?cache=0&sync_timestamp=1621146976557&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdetect-node%2Fdownload%2Fdetect-node-2.1.0.tgz"
   "version" "2.1.0"
 
+"dexie@^3.2.1":
+  "integrity" "sha512-Y8oz3t2XC9hvjkP35B5I8rUkKKwM36GGRjWQCMjzIYScg7W+GHKDXobSYswkisW7CxL1/tKQtggMDsiWqDUc1g=="
+  "resolved" "https://registry.npmjs.org/dexie/-/dexie-3.2.1.tgz"
+  "version" "3.2.1"
+
 "diffie-hellman@^5.0.0":
   "integrity" "sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg=="
   "resolved" "https://registry.npmjs.org/diffie-hellman/-/diffie-hellman-5.0.3.tgz"

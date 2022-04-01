@@ -26,25 +26,28 @@
             <template #empty>No results found</template>
           </b-autocomplete>
         </b-navbar-item>
-        <b-navbar-item href="#" class="hide-on-computer has-text-centered">
-          登录
-        </b-navbar-item>
-        <b-navbar-item href="#" class="hide-on-computer has-text-centered">
-          注册
-        </b-navbar-item>
+        <template v-if="isLoggedIn">
+          <b-navbar-item class="hide-on-computer has-text-centered" @click="$router.push({ name: 'Account' })">
+            <b-tag>{{ userInfo.username }}</b-tag> 账号
+          </b-navbar-item>
+        </template>
+        <template v-else>
+          <b-navbar-item class="hide-on-computer has-text-centered" @click="showLoginPanel=true">
+            登录或者注册
+          </b-navbar-item>
+        </template>
         <b-navbar-item tag="div" class="hide-on-phone">
           <b-dropdown aria-role="list" position="is-bottom-left">
             <template #trigger>
               <p class="image is-64x64" role="button">
-                <img src="https://gravatar.loli.net/avatar/c7502eca9956377451f2977c0b83f3fc" class="user-ava is-rounded">
+                <img :src="isLoggedIn?userAvatar:defaultAvatar" class="user-ava is-rounded">
               </p>
             </template>
-
             <template v-if="isLoggedIn">
               <div class="dropdown-item"> <b-tag>{{ userInfo.username }}</b-tag> </div>
-              <b-dropdown-item @click="onDeveloping">账号</b-dropdown-item>
-              <b-dropdown-item @click="onDeveloping">收藏</b-dropdown-item>
-              <b-dropdown-item @click="onDeveloping">关注</b-dropdown-item>
+              <b-dropdown-item @click="$router.push({ name: 'Account' })">账号</b-dropdown-item>
+              <b-dropdown-item @click="$router.push({ name: 'Account', hash: '#3' })">收藏</b-dropdown-item>
+              <b-dropdown-item @click="$router.push({ name: 'Account', hash: '#4' })">关注</b-dropdown-item>
               <b-dropdown-item @click="deleteToken">退出登录</b-dropdown-item>
             </template>
             <template v-else>
@@ -129,6 +132,7 @@ import HScroll from "@/components/horizontal_scroll";
 import UserList from "@/components/user_list";
 import Login from '@/components/login'
 import { getUserInfo, isLoggedIn, deleteToken } from "@/utils/account";
+import md5 from '@/utils/md5'
 
 export default {
   name: "Landing",
@@ -141,6 +145,7 @@ export default {
   data() {
     return {
       backgroundImg: "https://api.daihan.top/api/acg",
+      defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
       sampleIllusts: [],
       sampleIllustsPage: 0,
       loadid: +new Date(),
@@ -181,7 +186,10 @@ export default {
     },
     userInfo() {
       return getUserInfo()
-    }
+    },
+    userAvatar() {
+      return CONFIG.GRAVATAR_PROXY + md5(this.userInfo.email)
+    },
   },
   methods: {
     onDeveloping() {
@@ -193,8 +201,8 @@ export default {
     },
     deleteToken() {
       this.$buefy.dialog.confirm({
-        title: '确定要退出登录嘛',
-        message: `退出登录后本地将无法访问你的数据，需要重新登录才可以`,
+        title: '退出登录',
+        message: `确定要退出登录嘛?<br>退出登录后本地将无法访问你的数据，需要重新登录才可以`,
         cancelText: '算了',
         confirmText: '嗯',
         type: 'is-success',

@@ -190,4 +190,14 @@ h6 {
     display: none !important;
   }
 }
+
+.return-container {
+  .subtitle {
+    margin-bottom: 0;
+  }
+  margin-bottom: 3.3rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 </style>

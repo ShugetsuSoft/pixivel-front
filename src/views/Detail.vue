@@ -188,6 +188,7 @@ import VClamp from "vue-clamp";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import RouterA from "@/components/router_a";
+import { addHistory } from '@/utils/history'
 
 export default {
   name: "Detail",
@@ -224,6 +225,11 @@ export default {
       this.load();
       this.refreshRecommend();
     },
+    illust() {
+      if (this.illust) {
+        addHistory(this.illust)
+      }
+    }
   },
   created() {
     this.id = this.$route.params.id;

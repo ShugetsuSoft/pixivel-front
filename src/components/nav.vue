@@ -9,8 +9,8 @@
     <div class="nav-circle nav-center" @click="routerChange('Landing')">
       <img class="icon" src="../assets/images/favicon.png" />
     </div>
-    <div class="nav-circle" @click="routerChange('More')">
-      <b-icon pack="uil" icon="uil-ellipsis-h"></b-icon>
+    <div class="nav-circle" @click="routerChange('Account')">
+      <b-icon pack="uil" icon="uil-user"></b-icon>
     </div>
     <div class="nav-circle" @click="$router.back()">
       <b-icon pack="uil" icon="uil-angle-left"></b-icon>

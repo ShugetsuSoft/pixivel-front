@@ -32,11 +32,10 @@ const routes = [
     component: () => import("@/views/Rank.vue"),
   },
   {
-    path: "/more",
-    name: "More",
-    component: () => import("@/views/More.vue"),
+    path: "/account",
+    name: "Account",
+    component: () => import("@/views/Account.vue"),
   },
-
   {
     path: "/user",
     component: oldRedirect,
