@@ -210,7 +210,11 @@ export default {
   watch: {
     tabNow() {
       if ("#" + this.tabNow.toString() == this.$route.hash) return;
-      this.$router.push({ name: "Account", hash: "#" + this.tabNow.toString() })
+      this.$router.replace({ name: "Account", hash: "#" + this.tabNow.toString() })
+    },
+    $route() {
+      if ("#" + this.tabNow.toString() == this.$route.hash) return;
+      this.tabNow = parseInt(this.$route.hash.split("#")[1])
     }
   },
   created() {
