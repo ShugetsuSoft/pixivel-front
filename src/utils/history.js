@@ -1,13 +1,9 @@
-import Dexie from 'dexie'
+import db from './idb'
 import Lodash from "lodash"
 
-const PIXIVEL_DATABASE_NAME = "pixivel"
 const HISTORY_DATABASE_NAME = "history"
-const db = new Dexie(PIXIVEL_DATABASE_NAME)
-db.version(1).stores({
-  [HISTORY_DATABASE_NAME]: "&id, time"
-})
-const HISTORY_PAGE_LIMIT = 50
+
+const PAGE_LIMIT = 50
 
 export async function addHistory(illust) {
   let thumbIllust = Lodash.pick(illust, ["id", "height", "width", "type", "pageCount", "sanity", "title", "image"])
@@ -27,5 +23,5 @@ export async function clearHistory() {
 }
 
 export async function getHistory(page) {
-  return await db[HISTORY_DATABASE_NAME].orderBy('time').reverse().offset(page * HISTORY_PAGE_LIMIT).limit(HISTORY_PAGE_LIMIT).toArray()
+  return await db[HISTORY_DATABASE_NAME].orderBy('time').reverse().offset(page * PAGE_LIMIT).limit(PAGE_LIMIT).toArray()
 }

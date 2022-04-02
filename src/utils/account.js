@@ -12,6 +12,10 @@ export function setAccessToken(token) {
   storage.set("access_token", token)
 }
 
+export function getAccessToken() {
+  return storage.get("access_token", "")
+}
+
 export function isLoggedIn() {
   return storage.get("refresh_token", "").length > 0 && !isRefreshTokenExpired()
 }

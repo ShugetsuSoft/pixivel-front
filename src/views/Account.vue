@@ -153,11 +153,7 @@
         </div>
       </section>
       <section v-else-if="tabNow==3">
-        <b-message
-          title="告示牌"
-          type="is-warning">
-          用户系统功能还在开发中，尽请期待（咕计这几天吧）
-        </b-message>
+        <Bookmark />
       </section>
       <section v-else-if="tabNow==4">
         <b-message
@@ -190,6 +186,7 @@ import CONFIG from '@/config.json'
 import storage from "store2";
 import Login from '@/components/login'
 import History from '@/components/history'
+import Bookmark from '@/components/bookmark'
 
 const AnnounceKey = "announce";
 
@@ -197,7 +194,8 @@ export default {
   name: "Account",
   components: {
     Login,
-    History
+    History,
+    Bookmark
   },
   data() {
     return {
