@@ -1,7 +1,6 @@
 {
 	"IMAGE_PROXY_HOSTS":[
-		"https://proxy.pixivel.moe/",
-		"https://proxia.pixivel.moe/"
+		"https://proxy.pixivel.moe/"
 	],
 	"API_HOST": "https://api.pixivel.moe/v2/pixiv/",
 	"ANNOUNCE_API": "https://announcements.shugetsu.workers.dev/fetch/pixivel",
