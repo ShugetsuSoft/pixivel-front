@@ -14,6 +14,9 @@
         <b-icon pack="uil" icon="uil-video" size="is-small"></b-icon>
       </b-tag>
     </div>
+    <div class="page-operation" v-if="islogin">
+      <Like :illust="illust" />
+    </div>
     <div class="title-container">
       <h5 class="title is-5 has-text-white" v-html="illust.title"></h5>
     </div>
@@ -23,6 +26,8 @@
 <script>
 import LazyImg from "@/components/lazyimg";
 import RouterA from "@/components/router_a";
+import { isLoggedIn } from "@/utils/account";
+import Like from '@/components/like_heart'
 
 export default {
   name: "ImgCard",
@@ -37,10 +42,12 @@ export default {
   components: {
     LazyImg,
     RouterA,
+    Like
   },
   data() {
     return {
       loading: true,
+      islogin: isLoggedIn(),
     };
   },
   mounted() {},
@@ -87,6 +94,14 @@ export default {
         padding-left: 1px;
       }
     }
+  }
+
+  .page-operation {
+    position: absolute;
+    bottom: 10px;
+    right: 16px;
+    width: 1.8rem;
+    height: 1.8rem;
   }
 
   .title-container {

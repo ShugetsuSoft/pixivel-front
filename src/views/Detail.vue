@@ -138,6 +138,9 @@
               }"
             >
               <div class="buttons is-centered">
+                <div class="like-container" v-if="islogin">
+                  <Like :illust="this.illust" />
+                </div>
                 <b-button type="is-primary" inverted @click="saveDirect">{{
                   imgprogress == 100 ? "保存" : parseInt(imgprogress) + "%"
                 }}</b-button>
@@ -147,8 +150,7 @@
                   outlined
                   v-if="illust.pageCount > 1"
                   @click="saveDirectAll"
-                  >保存所有</b-button
-                >
+                  >保存所有</b-button>
               </div>
             </div>
           </div>
@@ -188,7 +190,9 @@ import VClamp from "vue-clamp";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import RouterA from "@/components/router_a";
+import Like from '@/components/like_heart'
 import { addHistory } from '@/utils/history'
+import { isLoggedIn } from "@/utils/account";
 
 export default {
   name: "Detail",
@@ -198,6 +202,7 @@ export default {
     WaterFall,
     HScroll,
     RouterA,
+    Like,
   },
   data: () => ({
     id: 0,
@@ -212,6 +217,7 @@ export default {
     userIllustsLoading: false,
     userIllustsShowLoading: true,
     imgprogress: 100,
+    islogin: isLoggedIn(),
   }),
   watch: {
     $route() {
@@ -541,5 +547,14 @@ export default {
 
 .obj-cover {
   object-fit: cover;
+}
+
+.like-container {
+  width: 38px;
+  height: 38px;
+  padding: 7px;
+  margin-bottom: 0.5rem;
+  background: #fff;
+  border-radius: 10px;
 }
 </style>
