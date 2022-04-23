@@ -17,7 +17,7 @@ const syncDEBU = Lodash.debounce(async () => {
     queue: false
   })
   await uploadBookMark()
-}, 1000, {
+}, 2000, {
   maxWait: 10
 })
 
