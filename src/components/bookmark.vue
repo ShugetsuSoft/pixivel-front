@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="notification is-info bookmark-info">
-      收藏个数: {{ bookmarkCount }}
+      收藏个数（最多收藏500个,还在测试捏）: {{ bookmarkCount }}
       <div class="buttons">
-        <b-button type="is-info" inverted outlined @click="sync">手动同步</b-button>
+        <b-button type="is-info" inverted outlined @click="sync">强制同步</b-button>
+        <b-button type="is-warning" outlined @click="clearAll">清空所有</b-button>
       </div>
     </div>
     <WaterFall :illusts="bookmark" :identifier="loadid" />
@@ -20,8 +21,9 @@
 </template>
 
 <script>
-import { getBookMark, countBookMark, uploadBookMark } from "@/utils/bookmark";
+import { getBookMark, countBookMark, syncBookMark } from "@/utils/bookmark";
 import WaterFall from "@/components/waterfall";
+import { clearBookMark } from "../utils/bookmark";
 
 export default {
   name: "Bookmark",
@@ -55,7 +57,28 @@ export default {
       }
     },
     async sync() {
-      await uploadBookMark()
+      await syncBookMark()
+      this.bookmark = []
+      this.bookmarkPage = 0
+      this.bookmarkCount = await countBookMark()
+      this.loadid += 1
+    },
+    clearAll() {
+      this.$buefy.dialog.confirm({
+        message: '真的要清空所有收藏吗！此操作不可恢复！',
+        cancelText: '点错了',
+        confirmText: '真的',
+        onConfirm: () => {
+          this.$buefy.dialog.confirm({
+            message: '红豆泥？！',
+            cancelText: 'NO',
+            confirmText: '嗯',
+            onConfirm: async () => {
+              await clearBookMark()
+            }
+          })
+        }
+      })
     }
   }
 };

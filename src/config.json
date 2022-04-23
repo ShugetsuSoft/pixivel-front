@@ -3,7 +3,7 @@
 		"https://proxy.pixivel.moe/"
 	],
 	"API_HOST": "https://api.pixivel.moe/v2/pixiv/",
-	"USER_API": "https://pixivel-user.shugetsu.workers.dev/",
+	"USER_API": "https://api-user.pixivel.moe/",
 	"ANNOUNCE_API": "https://announcements.shugetsu.workers.dev/fetch/pixivel",
 	"RAND_IMG":"https://api.daihan.top/api/acg",
 	"DOWNLOAD_DEFAULT": {

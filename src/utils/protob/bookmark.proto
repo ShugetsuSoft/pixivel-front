@@ -15,4 +15,5 @@ message IllustSimple {
 
 message BookMarks {
     repeated IllustSimple illusts = 10;
+    uint64 time = 8;
 }

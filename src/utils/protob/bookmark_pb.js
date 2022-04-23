@@ -2,7 +2,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
@@ -13,13 +12,7 @@
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() {
-  if (this) { return this; }
-  if (typeof window !== 'undefined') { return window; }
-  if (typeof global !== 'undefined') { return global; }
-  if (typeof self !== 'undefined') { return self; }
-  return Function('return this')();
-}.call(null));
+var global = Function('return this')();
 
 goog.exportSymbol('proto.bookmark.BookMarks', null, global);
 goog.exportSymbol('proto.bookmark.IllustSimple', null, global);
@@ -475,7 +468,8 @@ proto.bookmark.BookMarks.prototype.toObject = function(opt_includeInstance) {
 proto.bookmark.BookMarks.toObject = function(includeInstance, msg) {
   var f, obj = {
     illustsList: jspb.Message.toObjectList(msg.getIllustsList(),
-    proto.bookmark.IllustSimple.toObject, includeInstance)
+    proto.bookmark.IllustSimple.toObject, includeInstance),
+    time: jspb.Message.getFieldWithDefault(msg, 8, 0)
   };
 
   if (includeInstance) {
@@ -517,6 +511,10 @@ proto.bookmark.BookMarks.deserializeBinaryFromReader = function(msg, reader) {
       reader.readMessage(value,proto.bookmark.IllustSimple.deserializeBinaryFromReader);
       msg.addIllusts(value);
       break;
+    case 8:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setTime(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -552,6 +550,13 @@ proto.bookmark.BookMarks.serializeBinaryToWriter = function(message, writer) {
       10,
       f,
       proto.bookmark.IllustSimple.serializeBinaryToWriter
+    );
+  }
+  f = message.getTime();
+  if (f !== 0) {
+    writer.writeUint64(
+      8,
+      f
     );
   }
 };
@@ -592,6 +597,24 @@ proto.bookmark.BookMarks.prototype.addIllusts = function(opt_value, opt_index) {
  */
 proto.bookmark.BookMarks.prototype.clearIllustsList = function() {
   return this.setIllustsList([]);
+};
+
+
+/**
+ * optional uint64 time = 8;
+ * @return {number}
+ */
+proto.bookmark.BookMarks.prototype.getTime = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.bookmark.BookMarks} returns this
+ */
+proto.bookmark.BookMarks.prototype.setTime = function(value) {
+  return jspb.Message.setProto3IntField(this, 8, value);
 };
 
 
