@@ -1,7 +1,7 @@
 import BookMarkProtocol from './protob/bookmark_pb'
 import db from './idb'
 import Lodash from "lodash"
-import { renewAccessTokenIfExpired, getAccessToken } from './account'
+import { renewAccessTokenIfExpired, getAccessToken, isLoggedIn } from './account'
 import axios from "axios"
 import CONFIG from '@/config.json'
 import storage from "store2"
@@ -135,4 +135,6 @@ export async function syncBookMark() {
   })))
 }
 
-syncBookMark()
+if (isLoggedIn()) {
+  syncBookMark()
+}
