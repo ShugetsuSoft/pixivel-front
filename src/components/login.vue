@@ -82,7 +82,7 @@ import validate from "validate.js"
 import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import CONFIG from '@/config.json'
 import qs from 'qs'
-import { setAccessToken, setRefreshToken } from "@/utils/account";
+import { setAccessToken, setRefreshToken, clearAccountInformation } from "@/utils/account";
 
 validate.validators.password = function(value, options) {
   if (value.length < options) {
@@ -205,6 +205,7 @@ export default {
       this.axios.post(CONFIG.AUTHUGETSU_API + "user/login", qs.stringify(data)).then((response) => {
         setRefreshToken(response.data.refresh_token)
         setAccessToken(response.data.access_token)
+        clearAccountInformation()
         this.$buefy.toast.open({
           message: '登录成功！耶！',
           duration: 10000,

@@ -3,6 +3,7 @@ import axios from "axios";
 import CONFIG from "@/config.json";
 import qs from "qs";
 import moment from 'moment'
+import db from "./idb";
 
 export function setRefreshToken(token) {
   storage.set("refresh_token", token);
@@ -23,6 +24,11 @@ export function isLoggedIn() {
 export function deleteToken() {
   storage.remove("access_token")
   storage.remove("refresh_token")
+}
+
+export function clearAccountInformation() {
+  storage.remove("last_bookmark_modify")
+  db["bookmark"].clear()
 }
 
 function parseJwt(token) { // https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript-without-using-a-library
