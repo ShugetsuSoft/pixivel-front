@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="notification is-info bookmark-info">
-      收藏个数（最多收藏500个,还在测试捏）: {{ bookmarkCount }}
+      收藏个数: {{ bookmarkCount }}
       <div class="buttons">
         <b-button type="is-info" inverted outlined @click="sync">强制同步</b-button>
         <b-button type="is-warning" outlined @click="clearAll">清空所有</b-button>

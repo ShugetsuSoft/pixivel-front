@@ -28,15 +28,8 @@ export default {
         this.isBookMarked = false
         await deleteBookMark(this.illust.id)
       } else {
-        if (await addBookMark(this.illust)) {
-          this.isBookMarked = true
-        } else {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `无法收藏！已超过最大允许个数！`,
-            type: 'is-danger',
-          })
-        }
+        await addBookMark(this.illust)
+        this.isBookMarked = true
       }
     }
   }
