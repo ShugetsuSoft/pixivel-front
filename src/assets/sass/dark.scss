@@ -62,4 +62,9 @@
   html:before {
     filter: brightness(0.9);
   }
+
+  .taginput .taginput-container.is-focusable {
+    background: transparent;
+    border: none;
+  }
 }

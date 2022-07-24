@@ -41,6 +41,10 @@ export default {
     "initial-width": Number,
     "initial-height": Number,
     "ugoira-frames": Array,
+    "MaxPercent": {
+      default: 0.94,
+      type: Number
+    }
   },
   watch: {
     ugoiraFrames: "loadUgoira",
@@ -52,7 +56,6 @@ export default {
   },
   data() {
     return {
-      MaxPercent: 0.94,
       CurrentImgUrl:
         "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
       CurrentPage: 1,
