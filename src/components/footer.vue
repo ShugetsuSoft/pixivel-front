@@ -18,47 +18,58 @@
 </template>
 
 <script>
+import Banned from '@/assets/infos/ban.json'
+
 export default {
   name: "Footer",
   mounted() {
-    let adscript = document.createElement("script");
-    adscript.type = "text/javascript";
-    adscript.onload = () => {
-      try {
-        (window.adsbygoogle || []).push({});
-      } catch (error) {
-        this.$refs.adbanner.innerText = "是ADBLOCK好耶";
-        console.error(error);
-      }
-    };
-    adscript.onerror = () => {
-      this.$refs.adbanner.innerText = "唔，虽然这里本该有个广告，但是既然阁下不愿意的话，我也就不展示了。可以考虑捐赠支持开发者哦";
-    };
-    adscript["data-ad-client"] = "ca-pub-7564284646329791";
-    adscript.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7564284646329791";
-    document.currentScript.parentNode.insertBefore(
-      adscript,
-      document.currentScript
-    );
-
-    let analyticscript = document.createElement("script");
-    analyticscript.type = "text/javascript";
-    analyticscript.onload = () => {
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        window.dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "UA-159010258-1");
-    };
-    analyticscript.src =
-      "https://www.googletagmanager.com/gtag/js?id=UA-159010258-1";
-    document.currentScript.parentNode.insertBefore(
-      analyticscript,
-      document.currentScript
-    );
+    this.initAna()
+    if (Banned.indexOf(window.location.href) == -1) {
+      this.initAds()
+    }
   },
+  methods: {
+    initAds() {
+      let adscript = document.createElement("script");
+      adscript.type = "text/javascript";
+      adscript.onload = () => {
+        try {
+          (window.adsbygoogle || []).push({});
+        } catch (error) {
+          this.$refs.adbanner.innerText = "是ADBLOCK好耶";
+          console.error(error);
+        }
+      };
+      adscript.onerror = () => {
+        this.$refs.adbanner.innerText = "唔，虽然这里本该有个广告，但是既然阁下不愿意的话，我也就不展示了。可以考虑捐赠支持开发者哦";
+      };
+      adscript["data-ad-client"] = "ca-pub-7564284646329791";
+      adscript.src =
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7564284646329791";
+      document.currentScript.parentNode.insertBefore(
+        adscript,
+        document.currentScript
+      );
+    },
+    initAna() {
+      let analyticscript = document.createElement("script");
+      analyticscript.type = "text/javascript";
+      analyticscript.onload = () => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          window.dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "UA-159010258-1");
+      };
+      analyticscript.src =
+        "https://www.googletagmanager.com/gtag/js?id=UA-159010258-1";
+      document.currentScript.parentNode.insertBefore(
+        analyticscript,
+        document.currentScript
+      );
+    }
+  }
 };
 </script>
 
