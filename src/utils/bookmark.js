@@ -134,3 +134,8 @@ export async function syncBookMark() {
 if (isLoggedIn()) {
   syncBookMark()
 }
+document.addEventListener('visibilitychange', function() {
+  if (isLoggedIn()) {
+    syncBookMark()
+  }
+})
