@@ -207,7 +207,9 @@ export default {
           $state.loaded();
         })
         .catch((error) => {
-          this.error(error.response.data.message);
+          if (error?.response?.data) {
+            this.error(error?.response?.data?.message);
+          }
           $state.error();
         });
     },
