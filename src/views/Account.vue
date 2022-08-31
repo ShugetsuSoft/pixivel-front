@@ -228,13 +228,13 @@ export default {
         {
           name: "Rorical",
           ava: "https://avatars.githubusercontent.com/u/46294886?v=4",
-          desc: "开发者，如果是白毛萌妹就好了",
+          desc: "开发者，是白毛萌妹（雾）",
           link: "https://rorical.blue"
         },
         {
           name: "Matrew File",
           ava: "https://avatars.githubusercontent.com/u/28867264?v=4",
-          desc: "运维，如果是绿毛萌妹就好了",
+          desc: "运维，也许会变成绿毛萌妹（大雾）",
           link: "https://elfile4138.moe"
         }
       ]
