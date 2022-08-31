@@ -49,6 +49,9 @@
 
                 <li :class="{'link-active': tabNow==1}"  @click="tabNow=1"><a>下载</a></li>
                 <li :class="{'link-active': tabNow==2}"  @click="tabNow=2"><a>设置</a></li>
+
+                <li :class="{'link-active': tabNow==6}"  @click="tabNow=6"><a>友情链接</a></li>
+                <li><a href="https://forum.pixivel.moe/">论坛</a></li>
               </ul>
             </div>
           </nav>
@@ -165,6 +168,24 @@
       <section v-else-if="tabNow==5">
         <History />
       </section>
+
+      <section v-if="tabNow==6">
+        <div class="columns set-list">
+          <div class="column is-one-third-desktop is-half-tablet hover-up" @click="jump(link.link)" v-for="link in links" :key="link.name">
+            <b-notification :closable="false" class="is-clickable">
+              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
+                <figure class="image is-64x64 media-left">
+                  <img class="is-rounded" :src="link.ava">
+                </figure>
+                <div class="content">
+                  <strong>{{ link.name }}</strong>
+                  <p>{{ link.desc }}<a>{{ link.link }}</a></p>
+                </div>
+              </div>
+            </b-notification>
+          </div>
+        </div>
+      </section>
     </div>
     <b-modal
       :active="showLoginPanel"
@@ -203,6 +224,20 @@ export default {
       showLoginPanel: false,
       announce: window.JSON.parse(storage.get(AnnounceKey, '{}')),
       defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
+      links: [
+        {
+          name: "Rorical",
+          ava: "https://avatars.githubusercontent.com/u/46294886?v=4",
+          desc: "开发者，如果是白毛萌妹就好了",
+          link: "https://rorical.blue"
+        },
+        {
+          name: "Matrew File",
+          ava: "https://avatars.githubusercontent.com/u/28867264?v=4",
+          desc: "运维，如果是绿毛萌妹就好了",
+          link: "https://elfile4138.moe"
+        }
+      ]
     }
   },
   watch: {
@@ -297,6 +332,9 @@ export default {
         this.showLoginPanel = true
       }
     },
+    jump(url){
+      window.open(url, "_blank")
+    }
   },
 };
 </script>
@@ -333,5 +371,13 @@ export default {
 
 .set-list {
   flex-wrap: wrap;
+}
+
+.hover-up:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.hover-up {
+  transition: transform .1s ease-in-out;
 }
 </style>
