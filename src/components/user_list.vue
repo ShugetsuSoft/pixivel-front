@@ -9,7 +9,7 @@
       <div class="media-left">
         <figure class="image is-64x64">
           <img
-            :src="imgProxy(user.image.url, user.id)"
+            :src="imgProxy(user.image.url ? user.image.url: user.url, user.id)"
             class="is-rounded full-hw obj-cover"
           />
         </figure>

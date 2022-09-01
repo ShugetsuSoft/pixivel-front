@@ -24,7 +24,7 @@ const syncDEBU = Lodash.debounce(async () => {
 export async function addFollow(user) {
   storage.set("last_follow_modify", Date.now())
   let simpleUser = Lodash.pick(user, ["id", "name", "bio"])
-  simpleUser["bigUrl"] = user["image"]["bigUrl"]
+  simpleUser["url"] = user["image"]["url"]
   simpleUser["time"] = (new Date().getTime())
   let count = await db[FOLLOW_DATABASE_NAME].update(simpleUser["id"], simpleUser)
   if (count === 0) {
@@ -70,7 +70,7 @@ export async function uploadFollow() {
     obj.setId(user.id)
     obj.setName(user.name)
     obj.setBio(user.bio)
-    obj.setBigUrl(user.bigUrl)
+    obj.setUrl(user.url)
     obj.setTime(user.time)
     collect.addUsers(obj)
   })
@@ -107,7 +107,7 @@ export async function syncFollow() {
     return
   }
 
-  let remoteData = FollowProtocol.deserializeBinary(res.data)
+  let remoteData = FollowProtocol.Follows.deserializeBinary(res.data)
 
   let lastModifyTimeRemote = remoteData.getTime()
   let lastModifyTimeLocal = storage.get("last_follow_modify", 0)

@@ -94,7 +94,8 @@ proto.follow.UserSimple.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     bio: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    bigurl: jspb.Message.getFieldWithDefault(msg, 4, "")
+    url: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    time: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -145,7 +146,11 @@ proto.follow.UserSimple.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setBigurl(value);
+      msg.setUrl(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setTime(value);
       break;
     default:
       reader.skipField();
@@ -197,10 +202,17 @@ proto.follow.UserSimple.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getBigurl();
+  f = message.getUrl();
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getTime();
+  if (f !== 0) {
+    writer.writeUint64(
+      5,
       f
     );
   }
@@ -262,10 +274,10 @@ proto.follow.UserSimple.prototype.setBio = function(value) {
 
 
 /**
- * optional string bigUrl = 4;
+ * optional string url = 4;
  * @return {string}
  */
-proto.follow.UserSimple.prototype.getBigurl = function() {
+proto.follow.UserSimple.prototype.getUrl = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
@@ -274,8 +286,26 @@ proto.follow.UserSimple.prototype.getBigurl = function() {
  * @param {string} value
  * @return {!proto.follow.UserSimple} returns this
  */
-proto.follow.UserSimple.prototype.setBigurl = function(value) {
+proto.follow.UserSimple.prototype.setUrl = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional uint64 time = 5;
+ * @return {number}
+ */
+proto.follow.UserSimple.prototype.getTime = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.follow.UserSimple} returns this
+ */
+proto.follow.UserSimple.prototype.setTime = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
 };
 
 
