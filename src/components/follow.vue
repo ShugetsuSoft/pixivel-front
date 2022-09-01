@@ -39,7 +39,7 @@ export default {
     async nextPage() {
       try {
         let loadedFollow = await getFollow(this.followPage)
-        if (loadedFollow.length < 1) {
+        if (loadedFollow.length < 50) {
           this.hasLoad = false
         }
         this.follows = this.follows.concat(loadedFollow)
