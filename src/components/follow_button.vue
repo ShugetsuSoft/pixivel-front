@@ -24,9 +24,9 @@ export default {
       e.preventDefault()
       if (this.isFollowed) {
         this.isFollowed = false
-        await deleteFollow(this.illust.id)
+        await deleteFollow(this.user.id)
       } else {
-        await addFollow(this.illust)
+        await addFollow(this.user)
         this.isFollowed = true
       }
     }
