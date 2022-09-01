@@ -66,7 +66,7 @@
       </b-field>
     </div>
     <div class="container">
-      <WaterFall :illusts="illusts" :identifier="loadid" />
+      <WaterFall :illusts="illustsn" :identifier="loadid" />
       <infinite-loading
         @infinite="illustsPageNext"
         spinner="spiral"
@@ -222,6 +222,13 @@ export default {
       this.errorMsg = message;
     },
   },
+  computed: {
+    illustsn() {
+      return this.illusts.filter(v => {
+        return (v.id != 0)
+      })
+    }
+  }
 };
 </script>
 
