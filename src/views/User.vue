@@ -24,6 +24,9 @@
             position="is-centered"
           ></b-skeleton>
         </h1>
+        <div class="follow-container" v-if="user">
+          <Follow :user="user"/>
+        </div>
         <hr />
         <p class="subtitle is-6 bio-container break-raw-text">
           <template v-if="!user">
@@ -63,6 +66,7 @@ import CONFIG from "@/config.json";
 import WaterFall from "@/components/waterfall";
 import LoadImg from "@/components/load_img.vue";
 import LongLoadingBadage from "@/components/longloading_badage";
+import Follow from '@/components/follow_button'
 
 export default {
   name: "User",
@@ -70,6 +74,7 @@ export default {
     WaterFall,
     LoadImg,
     LongLoadingBadage,
+    Follow
   },
   data() {
     return {
@@ -204,6 +209,10 @@ export default {
     .lazyimg {
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.175);
     }
+  }
+
+  .follow-container {
+    text-align: center;
   }
 
   .bio-container {

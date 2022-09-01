@@ -1,0 +1,15 @@
+syntax = "proto3";
+package follow;
+
+message UserSimple {
+    uint64 id = 1;
+    string name = 2;
+    string bio = 3;
+    string bigUrl = 4;
+    uint64 time = 5;
+}
+
+message Follows {
+    repeated UserSimple users = 10;
+    uint64 time = 8;
+}

@@ -25,7 +25,7 @@
                   <p>
                     <strong>还没登录喵！</strong>
                     <br>
-                    登录以后可以启用收藏功能
+                    登录以后可以启用收藏和关注功能
                   </p>
                 </div>
 
@@ -51,7 +51,7 @@
                 <li :class="{'link-active': tabNow==2}"  @click="tabNow=2"><a>设置</a></li>
 
                 <li :class="{'link-active': tabNow==6}"  @click="tabNow=6"><a>友情链接</a></li>
-                <li><a href="https://forum.pixivel.moe/">论坛</a></li>
+                <li><a href="https://forum.pixivel.moe/" target="_blank">论坛</a></li>
               </ul>
             </div>
           </nav>
@@ -159,11 +159,7 @@
         <Bookmark />
       </section>
       <section v-else-if="tabNow==4">
-        <b-message
-          title="告示牌"
-          type="is-warning">
-          用户系统功能还在开发中，尽请期待（咕计这几天吧）
-        </b-message>
+        <Follow />
       </section>
       <section v-else-if="tabNow==5">
         <History />
@@ -208,6 +204,7 @@ import storage from "store2";
 import Login from '@/components/login'
 import History from '@/components/history'
 import Bookmark from '@/components/bookmark'
+import Follow from '@/components/follow'
 
 const AnnounceKey = "announce";
 
@@ -216,7 +213,8 @@ export default {
   components: {
     Login,
     History,
-    Bookmark
+    Bookmark,
+    Follow
   },
   data() {
     return {
