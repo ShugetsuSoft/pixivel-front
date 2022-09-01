@@ -82,6 +82,7 @@ module.exports = {
     },
     workboxPluginMode: "GenerateSW",
     workboxOptions: {
+      exclude: ['ads.txt'],
       skipWaiting: true,
       clientsClaim: true,
       importWorkboxFrom: 'local',
