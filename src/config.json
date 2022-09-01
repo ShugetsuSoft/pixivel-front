@@ -17,5 +17,6 @@
 		"recommend.quality": 3000
 	},
 	"CAPTCHA_SITEKEY": "76850985-c948-4b55-8a31-a01af2b85514",
-	"GRAVATAR_PROXY": "https://gravatar.loli.net/avatar/"
+	"GRAVATAR_PROXY": "https://gravatar.loli.net/avatar/",
+	"AFDIAN_API": "https://api-user.pixivel.moe/afdian/list"
 }

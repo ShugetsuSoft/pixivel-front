@@ -7,6 +7,11 @@
       </transition>
     </keep-alive>
     <Footer />
+    <b-modal v-model="showSponsor" has-modal-card trap-focus>
+      <template>
+        <Sponsor @close="showSponsor=false"/>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -14,40 +19,64 @@
 import Nav from "@/components/nav";
 import Footer from "@/components/footer.vue";
 import CheckAnnounce from "@/utils/checkAnnounce";
+import Sponsor from '@/components/sponsor'
+import storage from "store2"
 
 export default {
   name: "App",
   components: {
     Nav,
     Footer,
+    Sponsor
+  },
+  data() {
+    return {
+      showSponsor: false
+    }
   },
   mounted() {
-    CheckAnnounce().then(Anno => {
-      let infoshow = ""
-      Anno[0].forEach((key, index) => {
-        infoshow += Anno[1][key]
-        if (index < Anno[0].length - 1) {
-          infoshow += "<hr>"
+    this.sponsorShow()
+    this.announceShow()
+    this.addDownloadNotify()
+  },
+  methods: {
+    announceShow() {
+      CheckAnnounce().then(Anno => {
+        let infoshow = ""
+        Anno[0].forEach((key, index) => {
+          infoshow += Anno[1][key]
+          if (index < Anno[0].length - 1) {
+            infoshow += "<hr>"
+          }
+        })
+        if (infoshow != "") {
+          this.$buefy.notification.open({
+            duration: 60000,
+            message: infoshow,
+            type: 'is-primary',
+          })
         }
       })
-      if (infoshow != "") {
-        this.$buefy.notification.open({
-          duration: 60000,
-          message: infoshow,
-          type: 'is-primary',
-        })
+    },
+    sponsorShow() {
+      let lastTime = storage.get("last_sponsor_show_time", 0)
+      let now = (new Date().getTime())
+      if (lastTime < now - 864000000) { // ten days
+        this.showSponsor = true
+        storage.set("last_sponsor_show_time", now)
       }
-    })
-
-    window.addEventListener("beforeunload", (e) => {
-      if (!this.$store.getters["Pic/isDownloadFinish"]) {
-        e.preventDefault();
-        e.returnValue = "未完成的下载任务！";
-        return true;
-      }
-      return false;
-    });
-  },
+    },
+    addDownloadNotify() {
+      window.addEventListener("beforeunload", (e) => {
+        if (!this.$store.getters["Pic/isDownloadFinish"]) {
+          e.preventDefault();
+          e.returnValue = "未完成的下载任务！";
+          return true;
+        }
+        return false;
+      });
+    }
+  }
 };
 </script>
 
