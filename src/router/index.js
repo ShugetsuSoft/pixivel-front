@@ -1,40 +1,48 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import Landing from "@/views/Landing.vue"
+import Detail from "@/views/Detail.vue"
+import User from "@/views/User.vue"
+import Search from "@/views/Search.vue"
+import Rank from "@/views/Rank.vue"
+import Account from "@/views/Account.vue"
+import oldRedirect from "@/views/oldRedirect.vue"
+
 Vue.use(VueRouter);
 
-const oldRedirect = () => import("@/views/oldRedirect.vue");
+
 
 const routes = [
   {
     path: "/",
     name: "Landing",
-    component: () => import("@/views/Landing.vue"),
+    component: Landing,
   },
   {
     path: "/illust/:id",
     name: "Detail",
-    component: () => import("@/views/Detail.vue"),
+    component: Detail,
   },
   {
     path: "/illustrator/:id",
     name: "User",
-    component: () => import("@/views/User.vue"),
+    component: User,
   },
   {
     path: "/search",
     name: "Search",
-    component: () => import("@/views/Search.vue"),
+    component: Search,
   },
   {
     path: "/rank",
     name: "Rank",
-    component: () => import("@/views/Rank.vue"),
+    component: Rank,
   },
   {
     path: "/account",
     name: "Account",
-    component: () => import("@/views/Account.vue"),
+    component: Account,
   },
   {
     path: "/user",
