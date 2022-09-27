@@ -140,12 +140,3 @@ export async function syncFollow() {
   })))
   return true
 }
-
-if (isLoggedIn()) {
-  syncFollow()
-}
-document.addEventListener('visibilitychange', function() {
-  if (isLoggedIn()) {
-    syncFollow()
-  }
-})

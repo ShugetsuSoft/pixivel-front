@@ -84,9 +84,3 @@ export async function renewAccessToken() {
   }
   return true
 }
-
-if (!isLoggedIn()) {
-  if (storage.has("refresh_token")) {
-    clearAccountInformation()
-  }
-}

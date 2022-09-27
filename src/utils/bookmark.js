@@ -1,7 +1,7 @@
 import BookMarkProtocol from './protob/bookmark_pb'
 import db from './idb'
 import Lodash from "lodash"
-import { renewAccessTokenIfExpired, getAccessToken, isLoggedIn } from './account'
+import { renewAccessTokenIfExpired, getAccessToken } from './account'
 import axios from "axios"
 import CONFIG from '@/config.json'
 import storage from "store2"
@@ -142,12 +142,3 @@ export async function syncBookMark() {
   })))
   return true
 }
-
-if (isLoggedIn()) {
-  syncBookMark()
-}
-document.addEventListener('visibilitychange', function() {
-  if (isLoggedIn()) {
-    syncBookMark()
-  }
-})

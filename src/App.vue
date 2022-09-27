@@ -21,6 +21,9 @@ import Footer from "@/components/footer.vue";
 import CheckAnnounce from "@/utils/checkAnnounce";
 import Sponsor from '@/components/sponsor'
 import storage from "store2"
+import { clearAccountInformation, isLoggedIn } from "@/utils/account";
+import { syncBookMark } from "@/utils/bookmark";
+import { syncFollow } from "@/utils/follow";
 
 export default {
   name: "App",
@@ -38,8 +41,25 @@ export default {
     this.sponsorShow()
     this.announceShow()
     this.addDownloadNotify()
+    this.syncHook()
   },
   methods: {
+    syncHook() {
+      if (isLoggedIn()) {
+        syncBookMark()
+        syncFollow()
+      } else {
+        if (storage.has("refresh_token")) {
+          clearAccountInformation()
+        }
+      }
+      document.addEventListener('visibilitychange', function() {
+        if (isLoggedIn()) {
+          syncBookMark()
+          syncFollow()
+        }
+      })
+    },
     announceShow() {
       CheckAnnounce().then(Anno => {
         let infoshow = ""
