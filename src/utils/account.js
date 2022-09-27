@@ -27,9 +27,7 @@ export function deleteToken() {
 }
 
 export function clearAccountInformation() {
-  storage.remove("access_token")
-  storage.remove("refresh_token")
-
+  deleteToken()
   storage.remove("last_bookmark_modify")
   db["bookmark"].clear()
   storage.remove("last_follow_modify")

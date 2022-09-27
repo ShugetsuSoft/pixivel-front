@@ -203,9 +203,9 @@ export default {
         data["username"] = this.forms.username
       }
       this.axios.post(CONFIG.AUTHUGETSU_API + "user/login", qs.stringify(data)).then((response) => {
+        clearAccountInformation()
         setRefreshToken(response.data.refresh_token)
         setAccessToken(response.data.access_token)
-        clearAccountInformation()
         this.$buefy.toast.open({
           message: '登录成功！耶！',
           duration: 10000,
