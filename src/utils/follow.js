@@ -22,6 +22,9 @@ const syncDEBU = Lodash.debounce(async () => {
 })
 
 export async function addFollow(user) {
+  if (!storage.has("last_follow_modify")) {
+    await syncFollow()
+  }
   storage.set("last_follow_modify", Date.now())
   let simpleUser = Lodash.pick(user, ["id", "name", "bio"])
   simpleUser["url"] = user["image"]["url"]

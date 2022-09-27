@@ -27,8 +27,13 @@ export function deleteToken() {
 }
 
 export function clearAccountInformation() {
+  storage.remove("access_token")
+  storage.remove("refresh_token")
+
   storage.remove("last_bookmark_modify")
   db["bookmark"].clear()
+  storage.remove("last_follow_modify")
+  db["follow"].clear()
 }
 
 function parseJwt(token) { // https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript-without-using-a-library
@@ -80,4 +85,10 @@ export async function renewAccessToken() {
     return false
   }
   return true
+}
+
+if (!isLoggedIn()) {
+  if (storage.has("refresh_token")) {
+    clearAccountInformation()
+  }
 }

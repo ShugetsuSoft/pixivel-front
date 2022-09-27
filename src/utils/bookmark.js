@@ -22,6 +22,9 @@ const syncDEBU = Lodash.debounce(async () => {
 })
 
 export async function addBookMark(illust) {
+  if (!storage.has("last_bookmark_modify")) {
+    await syncBookMark()
+  }
   storage.set("last_bookmark_modify", Date.now())
   let thumbIllust = Lodash.pick(illust, ["id", "height", "width", "type", "pageCount", "sanity", "title", "image"])
   thumbIllust["time"] = (new Date().getTime())
