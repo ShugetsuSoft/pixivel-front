@@ -37,17 +37,17 @@ export default {
       showSponsor: false
     }
   },
-  mounted() {
+  async mounted() {
     this.sponsorShow()
     this.announceShow()
     this.addDownloadNotify()
-    this.syncHook()
+    await this.syncHook()
   },
   methods: {
-    syncHook() {
+    async syncHook() {
       if (isLoggedIn()) {
-        syncBookMark()
-        syncFollow()
+        await syncBookMark()
+        await syncFollow()
       } else {
         if (storage.has("refresh_token")) {
           clearAccountInformation()
