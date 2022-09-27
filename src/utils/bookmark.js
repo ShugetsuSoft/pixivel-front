@@ -10,7 +10,7 @@ import { SnackbarProgrammatic as Snackbar } from 'buefy'
 const BOOKMARK_DATABASE_NAME = "bookmark"
 const PAGE_LIMIT = 50
 
-const syncDEBU = Lodash.debounce(async () => {
+const syncBookmarkDEBU = Lodash.debounce(async () => {
   Snackbar.open({
     duration: 2000,
     message:'收藏夹上传中...',
@@ -23,7 +23,15 @@ const syncDEBU = Lodash.debounce(async () => {
 
 export async function addBookMark(illust) {
   if (!storage.has("last_bookmark_modify")) {
-    await syncBookMark()
+    if(!await syncBookMark()) {
+      Snackbar.open({
+        duration: 2000,
+        message:'关注列表拉取失败，请检查网络',
+        type: "is-danger",
+        queue: false
+      })
+      return
+    }
   }
   storage.set("last_bookmark_modify", Date.now())
   let thumbIllust = Lodash.pick(illust, ["id", "height", "width", "type", "pageCount", "sanity", "title", "image"])
@@ -32,14 +40,14 @@ export async function addBookMark(illust) {
   if (count === 0) {
     await db[BOOKMARK_DATABASE_NAME].add(thumbIllust)
   }
-  syncDEBU()
+  syncBookmarkDEBU()
   return true
 }
 
 export async function deleteBookMark(id) {
   storage.set("last_bookmark_modify", Date.now())
   await db[BOOKMARK_DATABASE_NAME].delete(id)
-  syncDEBU()
+  syncBookmarkDEBU()
 }
 
 export async function countBookMark() {
@@ -54,7 +62,7 @@ export async function clearBookMark() {
     message:'收藏夹，无了。。。呜呜',
     queue: false
   })
-  syncDEBU()
+  syncBookmarkDEBU()
 }
 
 export async function getBookMark(page) {
@@ -110,7 +118,7 @@ export async function syncBookMark() {
     if (e.response.status == 404) {
       await uploadBookMark()
     }
-    return
+    return false
   }
 
   let remoteData = BookMarkProtocol.BookMarks.deserializeBinary(res.data)
@@ -119,10 +127,10 @@ export async function syncBookMark() {
   let lastModifyTimeLocal = storage.get("last_bookmark_modify", 0)
 
   if (lastModifyTimeRemote == lastModifyTimeLocal) {
-    return
+    return true
   } else if (lastModifyTimeRemote < lastModifyTimeLocal) {
     await uploadBookMark()
-    return
+    return true
   }
 
   await db[BOOKMARK_DATABASE_NAME].clear()
@@ -132,6 +140,7 @@ export async function syncBookMark() {
       resolve()
     })
   })))
+  return true
 }
 
 if (isLoggedIn()) {

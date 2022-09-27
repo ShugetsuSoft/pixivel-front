@@ -10,7 +10,7 @@ import { SnackbarProgrammatic as Snackbar } from 'buefy'
 const FOLLOW_DATABASE_NAME = "follow"
 const PAGE_LIMIT = 50
 
-const syncDEBU = Lodash.debounce(async () => {
+const syncFollowDEBU = Lodash.debounce(async () => {
   Snackbar.open({
     duration: 2000,
     message:'关注列表上传中...',
@@ -23,7 +23,15 @@ const syncDEBU = Lodash.debounce(async () => {
 
 export async function addFollow(user) {
   if (!storage.has("last_follow_modify")) {
-    await syncFollow()
+    if (!await syncFollow()) {
+      Snackbar.open({
+        duration: 2000,
+        message:'关注列表拉取失败，请检查网络',
+        type: "is-danger",
+        queue: false
+      })
+      return
+    }
   }
   storage.set("last_follow_modify", Date.now())
   let simpleUser = Lodash.pick(user, ["id", "name", "bio"])
@@ -33,14 +41,14 @@ export async function addFollow(user) {
   if (count === 0) {
     await db[FOLLOW_DATABASE_NAME].add(simpleUser)
   }
-  syncDEBU()
+  syncFollowDEBU()
   return true
 }
 
 export async function deleteFollow(id) {
   storage.set("last_follow_modify", Date.now())
   await db[FOLLOW_DATABASE_NAME].delete(id)
-  syncDEBU()
+  syncFollowDEBU()
 }
 
 export async function countFollow() {
@@ -55,7 +63,7 @@ export async function clearFollow() {
     message:'关注列表被清空。。。呜呜',
     queue: false
   })
-  syncDEBU()
+  syncFollowDEBU()
 }
 
 export async function getFollow(page) {
@@ -106,8 +114,9 @@ export async function syncFollow() {
   } catch (e) {
     if (e.response.status == 404) {
       await uploadFollow()
+    } else {
+      return false
     }
-    return
   }
 
   let remoteData = FollowProtocol.Follows.deserializeBinary(res.data)
@@ -116,10 +125,10 @@ export async function syncFollow() {
   let lastModifyTimeLocal = storage.get("last_follow_modify", 0)
 
   if (lastModifyTimeRemote == lastModifyTimeLocal) {
-    return
+    return true
   } else if (lastModifyTimeRemote < lastModifyTimeLocal) {
     await uploadFollow()
-    return
+    return true
   }
 
   await db[FOLLOW_DATABASE_NAME].clear()
@@ -129,6 +138,7 @@ export async function syncFollow() {
       resolve()
     })
   })))
+  return true
 }
 
 if (isLoggedIn()) {
