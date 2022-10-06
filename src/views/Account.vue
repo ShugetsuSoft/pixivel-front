@@ -159,11 +159,7 @@
         <Bookmark />
       </section>
       <section v-else-if="tabNow==4">
-        <!--<Follow />-->
-        <div class="notification">
-          由于可能的关注模块与收藏模块冲突，目前我们暂时关闭关注功能，以防止进一步的收藏清空症状。
-          请放心，已经关注的数据仍在。
-        </div>
+        <Follow />
       </section>
       <section v-else-if="tabNow==5">
         <History />
@@ -208,7 +204,7 @@ import storage from "store2";
 import Login from '@/components/login'
 import History from '@/components/history'
 import Bookmark from '@/components/bookmark'
-//import Follow from '@/components/follow'
+import Follow from '@/components/follow'
 
 const AnnounceKey = "announce";
 
@@ -218,7 +214,7 @@ export default {
     Login,
     History,
     Bookmark,
-    //Follow
+    Follow
   },
   data() {
     return {
