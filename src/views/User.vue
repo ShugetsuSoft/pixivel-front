@@ -24,8 +24,8 @@
             position="is-centered"
           ></b-skeleton>
         </h1>
-        <div class="follow-container" v-if="islogin & user">
-          <Follow :user="user"/>
+        <div class="follow-container" v-if="islogin">
+          <Follow :user="user" v-if="user"/>
         </div>
         <hr />
         <p class="subtitle is-6 bio-container break-raw-text">
