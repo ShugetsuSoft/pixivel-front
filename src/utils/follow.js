@@ -131,12 +131,12 @@ export async function syncFollow() {
     return true
   }
 
-  await db[FOLLOW_DATABASE_NAME].clear()
-  await Promise.all(remoteData.getUsersList().map(i => new Promise(resolve => {
-    let user = i.toObject()
-    db[FOLLOW_DATABASE_NAME].add(user).then(() => {
-      resolve()
-    })
-  })))
+  let usersList = remoteData.getUsersList().map(i => i.toObject())
+
+  await db.transaction("rw", db[FOLLOW_DATABASE_NAME],async ()=>{
+    await db[FOLLOW_DATABASE_NAME].clear()
+    await db[FOLLOW_DATABASE_NAME].bulkPut(usersList)
+  })
+
   return true
 }

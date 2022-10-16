@@ -133,12 +133,11 @@ export async function syncBookMark() {
     return true
   }
 
-  await db[BOOKMARK_DATABASE_NAME].clear()
-  await Promise.all(remoteData.getIllustsList().map(i => new Promise(resolve => {
-    let illust = i.toObject()
-    db[BOOKMARK_DATABASE_NAME].add(illust).then(() => {
-      resolve()
-    })
-  })))
+  let illustsList = remoteData.getIllustsList().map(i => i.toObject())
+
+  await db.transaction("rw", db[BOOKMARK_DATABASE_NAME],async ()=>{
+    await db[BOOKMARK_DATABASE_NAME].clear()
+    await db[BOOKMARK_DATABASE_NAME].bulkPut(illustsList)
+  })
   return true
 }

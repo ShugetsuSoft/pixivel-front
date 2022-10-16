@@ -238,7 +238,7 @@ export default {
         {
           name: "墨影",
           ava: "https://doc.kmf.com/ke-feedback/2022/09/01/15/47/25/20220901154722.png",
-          desc: "管理，同时也是 NekoNya 编辑，同时也是可食用猪猪（大大雾）",
+          desc: "管理，NekoNya 编辑，可食用猪猪（大大雾）",
           link: "https://space.bilibili.com/36999062/"
         },
         {

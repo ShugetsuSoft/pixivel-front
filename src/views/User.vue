@@ -24,7 +24,7 @@
             position="is-centered"
           ></b-skeleton>
         </h1>
-        <div class="follow-container" v-if="user">
+        <div class="follow-container" v-if="islogin & user">
           <Follow :user="user"/>
         </div>
         <hr />
@@ -67,6 +67,7 @@ import WaterFall from "@/components/waterfall";
 import LoadImg from "@/components/load_img.vue";
 import LongLoadingBadage from "@/components/longloading_badage";
 import Follow from '@/components/follow_button'
+import { isLoggedIn } from "@/utils/account";
 
 export default {
   name: "User",
@@ -84,6 +85,7 @@ export default {
       user: null,
       userIllusts: [],
       illustsPage: 0,
+      islogin: isLoggedIn(),
     };
   },
   created() {
