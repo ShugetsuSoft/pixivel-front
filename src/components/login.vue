@@ -188,6 +188,18 @@ export default {
           }
           this.$refs.captcha.execute()
           break
+        case 2:
+          info = validate.single(this.forms.username, {presence: true, email: true})
+          if (info) {
+            info = validate.single(this.forms.username, {presence: true, format: { pattern: "^[a-zA-Z0-9]+$" }})
+            if (info) {
+              this.notify.username = "格式不正确"
+              this.loading = false
+              break
+            }
+          }
+          this.$refs.captcha.execute()
+          break
       }
     },
     captchaResolve(token) {
