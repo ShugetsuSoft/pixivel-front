@@ -64,6 +64,19 @@
           <a @click="mode=0">登录</a> <a @click="mode=2">重设密码</a>
         </div>
       </template>
+      <template v-if="mode==2">
+        <b-field label="用户名或邮箱" :message="notify.username" :type="notify.username.length > 0 ? 'is-danger' : ''">
+          <b-input
+            v-model="forms.username"
+            type="text"
+            placeholder="用户名">
+          </b-input>
+        </b-field>
+
+        <div class="tips">
+          <a @click="mode=0">登录</a> <a @click="mode=1">注册</a>
+        </div>
+      </template>
       <VueHcaptcha :sitekey="siteKey" v-on:verify="captchaResolve" size="invisible" ref="captcha"></VueHcaptcha>
     </section>
     <footer class="modal-card-foot" style="justify-content: flex-end;">
@@ -185,6 +198,9 @@ export default {
         case 1:
           this.handleRegister(token)
           break
+        case 2:
+          this.handleReset(token)
+          break
       }
     },
     handleLogin(token) {
@@ -234,6 +250,37 @@ export default {
       this.axios.post(CONFIG.AUTHUGETSU_API + "user/register", qs.stringify(data)).then(() => {
         this.$buefy.toast.open({
           message: '注册成功！请查收您的邮件~',
+          duration: 10000,
+          type: 'is-success'
+        })
+        this.loading = false
+        this.mode = 0
+      }).catch(e => {
+        this.$buefy.notification.open({
+          duration: 5000,
+          message: e.response.data.err,
+          type: "is-danger",
+        })
+        this.loading = false
+      })
+    },
+    handleReset(token) {
+      let isEmail = true
+      let info = validate.single(this.forms.username, {presence: true, email: true})
+      if (info) {
+        isEmail = false
+      }
+      const data = {
+        "h-captcha-response": token,
+      }
+      if (isEmail) {
+        data["email"] = this.forms.username
+      } else {
+        data["username"] = this.forms.username
+      }
+      this.axios.post(CONFIG.AUTHUGETSU_API + "user/reset", qs.stringify(data)).then(() => {
+        this.$buefy.toast.open({
+          message: '重设密码请求已经发送到邮箱！请查收您的邮件~',
           duration: 10000,
           type: 'is-success'
         })
