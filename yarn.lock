@@ -2967,7 +2967,7 @@
   "resolved" "https://registry.npmjs.org/core-js/-/core-js-2.6.12.tgz"
   "version" "2.6.12"
 
-"core-js@^3.19.2", "core-js@^3.6.5":
+"core-js@^3.21.1", "core-js@^3.6.5":
   "integrity" "sha512-FRq5b/VMrWlrmCzwRrpDYNxyHP9BcAZC+xHJaqTgIE5091ZV1NTmyh0sGOg5XqpnHvR0svdy0sv1gWA1zmhxig=="
   "resolved" "https://registry.npmjs.org/core-js/-/core-js-3.21.1.tgz"
   "version" "3.21.1"
@@ -9001,11 +9001,11 @@
   "version" "1.9.1"
 
 "vue-virtual-masonry@^1.2.2":
-  "integrity" "sha512-YHeEingVyGcHZMZORhbRtaOampKd4HG9wXe7s1UU0I3b9DlKjbnWAbH1VB7t5LSO+bwUjcaoaOvkwRAPbX1Xiw=="
-  "resolved" "https://registry.npmjs.org/vue-virtual-masonry/-/vue-virtual-masonry-1.2.6.tgz"
-  "version" "1.2.6"
+  "integrity" "sha512-5RyyOlbsQ/vtT6M4o5hJTHcl7N4YWH/z9V+aN0MssTX8oq0pI9COK3eaLPXKuG+oFU81Jl3gK3zwNnTOylDIWg=="
+  "resolved" "https://registry.npmjs.org/vue-virtual-masonry/-/vue-virtual-masonry-1.2.7.tgz"
+  "version" "1.2.7"
   dependencies:
-    "core-js" "^3.19.2"
+    "core-js" "^3.21.1"
     "vue" "^2.6.14"
 
 "vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.5.17", "vue@^2.6.10", "vue@^2.6.11", "vue@^2.6.14", "vue@^3.0.0 || ^2.0.0":
