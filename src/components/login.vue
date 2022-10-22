@@ -77,7 +77,7 @@
           <a @click="mode=0">登录</a> <a @click="mode=1">注册</a>
         </div>
       </template>
-      <div id="m-captcha" data-sitekey="3" data-invisible="true"></div>
+      <div id="m-captcha" data-sitekey="4" data-invisible="true"></div>
     </section>
     <footer class="modal-card-foot" style="justify-content: flex-end;">
       <b-button

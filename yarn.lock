@@ -966,11 +966,6 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hcaptcha/vue-hcaptcha@^0.3.2":
-  "integrity" "sha512-JiJsAJh+fSe+uf9N3ek7CKzX/r79+hx+rMPch+e2/h9+Ei3VyJtb2Dgk1DhG/dyUdrooPIzkNMr6gfo75Cn22g=="
-  "resolved" "https://registry.npmjs.org/@hcaptcha/vue-hcaptcha/-/vue-hcaptcha-0.3.2.tgz"
-  "version" "0.3.2"
-
 "@iconscout/unicons@^4.0.1":
   "integrity" "sha512-uMyaHfzfrc4Wd+n0EGsrSGqW/YB/7gZYro4fKhK+YjrG5GWn2bag+5Fj2yqnhjj0Wdc3nHQM6i6rjM7B5zNY3Q=="
   "resolved" "https://registry.npmjs.org/@iconscout/unicons/-/unicons-4.0.1.tgz"
