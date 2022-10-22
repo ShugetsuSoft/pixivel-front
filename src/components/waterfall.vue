@@ -101,10 +101,10 @@ export default {
       let illusts = this.illusts.filter((item) => {
         return item.sanity < sanity;
       });
-      if (this.showAd !== -1) {
-        illusts.splice(illusts.length - this.showAd, 0, {
+      if (this.showAd !== -1 && illusts.length > this.showAd) {
+        illusts.splice(this.showAd, 0, {
           type: -1,
-          height: 439,
+          height: 259,
           width: 311,
         })
       }
