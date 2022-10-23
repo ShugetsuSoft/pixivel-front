@@ -1,5 +1,5 @@
 <template>
-  <b-button :type="{'is-primary': !isFollowed, 'is-danger': isFollowed}" size="is-small" inverted outlined @click.native="onclick">关注!</b-button>
+  <b-button :type="{'is-primary': !isFollowed, 'is-danger': isFollowed}" size="is-small" @click.native="onclick">{{ isFollowed ? "已经关注" : "关注!" }}</b-button>
 </template>
 
 <script>

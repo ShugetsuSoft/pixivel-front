@@ -139,7 +139,7 @@
             >
               <div class="buttons is-centered">
                 <div class="like-container" v-if="islogin">
-                  <Like :illust="this.illust" />
+                  <Like :illust="illust" />
                 </div>
                 <b-button type="is-primary" inverted @click="saveDirect">{{
                   imgprogress == 100 ? "保存" : parseInt(imgprogress) + "%"
@@ -151,6 +151,7 @@
                   v-if="illust.pageCount > 1"
                   @click="saveDirectAll"
                   >保存所有</b-button>
+                <ShareButton :type="0" :id="illust.id" :info="illust.title"/>
               </div>
             </div>
           </div>
@@ -193,6 +194,7 @@ import RouterA from "@/components/router_a";
 import Like from '@/components/like_heart'
 import { addHistory } from '@/utils/history'
 import { isLoggedIn } from "@/utils/account";
+import ShareButton from '@/components/share_button'
 
 export default {
   name: "Detail",
@@ -203,6 +205,7 @@ export default {
     HScroll,
     RouterA,
     Like,
+    ShareButton
   },
   data: () => ({
     id: 0,
@@ -556,5 +559,7 @@ export default {
   margin-bottom: 0.5rem;
   background: #fff;
   border-radius: 10px;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }
 </style>

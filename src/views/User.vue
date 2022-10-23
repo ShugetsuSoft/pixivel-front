@@ -24,8 +24,11 @@
             position="is-centered"
           ></b-skeleton>
         </h1>
-        <div class="follow-container" v-if="islogin">
-          <Follow :user="user" v-if="user"/>
+        <div class="button-container">
+          <template v-if="islogin">
+            <Follow :user="user" v-if="user"/>
+          </template>
+          <ShareButton :type="1" :id="user.id" style="margin-left: 10px;" v-if="user" :info="user.name"/>
         </div>
         <hr />
         <p class="subtitle is-6 bio-container break-raw-text">
@@ -68,6 +71,7 @@ import LoadImg from "@/components/load_img.vue";
 import LongLoadingBadage from "@/components/longloading_badage";
 import Follow from '@/components/follow_button'
 import { isLoggedIn } from "@/utils/account";
+import ShareButton from '@/components/share_button'
 
 export default {
   name: "User",
@@ -75,7 +79,8 @@ export default {
     WaterFall,
     LoadImg,
     LongLoadingBadage,
-    Follow
+    Follow,
+    ShareButton
   },
   data() {
     return {
@@ -213,8 +218,13 @@ export default {
     }
   }
 
-  .follow-container {
-    text-align: center;
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
   }
 
   .bio-container {

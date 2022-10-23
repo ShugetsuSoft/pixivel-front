@@ -2673,6 +2673,15 @@
   "resolved" "https://registry.npm.taobao.org/cli-width/download/cli-width-3.0.0.tgz"
   "version" "3.0.0"
 
+"clipboard@^2.0.11":
+  "integrity" "sha512-C+0bbOqkezLIsmWSvlsXS0Q0bmkugu7jcfMIACB+RDEntIzQIkdr148we28AfSloQLRdZlYL/QYyrq05j/3Faw=="
+  "resolved" "https://registry.npmjs.org/clipboard/-/clipboard-2.0.11.tgz"
+  "version" "2.0.11"
+  dependencies:
+    "good-listener" "^1.2.2"
+    "select" "^1.1.2"
+    "tiny-emitter" "^2.0.0"
+
 "clipboardy@^2.3.0":
   "integrity" "sha1-PCkDZQxo5GqRs4iYW8J3QofbopA="
   "resolved" "https://registry.npm.taobao.org/clipboardy/download/clipboardy-2.3.0.tgz"
@@ -3439,6 +3448,11 @@
   "integrity" "sha1-3zrhmayt+31ECqrgsp4icrJOxhk="
   "resolved" "https://registry.npm.taobao.org/delayed-stream/download/delayed-stream-1.0.0.tgz"
   "version" "1.0.0"
+
+"delegate@^3.1.2":
+  "integrity" "sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw=="
+  "resolved" "https://registry.npmjs.org/delegate/-/delegate-3.2.0.tgz"
+  "version" "3.2.0"
 
 "depd@~1.1.2":
   "integrity" "sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak="
@@ -4564,6 +4578,13 @@
     "ignore" "^4.0.3"
     "pify" "^4.0.1"
     "slash" "^2.0.0"
+
+"good-listener@^1.2.2":
+  "integrity" "sha512-goW1b+d9q/HIwbVYZzZ6SsTr4IgE+WA44A0GmPIQstuOrgsFcT7VEJ48nmr9GaRtNu0XTKacFLGnBPAM6Afouw=="
+  "resolved" "https://registry.npmjs.org/good-listener/-/good-listener-1.2.2.tgz"
+  "version" "1.2.2"
+  dependencies:
+    "delegate" "^3.1.2"
 
 "google-protobuf@^3.21.0":
   "integrity" "sha512-byR7MBTK4tZ5PZEb+u5ZTzpt4SfrTxv5682MjPlHN16XeqgZE2/8HOIWeiXe8JKnT9OVbtBGhbq8mtvkK8cd5g=="
@@ -7714,6 +7735,11 @@
   "resolved" "https://registry.npm.taobao.org/select-hose/download/select-hose-2.0.0.tgz"
   "version" "2.0.0"
 
+"select@^1.1.2":
+  "integrity" "sha512-OwpTSOfy6xSs1+pwcNrv0RBMOzI39Lp3qQKUTPVVPRjCdNa5JH/oPRiqsesIskK8TVgmRiHwO4KXlV2Li9dANA=="
+  "resolved" "https://registry.npmjs.org/select/-/select-1.1.2.tgz"
+  "version" "1.1.2"
+
 "selfsigned@^1.10.8":
   "integrity" "sha512-lkjaiAye+wBZDCBsu5BGi0XiLRxeUlsGod5ZP924CRSEoGuZAw/f7y9RKu28rwTfiHVhdavhB0qH0INV6P1lEA=="
   "resolved" "https://registry.npmjs.org/selfsigned/-/selfsigned-1.10.14.tgz"
@@ -8488,6 +8514,11 @@
   "integrity" "sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q="
   "resolved" "https://registry.npm.taobao.org/timsort/download/timsort-0.3.0.tgz"
   "version" "0.3.0"
+
+"tiny-emitter@^2.0.0":
+  "integrity" "sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q=="
+  "resolved" "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
+  "version" "2.1.0"
 
 "tmp@^0.0.33":
   "integrity" "sha1-bTQzWIl2jSGyvNoKonfO07G/rfk="
