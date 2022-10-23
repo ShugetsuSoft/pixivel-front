@@ -130,16 +130,21 @@ export default {
       this.refresh(true);
       this.$router.push({
         name: "Search",
-        query: { keyword: this.keyword, mode: this.mode },
+        query: { keyword: this.keyword, mode: this.mode, features: this.queryFeatures.join(",") },
       });
     },
     queryFeatures() {
       this.refresh(false);
+      this.$router.push({
+        name: "Search",
+        query: { keyword: this.keyword, mode: this.mode, features: this.queryFeatures.join(",") },
+      });
     },
     $route() {
       this.keyword = this.$route.query.keyword;
       this.finalKeyword = this.$route.query.keyword;
       this.mode = this.$route.query.mode;
+      this.queryFeatures = this.$route.query.features.split(",");
       if (!this.mode) this.mode = "illust";
     },
   },
@@ -148,6 +153,7 @@ export default {
     if (!this.mode) this.mode = "illust";
     this.keyword = this.$route.query.keyword;
     this.finalKeyword = this.$route.query.keyword;
+    this.queryFeatures = this.$route.query.features.split(",");
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.keyword != "") {
         this.suggest();
@@ -173,6 +179,7 @@ export default {
       if (total) {
         this.finalKeyword = this.$route.query.keyword;
         this.keyword = this.$route.query.keyword;
+        this.queryFeatures = this.$route.query.features.split(",");
       }
       this.$store.commit("CancelRequests/clearCancelToken");
     },
@@ -180,7 +187,7 @@ export default {
       if (keywd) {
         this.$router.push({
           name: "Search",
-          query: { keyword: keywd, mode: this.mode },
+          query: { keyword: keywd, mode: this.mode, features: this.queryFeatures.join(",") },
         });
       }
     },
@@ -188,7 +195,7 @@ export default {
       if (this.keyword != this.$route.query.keyword) {
         this.$router.push({
           name: "Search",
-          query: { keyword: this.keyword, mode: this.mode },
+          query: { keyword: this.keyword, mode: this.mode, features: this.queryFeatures.join(",") },
         });
       }
     },
