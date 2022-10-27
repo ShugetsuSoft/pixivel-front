@@ -160,19 +160,37 @@ export default {
   watch: {
     mode() {
       this.refresh();
+      this.$router.push({
+        name: "Rank",
+        query: { mode: this.mode, content: this.content },
+      });
     },
     content() {
       this.mode = "daily";
       this.refresh();
+      this.$router.push({
+        name: "Rank",
+        query: { mode: this.mode, content: this.content },
+      });
     },
     date() {
       this.refresh();
     },
+    $route() {
+      this.mode = this.$route.query.mode;
+      this.content = this.$route.query.content;
+    }
   },
   mounted() {
     setTimeout(() => {
       this.$refs.infload.attemptLoad();
     }, 500);
+  },
+  created() {
+    this.mode = this.$route.query.mode;
+    this.content = this.$route.query.content;
+    if (!this.mode) this.mode = "daily";
+    if (!this.content) this.content = "all";
   },
   methods: {
     refresh() {

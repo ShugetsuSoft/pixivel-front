@@ -26,9 +26,15 @@
         </h1>
         <div class="button-container">
           <template v-if="islogin">
-            <Follow :user="user" v-if="user"/>
+            <Follow :user="user" v-if="user" />
           </template>
-          <ShareButton :type="1" :id="user.id" style="margin-left: 10px;" v-if="user" :info="user.name"/>
+          <ShareButton
+            :type="1"
+            :id="user.id"
+            style="margin-left: 10px"
+            v-if="user"
+            :info="user.name"
+          />
         </div>
         <hr />
         <p class="subtitle is-6 bio-container break-raw-text">
@@ -69,9 +75,9 @@ import CONFIG from "@/config.json";
 import WaterFall from "@/components/waterfall";
 import LoadImg from "@/components/load_img.vue";
 import LongLoadingBadage from "@/components/longloading_badage";
-import Follow from '@/components/follow_button'
+import Follow from "@/components/follow_button";
 import { isLoggedIn } from "@/utils/account";
-import ShareButton from '@/components/share_button'
+import ShareButton from "@/components/share_button";
 
 export default {
   name: "User",
@@ -80,7 +86,7 @@ export default {
     LoadImg,
     LongLoadingBadage,
     Follow,
-    ShareButton
+    ShareButton,
   },
   data() {
     return {
@@ -98,20 +104,40 @@ export default {
     this.loading = this.$buefy.loading.open();
   },
   mounted() {
-    this.axios
-      .get(CONFIG.API_HOST + `user/${this.id}`)
-      .then((response) => {
-        if (response.data.error) {
-          this.error(response.data.message);
-          return;
-        }
-        this.user = response.data.data;
-        this.loading.close();
-      })
-      .catch((error) => {
-        this.error(error.response.data.message);
-        this.loading.close();
-      });
+    let cached = this.$store.getters["Cache/get"](
+      {
+        type: "user",
+        id: this.id,
+      },
+      null
+    );
+    if (cached) {
+      this.user = cached;
+      this.loading.close();
+    } else {
+      this.axios
+        .get(CONFIG.API_HOST + `user/${this.id}`)
+        .then((response) => {
+          if (response.data.error) {
+            this.error(response.data.message);
+            return;
+          }
+          this.user = response.data.data;
+          this.loading.close();
+          this.$store.commit("Cache/cacheState", {
+            key: {
+              type: "user",
+              id: this.id,
+            },
+            val: this.user,
+          });
+        })
+        .catch((error) => {
+          this.error(error.response.data.message);
+          this.loading.close();
+        });
+    }
+    this.illustsInit();
   },
   methods: {
     error(message) {
@@ -121,6 +147,19 @@ export default {
         type: "is-danger",
       });
       this.errorMsg = message;
+    },
+    illustsInit() {
+      let cachedUesrIllusts = this.$store.getters["Cache/get"](
+        {
+          type: "userIllust",
+          id: this.id,
+        },
+        null
+      );
+      if (cachedUesrIllusts) {
+        this.illustsPage = cachedUesrIllusts["page"];
+        this.userIllusts = cachedUesrIllusts["illusts"];
+      }
     },
     illustsPageNext($state) {
       this.$refs.longloading_badage.start();
@@ -145,6 +184,17 @@ export default {
           );
           this.illustsPage += 1;
           $state.loaded();
+          this.$store.commit("Cache/cacheState", {
+            key: {
+              type: "userIllust",
+              id: this.id,
+            },
+            val: {
+              page: this.illustsPage,
+              illusts: this.userIllusts,
+              showloading: response.data.data.has_next,
+            },
+          });
         })
         .catch((error) => {
           this.error(error);

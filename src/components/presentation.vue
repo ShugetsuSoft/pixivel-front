@@ -41,10 +41,10 @@ export default {
     "initial-width": Number,
     "initial-height": Number,
     "ugoira-frames": Array,
-    "MaxPercent": {
+    MaxPercent: {
       default: 0.94,
-      type: Number
-    }
+      type: Number,
+    },
   },
   watch: {
     ugoiraFrames: "loadUgoira",
@@ -53,6 +53,7 @@ export default {
     windowHeight: "resizeImg",
     imgWidth: "resizeImg",
     imgHeight: "resizeImg",
+    id: "init",
   },
   data() {
     return {
@@ -75,15 +76,7 @@ export default {
     };
   },
   created() {
-    let smallImgUrl = "";
-    if (this.pageCount == -1) {
-      smallImgUrl = this.calcImg(this.id, -1, this.image, "small");
-    } else {
-      smallImgUrl = this.calcImg(this.id, 0, this.image, "small");
-    }
-    if (this.$store.getters["Pic/hasCached"](smallImgUrl)) {
-      this.CurrentImgUrl = smallImgUrl;
-    }
+    this.createInit();
   },
   mounted() {
     var parentNode = this.$refs.presentation.parentNode;
@@ -93,10 +86,7 @@ export default {
     });
     this.parentObserver.observe(parentNode);
     window.addEventListener("resize", this.windowResized, false);
-    this.windowResized();
-    if (this.pageCount != -1) {
-      this.preLoad();
-    }
+    this.mountInit();
   },
   beforeDestroy() {
     if (this.parentObserver) {
@@ -104,17 +94,50 @@ export default {
       this.parentObserver = null;
     }
     window.removeEventListener("resize", this.windowResized, false);
-    for (let i in this.loadedList) {
-      URL.revokeObjectURL(i);
-    }
-    if (Object.keys(this.ugoiraImages).length > 0) {
-      for (let i in this.ugoiraImages) {
-        URL.revokeObjectURL(this.ugoiraImages[i]);
-      }
-    }
+    this.destroy();
   },
   computed: {},
   methods: {
+    init() {
+      this.destroy();
+      this.createInit();
+      this.mountInit();
+    },
+    createInit() {
+      this.CurrentImgUrl =
+        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+      this.CurrentPage = 1;
+      this.urlList = [];
+      this.loadedList = [];
+      this.ugoiraImages = {};
+      this.ugoiraPlaying = false;
+
+      let smallImgUrl = "";
+      if (this.pageCount == -1) {
+        smallImgUrl = this.calcImg(this.id, -1, this.image, "small");
+      } else {
+        smallImgUrl = this.calcImg(this.id, 0, this.image, "small");
+      }
+      if (this.$store.getters["Pic/hasCached"](smallImgUrl)) {
+        this.CurrentImgUrl = smallImgUrl;
+      }
+    },
+    destroy() {
+      for (let i in this.loadedList) {
+        URL.revokeObjectURL(i);
+      }
+      if (Object.keys(this.ugoiraImages).length > 0) {
+        for (let i in this.ugoiraImages) {
+          URL.revokeObjectURL(this.ugoiraImages[i]);
+        }
+      }
+    },
+    mountInit() {
+      this.windowResized();
+      if (this.pageCount != -1) {
+        this.preLoad();
+      }
+    },
     preLoad() {
       this.urlList = [];
       for (let i = 0; i < this.pageCount; ++i) {
@@ -124,7 +147,7 @@ export default {
       this.switchPage();
     },
     switchPage() {
-      var url = this.urlList[this.CurrentPage - 1];
+      let url = this.urlList[this.CurrentPage - 1];
       let loaded = this.loadedList[this.CurrentPage - 1];
       if (this.CurrentPage == 1) {
         this.imgWidth = this.initialWidth;
@@ -142,6 +165,7 @@ export default {
         this.CurrentImgUrl = loaded;
         return;
       }
+
       this.loading = true;
       this.$emit("progress", 0);
       this.axios
@@ -176,6 +200,9 @@ export default {
         });
     },
     loadUgoira() {
+      if (this.ugoiraFrames.length < 1) {
+        return;
+      }
       this.loading = true;
       this.$emit("progress", 0);
       let url = this.calcUgoira(this.id, this.image, "original");

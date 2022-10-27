@@ -150,8 +150,9 @@
                   outlined
                   v-if="illust.pageCount > 1"
                   @click="saveDirectAll"
-                  >保存所有</b-button>
-                <ShareButton :type="0" :id="illust.id" :info="illust.title"/>
+                  >保存所有</b-button
+                >
+                <ShareButton :type="0" :id="illust.id" :info="illust.title" />
               </div>
             </div>
           </div>
@@ -191,10 +192,10 @@ import VClamp from "vue-clamp";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import RouterA from "@/components/router_a";
-import Like from '@/components/like_heart'
-import { addHistory } from '@/utils/history'
+import Like from "@/components/like_heart";
+import { addHistory } from "@/utils/history";
 import { isLoggedIn } from "@/utils/account";
-import ShareButton from '@/components/share_button'
+import ShareButton from "@/components/share_button";
 
 export default {
   name: "Detail",
@@ -205,7 +206,7 @@ export default {
     HScroll,
     RouterA,
     Like,
-    ShareButton
+    ShareButton,
   },
   data: () => ({
     id: 0,
@@ -225,27 +226,55 @@ export default {
   watch: {
     $route() {
       this.id = this.$route.params.id;
-      this.loading = this.$buefy.loading.open();
-      this.illust = null;
+      this.$set(
+        this,
+        "illust",
+        this.$store.getters["Cache/get"](
+          {
+            type: "illust",
+            id: this.id,
+          },
+          null
+        )
+      );
+      if (!this.illust) {
+        this.load();
+      }
       this.userIllusts = [];
       this.ugoiraFrames = [];
       this.userIllustsPage = 0;
       this.userIllustsLoading = false;
-      this.load();
       this.refreshRecommend();
     },
     illust() {
       if (this.illust) {
-        addHistory(this.illust)
+        this.$store.commit("Cache/cacheState", {
+          key: {
+            type: "illust",
+            id: this.id,
+          },
+          val: this.illust,
+        });
+        addHistory(this.illust);
+        this.loadUserIllusts(true);
+        this.recommendIllustsInit();
       }
-    }
+    },
   },
   created() {
     this.id = this.$route.params.id;
-    this.loading = this.$buefy.loading.open();
+    this.illust = this.$store.getters["Cache/get"](
+      {
+        type: "illust",
+        id: this.id,
+      },
+      null
+    );
   },
   mounted() {
-    this.load();
+    if (!this.illust) {
+      this.load();
+    }
     this.refreshRecommend();
   },
   beforeDestroy() {
@@ -283,6 +312,7 @@ export default {
         });
     },
     load(force) {
+      this.loading = this.$buefy.loading.open();
       let params = {};
       if (force) params["forcefetch"] = "true";
       this.axios
@@ -307,9 +337,29 @@ export default {
           this.loading.close();
         });
     },
-    loadUserIllusts() {
+    loadUserIllusts(tryloadcache = false) {
       if (this.userIllustsLoading == true) return;
       this.userIllustsLoading = true;
+      if (tryloadcache) {
+        let cachedUesrIllusts = this.$store.getters["Cache/get"](
+          {
+            type: "userIllust",
+            id: this.illust.user.id,
+          },
+          null
+        );
+        if (cachedUesrIllusts) {
+          this.userIllustsPage = cachedUesrIllusts["page"];
+          this.userIllusts = cachedUesrIllusts["illusts"];
+          this.userIllustsShowLoading = cachedUesrIllusts["showloading"];
+          this.$nextTick(() => {
+            this.findIllustUserPos();
+          });
+          this.userIllustsLoading = false;
+          return;
+        }
+      }
+
       this.axios
         .get(CONFIG.API_HOST + `user/${this.illust.user.id}/illusts`, {
           params: {
@@ -329,26 +379,22 @@ export default {
           );
           if (this.userIllustsPage == 0) {
             this.$nextTick(() => {
-              let sanity = this.$store.getters["Settings/get"](
-                "global.sanity_filter"
-              );
-              let userIllusts = this.userIllusts.filter((item) => {
-                return item.sanity < sanity;
-              });
-              let targetIndex = this.Lodash.findIndex(userIllusts, (item) => {
-                return item.id == this.id;
-              });
-              let leftDis = targetIndex * 184;
-              if (leftDis > this.$refs.userIllusts.$el.clientWidth / 2 - 92) {
-                leftDis -= this.$refs.userIllusts.$el.clientWidth / 2 - 92;
-              }
-              this.$refs.userIllusts.$el.scrollTo({
-                left: leftDis,
-              });
+              this.findIllustUserPos();
             });
           }
           this.userIllustsPage += 1;
           this.userIllustsLoading = false;
+          this.$store.commit("Cache/cacheState", {
+            key: {
+              type: "userIllust",
+              id: this.illust.user.id,
+            },
+            val: {
+              page: this.userIllustsPage,
+              illusts: this.userIllusts,
+              showloading: this.userIllustsShowLoading,
+            },
+          });
         })
         .catch((error) => {
           this.userIllustsLoading = false;
@@ -359,6 +405,35 @@ export default {
       this.recommendIllusts = [];
       this.recommendIllustsPage = 0;
       this.recommendIllustsIdentifier += 1;
+    },
+    findIllustUserPos() {
+      let sanity = this.$store.getters["Settings/get"]("global.sanity_filter");
+      let userIllusts = this.userIllusts.filter((item) => {
+        return item.sanity < sanity;
+      });
+      let targetIndex = this.Lodash.findIndex(userIllusts, (item) => {
+        return item.id == this.id;
+      });
+      let leftDis = targetIndex * 184;
+      if (leftDis > this.$refs.userIllusts.$el.clientWidth / 2 - 92) {
+        leftDis -= this.$refs.userIllusts.$el.clientWidth / 2 - 92;
+      }
+      this.$refs.userIllusts.$el.scrollTo({
+        left: leftDis,
+      });
+    },
+    recommendIllustsInit() {
+      let cachedRecommendIllusts = this.$store.getters["Cache/get"](
+        {
+          type: "recommendIllust",
+          id: this.id,
+        },
+        null
+      );
+      if (cachedRecommendIllusts) {
+        this.recommendIllustsPage = cachedRecommendIllusts["page"];
+        this.recommendIllusts = cachedRecommendIllusts["illusts"];
+      }
     },
     recommendIllustsPageNext($state) {
       this.axios
@@ -389,6 +464,16 @@ export default {
           );
           this.recommendIllustsPage += 1;
           $state.loaded();
+          this.$store.commit("Cache/cacheState", {
+            key: {
+              type: "recommendIllust",
+              id: this.id,
+            },
+            val: {
+              page: this.recommendIllustsPage,
+              illusts: this.recommendIllusts,
+            },
+          });
         })
         .catch((error) => {
           this.error(error.response.data.message);
