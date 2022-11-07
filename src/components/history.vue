@@ -3,7 +3,9 @@
     <div class="notification is-info history-info">
       历史记录个数: {{ historyCount }}
       <div class="buttons">
-        <b-button type="is-primary" inverted outlined @click="clearHistory">删除历史记录</b-button>
+        <b-button type="is-primary" inverted outlined @click="clearHistory"
+          >删除历史记录</b-button
+        >
       </div>
     </div>
     <WaterFall :illusts="history" :identifier="loadid" />
@@ -26,41 +28,41 @@ import WaterFall from "@/components/waterfall";
 export default {
   name: "History",
   components: {
-    WaterFall
+    WaterFall,
   },
   data() {
     return {
       history: [],
       loadid: +new Date(),
       historyPage: 0,
-      historyCount: 0
-    }
+      historyCount: 0,
+    };
   },
   async created() {
-    this.historyCount = await countHistory()
+    this.historyCount = await countHistory();
   },
   methods: {
     async clearHistory() {
-      await clearHistory()
-      this.historyCount = 0
-      this.historyPage = 0
-      this.history = []
+      await clearHistory();
+      this.historyCount = 0;
+      this.historyPage = 0;
+      this.history = [];
     },
     async nextPage($state) {
       try {
-        let loadedHistory = await getHistory(this.historyPage)
+        let loadedHistory = await getHistory(this.historyPage);
         if (loadedHistory.length < 1) {
-          $state.complete()
+          $state.complete();
         }
-        this.history = this.history.concat(loadedHistory)
-        this.historyPage += 1
-        $state.loaded()
+        this.history = this.history.concat(loadedHistory);
+        this.historyPage += 1;
+        $state.loaded();
       } catch (e) {
-       console.error(e)
-        $state.error()
+        console.error(e);
+        $state.error();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

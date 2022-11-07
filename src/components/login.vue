@@ -189,7 +189,7 @@ export default {
       if (!this.captchaToken) {
         // captcha token is empty
         this.$buefy.toast.open({
-          message: "",
+          message: "未完成验证码，请检查你的页面是否完成了加载。",
           duration: 10000,
           type: "is-success",
         });

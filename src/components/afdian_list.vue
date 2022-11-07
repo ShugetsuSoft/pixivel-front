@@ -1,10 +1,15 @@
 <template>
   <div class="columns set-list">
-    <div class="column is-half-desktop is-half-tablet hover-up" @click="jump('https://afdian.net/u/' + item.user.user_id)" v-for="(item, index) in list" :key="index">
+    <div
+      class="column is-half-desktop is-half-tablet hover-up"
+      @click="jump('https://afdian.net/u/' + item.user.user_id)"
+      v-for="(item, index) in list"
+      :key="index"
+    >
       <b-notification :closable="false" class="is-clickable">
         <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
           <figure class="image is-64x64 media-left">
-            <img class="is-rounded is-64x64 ava" :src="item.user.avatar">
+            <img class="is-rounded is-64x64 ava" :src="item.user.avatar" />
           </figure>
           <div class="content">
             <strong>{{ item.user.name }}</strong>
@@ -17,30 +22,30 @@
 </template>
 
 <script>
-import CONFIG from '@/config.json'
+import CONFIG from "@/config.json";
 
 export default {
   name: "AfdianList",
   data() {
     return {
       loading: true,
-      list: []
-    }
+      list: [],
+    };
   },
   mounted() {
-    this.fetchList()
+    this.fetchList();
   },
   methods: {
     fetchList() {
-      this.axios.get(CONFIG.AFDIAN_API).then(res => {
-        console.log(res.data)
-        this.list = res.data
-      })
+      this.axios.get(CONFIG.AFDIAN_API).then((res) => {
+        console.log(res.data);
+        this.list = res.data;
+      });
     },
-    jump(url){
-      window.open(url, "_blank")
-    }
-  }
+    jump(url) {
+      window.open(url, "_blank");
+    },
+  },
 };
 </script>
 

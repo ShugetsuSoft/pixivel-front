@@ -27,12 +27,18 @@
           </b-autocomplete>
         </b-navbar-item>
         <template v-if="isLoggedIn">
-          <b-navbar-item class="hide-on-computer has-text-centered" @click="$router.push({ name: 'Account' })">
+          <b-navbar-item
+            class="hide-on-computer has-text-centered"
+            @click="$router.push({ name: 'Account' })"
+          >
             <b-tag>{{ userInfo.username }}</b-tag> 账号
           </b-navbar-item>
         </template>
         <template v-else>
-          <b-navbar-item class="hide-on-computer has-text-centered" @click="showLoginPanel=true">
+          <b-navbar-item
+            class="hide-on-computer has-text-centered"
+            @click="showLoginPanel = true"
+          >
             登录或者注册
           </b-navbar-item>
         </template>
@@ -40,19 +46,34 @@
           <b-dropdown aria-role="list" position="is-bottom-left">
             <template #trigger>
               <p class="image is-64x64" role="button">
-                <img :src="isLoggedIn?userAvatar:defaultAvatar" class="user-ava is-rounded">
+                <img
+                  :src="isLoggedIn ? userAvatar : defaultAvatar"
+                  class="user-ava is-rounded"
+                />
               </p>
             </template>
             <template v-if="isLoggedIn">
-              <div class="dropdown-item"> <b-tag>{{ userInfo.username }}</b-tag> </div>
-              <b-dropdown-item @click="$router.push({ name: 'Account' })">账号</b-dropdown-item>
-              <b-dropdown-item @click="$router.push({ name: 'Account', hash: '#3' })">收藏</b-dropdown-item>
-              <b-dropdown-item @click="$router.push({ name: 'Account', hash: '#4' })">关注</b-dropdown-item>
+              <div class="dropdown-item">
+                <b-tag>{{ userInfo.username }}</b-tag>
+              </div>
+              <b-dropdown-item @click="$router.push({ name: 'Account' })"
+                >账号</b-dropdown-item
+              >
+              <b-dropdown-item
+                @click="$router.push({ name: 'Account', hash: '#3' })"
+                >收藏</b-dropdown-item
+              >
+              <b-dropdown-item
+                @click="$router.push({ name: 'Account', hash: '#4' })"
+                >关注</b-dropdown-item
+              >
               <b-dropdown-item @click="deleteToken">退出登录</b-dropdown-item>
             </template>
             <template v-else>
-              <div class="dropdown-item"> <b-tag>还没登录呀！</b-tag> </div>
-              <b-dropdown-item @click="showLoginPanel=true">登录或者注册</b-dropdown-item>
+              <div class="dropdown-item"><b-tag>还没登录呀！</b-tag></div>
+              <b-dropdown-item @click="showLoginPanel = true"
+                >登录或者注册</b-dropdown-item
+              >
             </template>
           </b-dropdown>
         </b-navbar-item>
@@ -117,9 +138,10 @@
       has-modal-card
       trap-focus
       :destroy-on-hide="true"
-      aria-modal>
+      aria-modal
+    >
       <template>
-        <Login @close="showLoginPanel=false"></Login>
+        <Login @close="showLoginPanel = false"></Login>
       </template>
     </b-modal>
   </section>
@@ -130,9 +152,9 @@ import CONFIG from "@/config.json";
 import WaterFall from "@/components/waterfall";
 import HScroll from "@/components/horizontal_scroll";
 import UserList from "@/components/user_list";
-import Login from '@/components/login'
+import Login from "@/components/login";
 import { getUserInfo, isLoggedIn, deleteToken } from "@/utils/account";
-import md5 from '@/utils/md5'
+import md5 from "@/utils/md5";
 
 export default {
   name: "Landing",
@@ -140,7 +162,7 @@ export default {
     WaterFall,
     HScroll,
     UserList,
-    Login
+    Login,
   },
   data() {
     return {
@@ -158,7 +180,7 @@ export default {
       sampleUsers: [],
       sampleUsersPage: 0,
       sampleUsersLoadFlag: true,
-      showLoginPanel: false
+      showLoginPanel: false,
     };
   },
   created() {
@@ -182,13 +204,13 @@ export default {
   mounted() {},
   computed: {
     isLoggedIn() {
-      return isLoggedIn()
+      return isLoggedIn();
     },
     userInfo() {
-      return getUserInfo()
+      return getUserInfo();
     },
     userAvatar() {
-      return CONFIG.GRAVATAR_PROXY + md5(this.userInfo.email)
+      return CONFIG.GRAVATAR_PROXY + md5(this.userInfo.email);
     },
   },
   methods: {
@@ -196,21 +218,21 @@ export default {
       this.$buefy.notification.open({
         duration: 5000,
         message: "功能还正在开发中...",
-        type: "is-info"
-      })
+        type: "is-info",
+      });
     },
     deleteToken() {
       this.$buefy.dialog.confirm({
-        title: '退出登录',
+        title: "退出登录",
         message: `确定要退出登录嘛?<br>退出登录后本地将无法访问你的数据，需要重新登录才可以`,
-        cancelText: '算了',
-        confirmText: '嗯',
-        type: 'is-success',
+        cancelText: "算了",
+        confirmText: "嗯",
+        type: "is-success",
         onConfirm: () => {
-          deleteToken()
-          this.$router.go(0)
-        }
-      })
+          deleteToken();
+          this.$router.go(0);
+        },
+      });
     },
     sampleIllustsPageNext($state) {
       let params = {
