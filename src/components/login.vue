@@ -367,6 +367,7 @@ export default {
         });
     },
     renderCaptcha() {
+      this.captchaToken = '';
       window.turnstile?.render("#turnstile", {
         sitekey: 'YOUR_SITE_KEY',
         callback: this.onCaptchaResponse,
@@ -379,9 +380,11 @@ export default {
     }
     onCaptchaExpired() {
       // if necessary, rerender captcha here
+      this.captchaToken = '';
     },
     onCaptchaFailed() {
       // if necessary, rerender captcha here
+      this.captchaToken = '';
     },
     toNotify(info) {
       for (const [key, value] of Object.entries(info)) {
