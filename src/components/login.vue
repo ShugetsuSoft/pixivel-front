@@ -183,14 +183,17 @@ export default {
     },
   },
   mounted() {
-    this.$refs.mcaptcha.setAttribute("data-sitekey", () => {
-      switch (window.location.hostname) {
-        case "pixivel.moe":
-          return 4;
-        case "pixivel.art":
-          return 5;
-      }
-    });
+    this.$refs.mcaptcha.setAttribute(
+      "data-sitekey",
+      (() => {
+        switch (window.location.hostname) {
+          case "pixivel.moe":
+            return 4;
+          case "pixivel.art":
+            return 5;
+        }
+      })()
+    );
     window.mcaptcha.init();
     window.mcaptcha.solve((token) => {
       this.captchaResolve(token);
