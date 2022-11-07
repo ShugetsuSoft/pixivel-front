@@ -377,7 +377,7 @@ export default {
     },
     onCaptchaResponse(res) {
       this.captchaToken = res;
-    }
+    },
     onCaptchaExpired() {
       // if necessary, rerender captcha here
       this.captchaToken = '';
