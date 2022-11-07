@@ -77,7 +77,12 @@
           >
           </b-input>
         </b-field>
-
+        <div id="m-captcha">
+          <cfturnstile
+            :sitekey="sitekey"
+            @verify="verify"
+          />
+        </div>
         <div class="tips">
           <a @click="mode = 0">登录</a> <a @click="mode = 2">重设密码</a>
         </div>
@@ -96,12 +101,7 @@
           <a @click="mode = 0">登录</a> <a @click="mode = 1">注册</a>
         </div>
       </template>
-      <div
-        id="m-captcha"
-        data-sitekey="4"
-        data-invisible="true"
-        ref="mcaptcha"
-      ></div>
+      <div id="turnstile"></div>
     </section>
     <footer class="modal-card-foot" style="justify-content: flex-end">
       <b-button label="关闭" @click="$emit('close')" />
@@ -133,13 +133,13 @@ validate.validators.password = function (value, options) {
 
 export default {
   name: "Login",
-  components: {},
   data() {
     return {
       mode: 0,
       titles: ["登录", "注册", "重设密码"],
       siteKey: CONFIG.CAPTCHA_SITEKEY,
       loading: false,
+      captchaToken: '',
       forms: {
         username: "",
         password: "",
@@ -183,30 +183,19 @@ export default {
     },
   },
   mounted() {
-    this.$refs.mcaptcha.setAttribute(
-      "data-sitekey",
-      (() => {
-        switch (window.location.hostname) {
-          case "pixivel.moe":
-            return 4;
-          case "pixivel.art":
-            return 5;
-        }
-      })()
-    );
-    window.mcaptcha.init();
-    window.mcaptcha.solve((token) => {
-      this.captchaResolve(token);
-    });
-  },
-  beforeDestroy() {
-    window.mcaptcha.destroy();
-    window.mcaptcha.solve((token) => {
-      console.log(token);
-    });
+    this.renderCaptcha();
   },
   methods: {
     handle() {
+      if (!this.captchaToken) {
+        // captcha token is empty
+        this.$buefy.toast.open({
+          message: "",
+          duration: 10000,
+          type: "is-success",
+        });
+        return;
+      }
       this.loading = true;
       let info;
       switch (this.mode) {
@@ -223,7 +212,7 @@ export default {
             if (info) {
               this.notify.username = "格式不正确";
               this.loading = false;
-              break;
+              return;
             }
           }
           info = validate.single(this.forms.password, {
@@ -233,18 +222,18 @@ export default {
           if (info) {
             this.notify.password = info[0];
             this.loading = false;
-            break;
+            return;
           }
-          window.mcaptcha.trigger();
+          this.handleLogin();
           break;
         case 1:
           info = validate.validate(this.forms, this.constraints.register);
           if (info) {
             this.toNotify(info);
             this.loading = false;
-            break;
+            return;
           }
-          window.mcaptcha.trigger();
+          this.handleRegister();
           break;
         case 2:
           info = validate.single(this.forms.username, {
@@ -259,27 +248,14 @@ export default {
             if (info) {
               this.notify.username = "格式不正确";
               this.loading = false;
-              break;
+              return;
             }
           }
-          window.mcaptcha.trigger();
+          this.handleReset();
           break;
       }
     },
-    captchaResolve(token) {
-      switch (this.mode) {
-        case 0:
-          this.handleLogin(token);
-          break;
-        case 1:
-          this.handleRegister(token);
-          break;
-        case 2:
-          this.handleReset(token);
-          break;
-      }
-    },
-    handleLogin(token) {
+    handleLogin() {
       let isEmail = true;
       let info = validate.single(this.forms.username, {
         presence: true,
@@ -289,7 +265,7 @@ export default {
         isEmail = false;
       }
       const data = {
-        "h-captcha-response": token,
+        "h-captcha-response": this.captchaToken,
         password: this.forms.password,
       };
       if (isEmail) {
@@ -322,9 +298,9 @@ export default {
           this.loading = false;
         });
     },
-    handleRegister(token) {
+    handleRegister() {
       const data = {
-        "h-captcha-response": token,
+        "h-captcha-response": this.captchaToken,
         username: this.forms.username,
         password: this.forms.password,
         email: this.forms.email,
@@ -349,7 +325,7 @@ export default {
           this.loading = false;
         });
     },
-    handleReset(token) {
+    handleReset() {
       let isEmail = true;
       let info = validate.single(this.forms.username, {
         presence: true,
@@ -359,7 +335,7 @@ export default {
         isEmail = false;
       }
       const data = {
-        "h-captcha-response": token,
+        "h-captcha-response": this.captchaToken,
       };
       if (isEmail) {
         data["email"] = this.forms.username;
@@ -385,6 +361,26 @@ export default {
           });
           this.loading = false;
         });
+    },
+    renderCaptcha() {
+      this.captchaToken = '';
+      window.turnstile?.render("#turnstile", {
+        sitekey: 'YOUR_SITE_KEY',
+        callback: this.onCaptchaResponse,
+        'expired-callback': this.onCaptchaExpired,
+        'error-callback': this.onCaptchaFailed,
+      });
+    },
+    onCaptchaResponse(res) {
+      this.captchaToken = res;
+    },
+    onCaptchaExpired() {
+      // if necessary, rerender captcha here
+      this.captchaToken = '';
+    },
+    onCaptchaFailed() {
+      // if necessary, rerender captcha here
+      this.captchaToken = '';
     },
     toNotify(info) {
       for (const [key, value] of Object.entries(info)) {
