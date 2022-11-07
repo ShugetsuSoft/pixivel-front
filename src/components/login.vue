@@ -124,7 +124,6 @@ import {
   setRefreshToken,
   clearAccountInformation,
 } from "@/utils/account";
-import { defineComponent } from 'vue';
 
 validate.validators.password = function (value, options) {
   if (value.length < options) {
@@ -134,9 +133,6 @@ validate.validators.password = function (value, options) {
 
 export default {
   name: "Login",
-  components: {
-    Turnstile
-  },
   data() {
     return {
       mode: 0,
