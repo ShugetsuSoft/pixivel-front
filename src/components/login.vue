@@ -137,7 +137,6 @@ export default {
     return {
       mode: 0,
       titles: ["登录", "注册", "重设密码"],
-      siteKey: CONFIG.CAPTCHA_SITEKEY,
       loading: false,
       captchaToken: '',
       forms: {
@@ -190,7 +189,7 @@ export default {
       if (!this.captchaToken) {
         // captcha token is empty
         this.$buefy.toast.open({
-          message: "",
+          message: "未完成验证码，请检查你的页面是否完成了加载。",
           duration: 10000,
           type: "is-success",
         });
@@ -365,7 +364,7 @@ export default {
     renderCaptcha() {
       this.captchaToken = '';
       window.turnstile?.render("#turnstile", {
-        sitekey: 'YOUR_SITE_KEY',
+        sitekey: CONFIG.CAPTCHA_SITEKEY,
         callback: this.onCaptchaResponse,
         'expired-callback': this.onCaptchaExpired,
         'error-callback': this.onCaptchaFailed,

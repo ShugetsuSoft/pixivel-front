@@ -1,17 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Landing from "@/views/Landing.vue"
-import Detail from "@/views/Detail.vue"
-import User from "@/views/User.vue"
-import Search from "@/views/Search.vue"
-import Rank from "@/views/Rank.vue"
-import Account from "@/views/Account.vue"
-import oldRedirect from "@/views/oldRedirect.vue"
+import Landing from "@/views/Landing.vue";
+import Detail from "@/views/Detail.vue";
+import User from "@/views/User.vue";
+import Search from "@/views/Search.vue";
+import Rank from "@/views/Rank.vue";
+import Account from "@/views/Account.vue";
+import oldRedirect from "@/views/oldRedirect.vue";
 
 Vue.use(VueRouter);
-
-
 
 const routes = [
   {
@@ -58,20 +56,20 @@ const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
     return new Promise((resolve) => {
       const check = () => {
-        const nowHeight = document.body.scrollHeight
+        const nowHeight = document.body.scrollHeight;
         if (nowHeight < savedPosition.y) {
-          window.scrollTo(savedPosition.x, savedPosition.y)
+          window.scrollTo(savedPosition.x, savedPosition.y);
           setTimeout(() => {
-            check()
-          }, 200)
+            check();
+          }, 200);
         } else {
           setTimeout(() => {
-            resolve(savedPosition)
-          }, 500)
+            resolve(savedPosition);
+          }, 500);
         }
-      }
-      check()
-    })
+      };
+      check();
+    });
   } else {
     return { x: 0, y: 0 };
   }

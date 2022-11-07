@@ -7,16 +7,18 @@
             <div class="media">
               <figure class="media-left">
                 <p class="image is-64x64">
-                  <img class="is-rounded" :src="isLoggedIn ? userAvatar: defaultAvatar">
-
+                  <img
+                    class="is-rounded"
+                    :src="isLoggedIn ? userAvatar : defaultAvatar"
+                  />
                 </p>
               </figure>
               <div class="media-content">
-
                 <div class="content" v-if="isLoggedIn">
                   <p>
-                    <strong>{{ userInfo.username }}</strong> <small>@{{ userInfo.userid }}</small>
-                    <br>
+                    <strong>{{ userInfo.username }}</strong>
+                    <small>@{{ userInfo.userid }}</small>
+                    <br />
                     {{ userInfo.email }}
                   </p>
                 </div>
@@ -24,46 +26,74 @@
                 <div class="content" v-else>
                   <p>
                     <strong>还没登录喵！</strong>
-                    <br>
+                    <br />
                     登录以后可以启用收藏和关注功能
                   </p>
                 </div>
-
               </div>
               <div class="buttons">
-                <b-button type="is-primary" inverted @click="logInOrOut">{{ isLoggedIn ? "登出": "登录" }}</b-button>
+                <b-button type="is-primary" inverted @click="logInOrOut">{{
+                  isLoggedIn ? "登出" : "登录"
+                }}</b-button>
               </div>
             </div>
-
           </div>
         </div>
         <div class="hero-foot">
           <nav class="tabs">
             <div class="container">
               <ul class="is-justify-content-center link-tabs">
-                <li :class="{'link-active': tabNow==0}" @click="tabNow=0"><a>主页</a></li>
+                <li :class="{ 'link-active': tabNow == 0 }" @click="tabNow = 0">
+                  <a>主页</a>
+                </li>
 
-                <li :class="{'link-active': tabNow==3}"  @click="tabNow=3" v-if="isLoggedIn"><a>收藏</a></li>
-                <li :class="{'link-active': tabNow==4}"  @click="tabNow=4" v-if="isLoggedIn"><a>关注</a></li>
-                <li :class="{'link-active': tabNow==5}"  @click="tabNow=5"><a>历史记录</a></li>
+                <li
+                  :class="{ 'link-active': tabNow == 3 }"
+                  @click="tabNow = 3"
+                  v-if="isLoggedIn"
+                >
+                  <a>收藏</a>
+                </li>
+                <li
+                  :class="{ 'link-active': tabNow == 4 }"
+                  @click="tabNow = 4"
+                  v-if="isLoggedIn"
+                >
+                  <a>关注</a>
+                </li>
+                <li :class="{ 'link-active': tabNow == 5 }" @click="tabNow = 5">
+                  <a>历史记录</a>
+                </li>
 
-                <li :class="{'link-active': tabNow==1}"  @click="tabNow=1"><a>下载</a></li>
-                <li :class="{'link-active': tabNow==2}"  @click="tabNow=2"><a>设置</a></li>
+                <li :class="{ 'link-active': tabNow == 1 }" @click="tabNow = 1">
+                  <a>下载</a>
+                </li>
+                <li :class="{ 'link-active': tabNow == 2 }" @click="tabNow = 2">
+                  <a>设置</a>
+                </li>
 
-                <li :class="{'link-active': tabNow==6}"  @click="tabNow=6"><a>友情链接</a></li>
-                <li><a href="https://forum.pixivel.moe/" target="_blank">论坛</a></li>
+                <li :class="{ 'link-active': tabNow == 6 }" @click="tabNow = 6">
+                  <a>友情链接</a>
+                </li>
+                <li>
+                  <a href="https://forum.pixivel.moe/" target="_blank">论坛</a>
+                </li>
               </ul>
             </div>
           </nav>
         </div>
       </section>
-      <section v-if="tabNow==0">
+      <section v-if="tabNow == 0">
         <h3 class="title is-3">公告</h3>
-        <b-message v-for="(value, key) in announce" :key="key" type="is-success">
+        <b-message
+          v-for="(value, key) in announce"
+          :key="key"
+          type="is-success"
+        >
           <div v-html="value"></div>
         </b-message>
       </section>
-      <section v-else-if="tabNow==1">
+      <section v-else-if="tabNow == 1">
         <div class="notification" v-if="!hasDownloadTask">
           没有正在进行的下载任务喵！
         </div>
@@ -76,11 +106,11 @@
             <b-notification :closable="false">
               <b-taglist>
                 <b-tag type="is-link"
-                >TYPE: {{ JSON.parse(iden)["type"] }}</b-tag
+                  >TYPE: {{ JSON.parse(iden)["type"] }}</b-tag
                 >
                 <b-tag type="is-info">ID: {{ JSON.parse(iden)["id"] }}</b-tag>
                 <b-tag type="is-info"
-                >PAGE: {{ JSON.parse(iden)["page"] }}</b-tag
+                  >PAGE: {{ JSON.parse(iden)["page"] }}</b-tag
                 >
               </b-taglist>
               <b-progress
@@ -107,8 +137,8 @@
           </div>
         </div>
       </section>
-      <section v-else-if="tabNow==2">
-        <br>
+      <section v-else-if="tabNow == 2">
+        <br />
         <div class="columns set-list">
           <div class="column is-one-third-desktop is-full-mobile">
             <b-field label="下载文件名格式">
@@ -155,27 +185,34 @@
           </div>
         </div>
       </section>
-      <section v-else-if="tabNow==3">
+      <section v-else-if="tabNow == 3">
         <Bookmark />
       </section>
-      <section v-else-if="tabNow==4">
+      <section v-else-if="tabNow == 4">
         <Follow />
       </section>
-      <section v-else-if="tabNow==5">
+      <section v-else-if="tabNow == 5">
         <History />
       </section>
 
-      <section v-if="tabNow==6">
+      <section v-if="tabNow == 6">
         <div class="columns set-list">
-          <div class="column is-one-third-desktop is-half-tablet hover-up" @click="jump(link.link)" v-for="link in links" :key="link.name">
+          <div
+            class="column is-one-third-desktop is-half-tablet hover-up"
+            @click="jump(link.link)"
+            v-for="link in links"
+            :key="link.name"
+          >
             <b-notification :closable="false" class="is-clickable">
               <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
                 <figure class="image is-64x64 media-left">
-                  <img class="is-rounded" :src="link.ava">
+                  <img class="is-rounded" :src="link.ava" />
                 </figure>
                 <div class="content">
                   <strong>{{ link.name }}</strong>
-                  <p>{{ link.desc }}<a>{{ link.link }}</a></p>
+                  <p>
+                    {{ link.desc }}<a>{{ link.link }}</a>
+                  </p>
                 </div>
               </div>
             </b-notification>
@@ -188,9 +225,10 @@
       has-modal-card
       trap-focus
       :destroy-on-hide="true"
-      aria-modal>
+      aria-modal
+    >
       <template>
-        <Login @close="showLoginPanel=false"></Login>
+        <Login @close="showLoginPanel = false"></Login>
       </template>
     </b-modal>
   </section>
@@ -198,13 +236,13 @@
 
 <script>
 import { deleteToken, getUserInfo, isLoggedIn } from "@/utils/account";
-import md5 from '@/utils/md5'
-import CONFIG from '@/config.json'
+import md5 from "@/utils/md5";
+import CONFIG from "@/config.json";
 import storage from "store2";
-import Login from '@/components/login'
-import History from '@/components/history'
-import Bookmark from '@/components/bookmark'
-import Follow from '@/components/follow'
+import Login from "@/components/login";
+import History from "@/components/history";
+import Bookmark from "@/components/bookmark";
+import Follow from "@/components/follow";
 
 const AnnounceKey = "announce";
 
@@ -214,66 +252,69 @@ export default {
     Login,
     History,
     Bookmark,
-    Follow
+    Follow,
   },
   data() {
     return {
       tabNow: 0,
       showLoginPanel: false,
-      announce: window.JSON.parse(storage.get(AnnounceKey, '{}')),
+      announce: window.JSON.parse(storage.get(AnnounceKey, "{}")),
       defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
       links: [
         {
           name: "Rorical",
           ava: "https://avatars.githubusercontent.com/u/46294886?v=4",
           desc: "开发者，是白毛萌妹（雾）",
-          link: "https://rorical.blue"
+          link: "https://rorical.blue",
         },
         {
           name: "Matrew File",
           ava: "https://avatars.githubusercontent.com/u/28867264?v=4",
           desc: "运维，也许会变成绿毛萌妹（大雾）",
-          link: "https://elfile4138.moe"
+          link: "https://elfile4138.moe",
         },
         {
           name: "墨影",
           ava: "https://doc.kmf.com/ke-feedback/2022/09/01/15/47/25/20220901154722.png",
           desc: "管理，NekoNya 编辑，可食用猪猪（大大雾）",
-          link: "https://space.bilibili.com/36999062/"
+          link: "https://space.bilibili.com/36999062/",
         },
         {
           name: "Shugetsu Soft",
           ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
           desc: "Where no magic happens.",
-          link: "https://shugetsu.dev/"
-        }
-      ]
-    }
+          link: "https://shugetsu.dev/",
+        },
+      ],
+    };
   },
   watch: {
     tabNow() {
       if ("#" + this.tabNow.toString() == this.$route.hash) return;
-      this.$router.replace({ name: "Account", hash: "#" + this.tabNow.toString() })
+      this.$router.replace({
+        name: "Account",
+        hash: "#" + this.tabNow.toString(),
+      });
     },
     $route() {
       if ("#" + this.tabNow.toString() == this.$route.hash) return;
-      this.tabNow = parseInt(this.$route.hash.split("#")[1])
-    }
+      this.tabNow = parseInt(this.$route.hash.split("#")[1]);
+    },
   },
   created() {
     if (this.$route.hash.length > 1) {
-      this.tabNow = parseInt(this.$route.hash.split("#")[1])
+      this.tabNow = parseInt(this.$route.hash.split("#")[1]);
     }
   },
   computed: {
     isLoggedIn() {
-      return isLoggedIn()
+      return isLoggedIn();
     },
     userInfo() {
-      return getUserInfo()
+      return getUserInfo();
     },
     userAvatar() {
-      return CONFIG.GRAVATAR_PROXY + md5(this.userInfo.email)
+      return CONFIG.GRAVATAR_PROXY + md5(this.userInfo.email);
     },
     downloadTasks() {
       return this.$store.state.Pic.download.queue;
@@ -282,7 +323,10 @@ export default {
       return this.$store.state.Pic.download.downloadingQueue;
     },
     hasDownloadTask() {
-      return Object.keys(this.$store.state.Pic.download.downloadingQueue).length > 0 || this.$store.state.Pic.download.queue.length > 0
+      return (
+        Object.keys(this.$store.state.Pic.download.downloadingQueue).length >
+          0 || this.$store.state.Pic.download.queue.length > 0
+      );
     },
     getdownloadfilename() {
       return this.$store.getters["Settings/get"]("download.filename");
@@ -328,23 +372,23 @@ export default {
     logInOrOut() {
       if (this.isLoggedIn) {
         this.$buefy.dialog.confirm({
-          title: '退出登录',
+          title: "退出登录",
           message: `确定要退出登录嘛?<br>退出登录后本地将无法访问你的数据，需要重新登录才可以`,
-          cancelText: '算了',
-          confirmText: '嗯',
-          type: 'is-success',
+          cancelText: "算了",
+          confirmText: "嗯",
+          type: "is-success",
           onConfirm: () => {
-            deleteToken()
-            this.$router.go(0)
-          }
-        })
+            deleteToken();
+            this.$router.go(0);
+          },
+        });
       } else {
-        this.showLoginPanel = true
+        this.showLoginPanel = true;
       }
     },
-    jump(url){
-      window.open(url, "_blank")
-    }
+    jump(url) {
+      window.open(url, "_blank");
+    },
   },
 };
 </script>
@@ -372,7 +416,6 @@ export default {
       color: #009e86;
     }
   }
-
 }
 
 .media {
@@ -388,6 +431,6 @@ export default {
 }
 
 .hover-up {
-  transition: transform .1s ease-in-out;
+  transition: transform 0.1s ease-in-out;
 }
 </style>
