@@ -77,7 +77,12 @@
           >
           </b-input>
         </b-field>
-
+        <div id="m-captcha">
+          <cfturnstile
+            :sitekey="sitekey"
+            @verify="verify"
+          />
+        </div>
         <div class="tips">
           <a @click="mode = 0">登录</a> <a @click="mode = 2">重设密码</a>
         </div>
@@ -124,6 +129,9 @@ import {
   setRefreshToken,
   clearAccountInformation,
 } from "@/utils/account";
+import { defineComponent } from 'vue';
+import Turnstile from 'cfturnstile-vue3';
+
 
 validate.validators.password = function (value, options) {
   if (value.length < options) {
@@ -133,7 +141,9 @@ validate.validators.password = function (value, options) {
 
 export default {
   name: "Login",
-  components: {},
+  components: {
+    Turnstile
+  },
   data() {
     return {
       mode: 0,
@@ -182,29 +192,7 @@ export default {
       this.clearNotify();
     },
   },
-  mounted() {
-    this.$refs.mcaptcha.setAttribute(
-      "data-sitekey",
-      (() => {
-        switch (window.location.hostname) {
-          case "pixivel.moe":
-            return 4;
-          case "pixivel.art":
-            return 5;
-        }
-      })()
-    );
-    window.mcaptcha.init();
-    window.mcaptcha.solve((token) => {
-      this.captchaResolve(token);
-    });
-  },
-  beforeDestroy() {
-    window.mcaptcha.destroy();
-    window.mcaptcha.solve((token) => {
-      console.log(token);
-    });
-  },
+
   methods: {
     handle() {
       this.loading = true;
@@ -263,6 +251,7 @@ export default {
             }
           }
           window.mcaptcha.trigger();
+          // TODO: Trigger CAPTCHA responce;
           break;
       }
     },
