@@ -137,7 +137,6 @@ export default {
     return {
       mode: 0,
       titles: ["登录", "注册", "重设密码"],
-      siteKey: CONFIG.CAPTCHA_SITEKEY,
       loading: false,
       captchaToken: '',
       forms: {
@@ -365,7 +364,7 @@ export default {
     renderCaptcha() {
       this.captchaToken = '';
       window.turnstile?.render("#turnstile", {
-        sitekey: 'YOUR_SITE_KEY',
+        sitekey: CONFIG.CAPTCHA_SITEKEY,
         callback: this.onCaptchaResponse,
         'expired-callback': this.onCaptchaExpired,
         'error-callback': this.onCaptchaFailed,
