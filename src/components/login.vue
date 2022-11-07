@@ -139,6 +139,7 @@ export default {
       titles: ["登录", "注册", "重设密码"],
       loading: false,
       captchaToken: '',
+      catpchaRendered: false,
       forms: {
         username: "",
         password: "",
@@ -181,8 +182,14 @@ export default {
       this.clearNotify();
     },
   },
+  created() {
+    window.addEventListener('turnstile-loaded', this.renderCaptcha);
+  },
   mounted() {
     this.renderCaptcha();
+  },
+  beforeDestroy() {
+    window.removeEventListener('turnstile-loaded', this.renderCaptcha);
   },
   methods: {
     handle() {
@@ -362,13 +369,23 @@ export default {
         });
     },
     renderCaptcha() {
+      if (this.captchaRendered) {
+        return;
+      }
       this.captchaToken = '';
-      window.turnstile?.render("#turnstile", {
-        sitekey: CONFIG.CAPTCHA_SITEKEY,
-        callback: this.onCaptchaResponse,
-        'expired-callback': this.onCaptchaExpired,
-        'error-callback': this.onCaptchaFailed,
-      });
+      try {
+        window.turnstile?.render("#turnstile", {
+          sitekey: CONFIG.CAPTCHA_SITEKEY,
+          callback: this.onCaptchaResponse,
+          'expired-callback': this.onCaptchaExpired,
+          'error-callback': this.onCaptchaFailed,
+        });
+      } catch (e) {
+        console.error('Failed to init turnstile.');
+        this.onCaptchaFailed();
+        return;
+      }
+      this.captchaRendered = true;
     },
     onCaptchaResponse(res) {
       this.captchaToken = res;
@@ -376,10 +393,12 @@ export default {
     onCaptchaExpired() {
       // if necessary, rerender captcha here
       this.captchaToken = '';
+      // this.captchaRendered = false;
     },
     onCaptchaFailed() {
       // if necessary, rerender captcha here
       this.captchaToken = '';
+      // this.captchaRendered = false;
     },
     toNotify(info) {
       for (const [key, value] of Object.entries(info)) {
