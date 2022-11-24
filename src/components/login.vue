@@ -139,7 +139,7 @@ export default {
       titles: ["登录", "注册", "重设密码"],
       loading: false,
       captchaToken: '',
-      catpchaRendered: false,
+      captchaRendered: false,
       forms: {
         username: "",
         password: "",
