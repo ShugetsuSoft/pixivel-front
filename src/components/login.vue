@@ -393,12 +393,12 @@ export default {
     onCaptchaExpired() {
       // if necessary, rerender captcha here
       this.captchaToken = '';
-      // this.captchaRendered = false;
+      this.captchaRendered = false;
     },
     onCaptchaFailed() {
       // if necessary, rerender captcha here
       this.captchaToken = '';
-      // this.captchaRendered = false;
+      this.captchaRendered = false;
     },
     toNotify(info) {
       for (const [key, value] of Object.entries(info)) {
