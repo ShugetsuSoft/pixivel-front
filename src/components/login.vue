@@ -77,7 +77,7 @@
           <a @click="mode=0">登录</a> <a @click="mode=1">注册</a>
         </div>
       </template>
-      <div id="m-captcha" data-sitekey="4" data-invisible="true"></div>
+      <VueHcaptcha :sitekey="siteKey" v-on:verify="captchaResolve" size="invisible" ref="captcha"></VueHcaptcha>
     </section>
     <footer class="modal-card-foot" style="justify-content: flex-end;">
       <b-button
@@ -92,6 +92,7 @@
 
 <script>
 import validate from "validate.js"
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import CONFIG from '@/config.json'
 import qs from 'qs'
 import { setAccessToken, setRefreshToken, clearAccountInformation } from "@/utils/account";
@@ -105,6 +106,7 @@ validate.validators.password = function(value, options) {
 export default {
   name: "Login",
   components: {
+    VueHcaptcha
   },
   data() {
     return {
@@ -154,18 +156,6 @@ export default {
       this.clearNotify()
     }
   },
-  mounted() {
-    window.mcaptcha.init()
-    window.mcaptcha.solve((token) => {
-      this.captchaResolve(token)
-    })
-  },
-  beforeDestroy() {
-    window.mcaptcha.destroy()
-    window.mcaptcha.solve((token) => {
-      console.log(token)
-    })
-  },
   methods: {
     handle() {
       this.loading = true
@@ -187,7 +177,7 @@ export default {
             this.loading = false
             break
           }
-          window.mcaptcha.trigger()
+          this.$refs.captcha.execute()
           break
         case 1:
           info = validate.validate(this.forms, this.constraints.register)
@@ -196,7 +186,7 @@ export default {
             this.loading = false
             break
           }
-          window.mcaptcha.trigger()
+          this.$refs.captcha.execute()
           break
         case 2:
           info = validate.single(this.forms.username, {presence: true, email: true})
@@ -208,7 +198,7 @@ export default {
               break
             }
           }
-          window.mcaptcha.trigger()
+          this.$refs.captcha.execute()
           break
       }
     },
