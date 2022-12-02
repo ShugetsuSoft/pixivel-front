@@ -13,7 +13,7 @@
     >
       <template slot-scope="illust">
         <AdsCard v-if="illust.data.type == -1" />
-        <ImgCard :illust="illust.data" v-else/>
+        <ImgCard :illust="illust.data" v-else />
       </template>
     </VirtualMasonry>
   </div>
@@ -46,7 +46,7 @@ export default {
   },
   components: {
     ImgCard,
-    AdsCard
+    AdsCard,
   },
   watch: {
     illusts: "illustsChange",
@@ -106,7 +106,7 @@ export default {
           type: -1,
           height: 259,
           width: 311,
-        })
+        });
       }
       return illusts;
     },

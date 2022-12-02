@@ -27,7 +27,7 @@
 import LazyImg from "@/components/lazyimg";
 import RouterA from "@/components/router_a";
 import { isLoggedIn } from "@/utils/account";
-import Like from '@/components/like_heart'
+import Like from "@/components/like_heart";
 
 export default {
   name: "ImgCard",
@@ -42,7 +42,7 @@ export default {
   components: {
     LazyImg,
     RouterA,
-    Like
+    Like,
   },
   data() {
     return {

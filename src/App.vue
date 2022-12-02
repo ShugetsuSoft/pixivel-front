@@ -9,7 +9,7 @@
     <Footer />
     <b-modal v-model="showSponsor" has-modal-card trap-focus>
       <template>
-        <Sponsor @close="showSponsor=false"/>
+        <Sponsor @close="showSponsor = false" />
       </template>
     </b-modal>
   </div>
@@ -19,8 +19,8 @@
 import Nav from "@/components/nav";
 import Footer from "@/components/footer.vue";
 import CheckAnnounce from "@/utils/checkAnnounce";
-import Sponsor from '@/components/sponsor'
-import storage from "store2"
+import Sponsor from "@/components/sponsor";
+import storage from "store2";
 import { clearAccountInformation, isLoggedIn } from "@/utils/account";
 import { syncBookMark } from "@/utils/bookmark";
 import { syncFollow } from "@/utils/follow";
@@ -30,60 +30,61 @@ export default {
   components: {
     Nav,
     Footer,
-    Sponsor
+    Sponsor,
   },
   data() {
     return {
-      showSponsor: false
-    }
+      showSponsor: false,
+    };
   },
   async mounted() {
-    this.sponsorShow()
-    this.announceShow()
-    this.addDownloadNotify()
-    await this.syncHook()
+    this.sponsorShow();
+    this.announceShow();
+    this.addDownloadNotify();
+    await this.syncHook();
   },
   methods: {
     async syncHook() {
       if (isLoggedIn()) {
-        await syncBookMark()
-        await syncFollow()
+        await syncBookMark();
+        await syncFollow();
       } else {
         if (storage.has("refresh_token")) {
-          clearAccountInformation()
+          clearAccountInformation();
         }
       }
-      document.addEventListener('visibilitychange', function() {
+      document.addEventListener("visibilitychange", function () {
         if (isLoggedIn()) {
-          syncBookMark()
-          syncFollow()
+          syncBookMark();
+          syncFollow();
         }
-      })
+      });
     },
     announceShow() {
-      CheckAnnounce().then(Anno => {
-        let infoshow = ""
+      CheckAnnounce().then((Anno) => {
+        let infoshow = "";
         Anno[0].forEach((key, index) => {
-          infoshow += Anno[1][key]
+          infoshow += Anno[1][key];
           if (index < Anno[0].length - 1) {
-            infoshow += "<hr>"
+            infoshow += "<hr>";
           }
-        })
+        });
         if (infoshow != "") {
           this.$buefy.notification.open({
             duration: 60000,
             message: infoshow,
-            type: 'is-primary',
-          })
+            type: "is-primary",
+          });
         }
-      })
+      });
     },
     sponsorShow() {
-      let lastTime = storage.get("last_sponsor_show_time", 0)
-      let now = (new Date().getTime())
-      if (lastTime < now - 864000000) { // ten days
-        this.showSponsor = true
-        storage.set("last_sponsor_show_time", now)
+      let lastTime = storage.get("last_sponsor_show_time", 0);
+      let now = new Date().getTime();
+      if (lastTime < now - 864000000) {
+        // ten days
+        this.showSponsor = true;
+        storage.set("last_sponsor_show_time", now);
       }
     },
     addDownloadNotify() {
@@ -95,8 +96,8 @@ export default {
         }
         return false;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

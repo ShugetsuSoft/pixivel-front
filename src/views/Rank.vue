@@ -179,7 +179,7 @@ export default {
     $route() {
       this.mode = this.$route.query.mode;
       this.content = this.$route.query.content;
-    }
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -242,11 +242,11 @@ export default {
   },
   computed: {
     illustsn() {
-      return this.illusts.filter(v => {
-        return (v.id != 0)
-      })
-    }
-  }
+      return this.illusts.filter((v) => {
+        return v.id != 0;
+      });
+    },
+  },
 };
 </script>
 
@@ -267,7 +267,7 @@ export default {
   }
 
   .datepicker {
-    width: fill-available;
+    width: stretch;
   }
 
   @media screen and (max-width: 790px) {

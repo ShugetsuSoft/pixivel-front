@@ -130,14 +130,22 @@ export default {
       this.refresh(true);
       this.$router.push({
         name: "Search",
-        query: { keyword: this.keyword, mode: this.mode, features: this.queryFeatures.join(",") },
+        query: {
+          keyword: this.keyword,
+          mode: this.mode,
+          features: this.queryFeatures.join(","),
+        },
       });
     },
     queryFeatures() {
       this.refresh(false);
       this.$router.push({
         name: "Search",
-        query: { keyword: this.keyword, mode: this.mode, features: this.queryFeatures.join(",") },
+        query: {
+          keyword: this.keyword,
+          mode: this.mode,
+          features: this.queryFeatures.join(","),
+        },
       });
     },
     $route() {
@@ -187,7 +195,11 @@ export default {
       if (keywd) {
         this.$router.push({
           name: "Search",
-          query: { keyword: keywd, mode: this.mode, features: this.queryFeatures.join(",") },
+          query: {
+            keyword: keywd,
+            mode: this.mode,
+            features: this.queryFeatures.join(","),
+          },
         });
       }
     },
@@ -195,7 +207,11 @@ export default {
       if (this.keyword != this.$route.query.keyword) {
         this.$router.push({
           name: "Search",
-          query: { keyword: this.keyword, mode: this.mode, features: this.queryFeatures.join(",") },
+          query: {
+            keyword: this.keyword,
+            mode: this.mode,
+            features: this.queryFeatures.join(","),
+          },
         });
       }
     },

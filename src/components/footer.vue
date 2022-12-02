@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import Banned from '@/assets/infos/ban.json'
+import Banned from "@/assets/infos/ban.json";
 
 export default {
   name: "Footer",
   mounted() {
-    this.initAna()
+    this.initAna();
     if (Banned.indexOf(window.location.href) == -1) {
-      this.initAds()
+      this.initAds();
     }
   },
   methods: {
@@ -41,7 +41,8 @@ export default {
         }
       };
       adscript.onerror = () => {
-        this.$refs.adbanner.innerText = "唔，虽然这里本该有个广告，但是既然阁下不愿意的话，我也就不展示了。可以考虑捐赠支持开发者哦";
+        this.$refs.adbanner.innerText =
+          "唔，虽然这里本该有个广告，但是既然阁下不愿意的话，我也就不展示了。可以考虑捐赠支持开发者哦";
       };
       adscript["data-ad-client"] = "ca-pub-7564284646329791";
       adscript.src =
@@ -68,8 +69,8 @@ export default {
         analyticscript,
         document.currentScript
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

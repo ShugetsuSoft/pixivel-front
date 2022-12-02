@@ -15,61 +15,61 @@ module.exports = {
     themeColor: "#00e2bc",
     msTileColor: "#000000",
     manifestOptions: {
-      "name": "Pixivel",
-      "short_name": "Pixivel",
-      "theme_color": "#00e2bc",
-      "background_color": "#fafafa",
-      "display": "standalone",
-      "scope": "./",
-      "start_url": "./",
-      "id": "/",
-      "icons": [
+      name: "Pixivel",
+      short_name: "Pixivel",
+      theme_color: "#00e2bc",
+      background_color: "#fafafa",
+      display: "standalone",
+      scope: "./",
+      start_url: "./",
+      id: "/",
+      icons: [
         {
-          "src": "img/icons/icon-48x48.png",
-          "sizes": "48x48",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-72x72.png",
-          "sizes": "72x72",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-96x96.png",
-          "sizes": "96x96",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-128x128.png",
-          "sizes": "128x128",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-144x144.png",
-          "sizes": "144x144",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-152x152.png",
-          "sizes": "152x152",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-192x192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-384x384.png",
-          "sizes": "384x384",
-          "type": "image/png"
-          },
-          {
-          "src": "img/icons/icon-512x512.png",
-          "sizes": "512x512",
-          "type": "image/png"
-          }
-      ]
+          src: "img/icons/icon-48x48.png",
+          sizes: "48x48",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-72x72.png",
+          sizes: "72x72",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-96x96.png",
+          sizes: "96x96",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-128x128.png",
+          sizes: "128x128",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-144x144.png",
+          sizes: "144x144",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-152x152.png",
+          sizes: "152x152",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-384x384.png",
+          sizes: "384x384",
+          type: "image/png",
+        },
+        {
+          src: "img/icons/icon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
     },
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "#00cea8",
@@ -82,17 +82,17 @@ module.exports = {
     },
     workboxPluginMode: "GenerateSW",
     workboxOptions: {
-      exclude: ['ads.txt'],
+      exclude: ["ads.txt"],
       skipWaiting: true,
       clientsClaim: true,
-      importWorkboxFrom: 'local',
-      importsDirectory: 'js',
+      importWorkboxFrom: "local",
+      importsDirectory: "js",
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/pixivel\.moe(\/.*\.(html|js|css))?$/,
-          handler: 'NetworkFirst',
+          handler: "NetworkFirst",
           options: {
-            cacheName: 'static-files',
+            cacheName: "static-files",
             cacheableResponse: {
               statuses: [0, 200],
             },
@@ -103,10 +103,11 @@ module.exports = {
           },
         },
         {
-          urlPattern: /^https:\/\/pixivel\.moe(\/.*\.(jpg|jpeg|png|webp|svg))?$/,
-          handler: 'CacheFirst',
+          urlPattern:
+            /^https:\/\/pixivel\.moe(\/.*\.(jpg|jpeg|png|webp|svg))?$/,
+          handler: "CacheFirst",
           options: {
-            cacheName: 'static-imgs',
+            cacheName: "static-imgs",
             cacheableResponse: {
               statuses: [0, 200],
             },
@@ -117,9 +118,9 @@ module.exports = {
         },
         {
           urlPattern: /^https:\/\/api\.pixivel\.moe/,
-          handler: 'CacheFirst',
+          handler: "CacheFirst",
           options: {
-            cacheName: 'api',
+            cacheName: "api",
             cacheableResponse: {
               statuses: [0, 200],
             },
@@ -130,10 +131,11 @@ module.exports = {
           },
         },
         {
-          urlPattern: /^https:\/\/proxy(-((jp1)|(jp2)|(jp3)))?\.pixivel\.moe\/.*$/,
-          handler: 'CacheFirst',
+          urlPattern:
+            /^https:\/\/proxy(-((jp1)|(jp2)|(jp3)))?\.pixivel\.moe\/.*$/,
+          handler: "CacheFirst",
           options: {
-            cacheName: 'pics',
+            cacheName: "pics",
             cacheableResponse: {
               statuses: [0, 200],
             },
@@ -142,12 +144,12 @@ module.exports = {
               maxEntries: 1000,
             },
             fetchOptions: {
-              credentials: 'omit',
-              mode: 'cors',
+              credentials: "omit",
+              mode: "cors",
             },
           },
         },
-      ]
-    }
-  }
+      ],
+    },
+  },
 };

@@ -3,8 +3,12 @@
     <div class="notification is-info bookmark-info">
       收藏个数: {{ bookmarkCount }}
       <div class="buttons">
-        <b-button type="is-info" inverted outlined @click="sync">强制同步</b-button>
-        <b-button type="is-warning" outlined @click="clearAll">清空所有</b-button>
+        <b-button type="is-info" inverted outlined @click="sync"
+          >强制同步</b-button
+        >
+        <b-button type="is-warning" outlined @click="clearAll"
+          >清空所有</b-button
+        >
       </div>
     </div>
     <WaterFall :illusts="bookmark" :identifier="loadid" />
@@ -28,59 +32,59 @@ import { clearBookMark } from "../utils/bookmark";
 export default {
   name: "Bookmark",
   components: {
-    WaterFall
+    WaterFall,
   },
   data() {
     return {
       bookmark: [],
       loadid: +new Date(),
       bookmarkPage: 0,
-      bookmarkCount: 0
-    }
+      bookmarkCount: 0,
+    };
   },
   async created() {
-    this.bookmarkCount = await countBookMark()
+    this.bookmarkCount = await countBookMark();
   },
   methods: {
     async nextPage($state) {
       try {
-        let loadedBookmark = await getBookMark(this.bookmarkPage)
+        let loadedBookmark = await getBookMark(this.bookmarkPage);
         if (loadedBookmark.length < 1) {
-          $state.complete()
+          $state.complete();
         }
-        this.bookmark = this.bookmark.concat(loadedBookmark)
-        this.bookmarkPage += 1
-        $state.loaded()
+        this.bookmark = this.bookmark.concat(loadedBookmark);
+        this.bookmarkPage += 1;
+        $state.loaded();
       } catch (e) {
-       console.error(e)
-        $state.error()
+        console.error(e);
+        $state.error();
       }
     },
     async sync() {
-      await syncBookMark()
-      this.bookmark = []
-      this.bookmarkPage = 0
-      this.bookmarkCount = await countBookMark()
-      this.loadid += 1
+      await syncBookMark();
+      this.bookmark = [];
+      this.bookmarkPage = 0;
+      this.bookmarkCount = await countBookMark();
+      this.loadid += 1;
     },
     clearAll() {
       this.$buefy.dialog.confirm({
-        message: '真的要清空所有收藏吗！此操作不可恢复！',
-        cancelText: '点错了',
-        confirmText: '真的',
+        message: "真的要清空所有收藏吗！此操作不可恢复！",
+        cancelText: "点错了",
+        confirmText: "真的",
         onConfirm: () => {
           this.$buefy.dialog.confirm({
-            message: '红豆泥？！',
-            cancelText: 'NO',
-            confirmText: '嗯',
+            message: "红豆泥？！",
+            cancelText: "NO",
+            confirmText: "嗯",
             onConfirm: async () => {
-              await clearBookMark()
-            }
-          })
-        }
-      })
-    }
-  }
+              await clearBookMark();
+            },
+          });
+        },
+      });
+    },
+  },
 };
 </script>
 
