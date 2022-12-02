@@ -102,7 +102,12 @@ export default {
 </script>
 
 <style lang="scss">
-html,
+html// {
+//  filter: grayscale(100%);
+//}
+
+// TODO Ready for 12/6
+
 body {
   width: 100%;
   height: auto;
