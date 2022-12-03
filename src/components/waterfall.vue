@@ -58,7 +58,7 @@ export default {
       parentObserver: null,
       cols: 0,
       calcdebu: null,
-      showAd: 12,
+      showAd: -1,
     };
   },
   mounted() {
