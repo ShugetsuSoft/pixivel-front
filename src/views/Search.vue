@@ -171,6 +171,7 @@ export default {
   mounted() {
     if (this.finalKeyword) {
       setTimeout(() => {
+        this.$refs.infload.$emit("$InfiniteLoading:reset");
         this.$refs.infload.attemptLoad();
       }, 500);
     }

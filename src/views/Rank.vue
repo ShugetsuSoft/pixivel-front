@@ -183,6 +183,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
+      this.$refs.infload.$emit("$InfiniteLoading:reset");
       this.$refs.infload.attemptLoad();
     }, 500);
   },
