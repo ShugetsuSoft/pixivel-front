@@ -273,19 +273,25 @@ export default {
         {
           name: "Matrew File",
           ava: "https://avatars.githubusercontent.com/u/28867264?v=4",
-          desc: "运维，也许会变成绿毛萌妹（大雾）",
+          desc: "运维，已经变成蓝毛萌妹力（大雾）",
           link: "https://elfile4138.moe",
         },
         {
           name: "墨影",
           ava: "https://doc.kmf.com/ke-feedback/2022/09/01/15/47/25/20220901154722.png",
-          desc: "管理，NekoNya 编辑，可食用猪猪（大大雾）",
+          desc: "管理，NekoNya 编辑，可食用猪猪",
           link: "https://space.bilibili.com/36999062/",
+        },
+        {
+          name: "Project Shugetsu",
+          ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
+          desc: "秋月计划。The forseeable future.",
+          link: "https://shugetsu.org/",
         },
         {
           name: "Shugetsu Soft",
           ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
-          desc: "Where no magic happens.",
+          desc: "秋月的软件部！Where no magic happens.",
           link: "https://shugetsu.dev/",
         },
       ],
