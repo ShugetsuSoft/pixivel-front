@@ -102,6 +102,10 @@ export default {
 </script>
 
 <style lang="scss">
+html {
+  filter: grayscale(100%);
+}
+
 html,
 body {
   width: 100%;
