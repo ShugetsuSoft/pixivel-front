@@ -78,6 +78,9 @@
                 <li>
                   <a href="https://forum.pixivel.moe/" target="_blank">论坛</a>
                 </li>
+                <li>
+                  <a href="https://nekonya.fun/" target="_blank">图站</a>
+                </li>
               </ul>
             </div>
           </nav>
