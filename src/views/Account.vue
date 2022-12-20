@@ -81,6 +81,9 @@
                 <li>
                   <a href="https://nekonya.fun/" target="_blank">图站</a>
                 </li>
+                <li>
+                  <a href="https://ultra.pixivel.moe/" target="_blank">超分</a>
+                </li>
               </ul>
             </div>
           </nav>
