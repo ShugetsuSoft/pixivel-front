@@ -3,8 +3,7 @@
     <div class="content has-text-centered">
       <p>
         <strong>Pixivel</strong> by
-        <a href="https://shugetsu.dev/" target="_blank">Shugetsu Soft</a>. No
-        affiliation with Pixiv Inc.
+        <a href="https://shugetsu.dev/" target="_blank">Shugetsu Soft</a>. Not affiliated with pixiv Inc. .
       </p>
       <p ref="adbanner">这里应该会有个广告用来支持运营</p>
       <ins
