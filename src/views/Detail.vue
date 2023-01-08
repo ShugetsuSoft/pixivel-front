@@ -322,6 +322,7 @@ export default {
         .then((response) => {
           if (response.data.error) {
             this.error(response.data.message);
+            this.loading.close();
             return;
           }
           this.illust = response.data.data;
