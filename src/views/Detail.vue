@@ -521,7 +521,6 @@ export default {
       this.imgprogress = progress * 100;
     },
     triggerForceFetchIllust() {
-      this.loading = this.$buefy.loading.open();
       this.illust = null;
       this.load(true);
     },
