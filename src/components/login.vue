@@ -268,7 +268,7 @@ export default {
         isEmail = false;
       }
       const data = {
-        "h-captcha-response": this.captchaToken,
+        "turnstile-response": this.captchaToken,
         password: this.forms.password,
       };
       if (isEmail) {
@@ -303,7 +303,7 @@ export default {
     },
     handleRegister() {
       const data = {
-        "h-captcha-response": this.captchaToken,
+        "turnstile-response": this.captchaToken,
         username: this.forms.username,
         password: this.forms.password,
         email: this.forms.email,
@@ -338,7 +338,7 @@ export default {
         isEmail = false;
       }
       const data = {
-        "h-captcha-response": this.captchaToken,
+        "turnstile-response": this.captchaToken,
       };
       if (isEmail) {
         data["email"] = this.forms.username;
