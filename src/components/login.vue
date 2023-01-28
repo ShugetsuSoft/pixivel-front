@@ -77,9 +77,6 @@
           >
           </b-input>
         </b-field>
-        <div id="m-captcha">
-          <cfturnstile :sitekey="sitekey" @verify="verify" />
-        </div>
         <div class="tips">
           <a @click="mode = 0">登录</a> <a @click="mode = 2">重设密码</a>
         </div>

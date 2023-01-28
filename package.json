@@ -13,7 +13,6 @@
     "bloom-filters": "^1.3.8",
     "buefy": "^0.9.8",
     "bulma-prefers-dark": "^0.1.0-beta.1",
-    "cfturnstile-vue3": "^1.0.0",
     "clipboard": "^2.0.11",
     "core-js": "^3.6.5",
     "crc-32": "^1.2.0",
