@@ -278,7 +278,7 @@ export default {
         data["username"] = this.forms.username;
       }
       this.axios
-        .post(CONFIG.AUTHUGETSU_API + "user/login", qs.stringify(data))
+        .post(CONFIG.SHUGETSU_SOFT_API + "user/login", qs.stringify(data))
         .then((response) => {
           clearAccountInformation();
           setRefreshToken(response.data.refresh_token);
@@ -310,7 +310,7 @@ export default {
         email: this.forms.email,
       };
       this.axios
-        .post(CONFIG.AUTHUGETSU_API + "user/register", qs.stringify(data))
+        .post(CONFIG.SHUGETSU_SOFT_API + "user/register", qs.stringify(data))
         .then(() => {
           this.$buefy.toast.open({
             message: "注册成功！请查收您的邮件~",
@@ -347,7 +347,7 @@ export default {
         data["username"] = this.forms.username;
       }
       this.axios
-        .post(CONFIG.AUTHUGETSU_API + "user/reset", qs.stringify(data))
+        .post(CONFIG.SHUGETSU_SOFT_API + "user/reset", qs.stringify(data))
         .then(() => {
           this.$buefy.toast.open({
             message: "重设密码请求已经发送到邮箱！请查收您的邮件~",

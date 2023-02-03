@@ -85,7 +85,7 @@ export async function renewAccessToken() {
   };
   try {
     let res = await axios.post(
-      CONFIG.AUTHUGETSU_API + "user/refresh",
+      CONFIG.SHUGETSU_SOFT_API + "user/refresh",
       qs.stringify(data),
       {
         background: true,
