@@ -77,7 +77,6 @@
           >
           </b-input>
         </b-field>
-
         <div class="tips">
           <a @click="mode = 0">登录</a> <a @click="mode = 2">重设密码</a>
         </div>
@@ -96,12 +95,7 @@
           <a @click="mode = 0">登录</a> <a @click="mode = 1">注册</a>
         </div>
       </template>
-      <VueHcaptcha
-        :sitekey="siteKey"
-        v-on:verify="captchaResolve"
-        size="invisible"
-        ref="captcha"
-      ></VueHcaptcha>
+      <div id="turnstile"></div>
     </section>
     <footer class="modal-card-foot" style="justify-content: flex-end">
       <b-button label="关闭" @click="$emit('close')" />
@@ -117,7 +111,6 @@
 
 <script>
 import validate from "validate.js";
-import VueHcaptcha from "@hcaptcha/vue-hcaptcha";
 import CONFIG from "@/config.json";
 import qs from "qs";
 import {
@@ -134,15 +127,13 @@ validate.validators.password = function (value, options) {
 
 export default {
   name: "Login",
-  components: {
-    VueHcaptcha,
-  },
   data() {
     return {
       mode: 0,
       titles: ["登录", "注册", "重设密码"],
-      siteKey: CONFIG.CAPTCHA_SITEKEY,
       loading: false,
+      captchaToken: "",
+      captchaRendered: false,
       forms: {
         username: "",
         password: "",
@@ -185,8 +176,26 @@ export default {
       this.clearNotify();
     },
   },
+  created() {
+    window.addEventListener("turnstile-loaded", this.renderCaptcha);
+  },
+  mounted() {
+    this.renderCaptcha();
+  },
+  beforeDestroy() {
+    window.removeEventListener("turnstile-loaded", this.renderCaptcha);
+  },
   methods: {
     handle() {
+      if (!this.captchaToken) {
+        // captcha token is empty
+        this.$buefy.toast.open({
+          message: "未完成验证码，请检查你的页面是否完成了加载。",
+          duration: 10000,
+          type: "is-success",
+        });
+        return;
+      }
       this.loading = true;
       let info;
       switch (this.mode) {
@@ -203,7 +212,7 @@ export default {
             if (info) {
               this.notify.username = "格式不正确";
               this.loading = false;
-              break;
+              return;
             }
           }
           info = validate.single(this.forms.password, {
@@ -213,18 +222,18 @@ export default {
           if (info) {
             this.notify.password = info[0];
             this.loading = false;
-            break;
+            return;
           }
-          this.$refs.captcha.execute();
+          this.handleLogin();
           break;
         case 1:
           info = validate.validate(this.forms, this.constraints.register);
           if (info) {
             this.toNotify(info);
             this.loading = false;
-            break;
+            return;
           }
-          this.$refs.captcha.execute();
+          this.handleRegister();
           break;
         case 2:
           info = validate.single(this.forms.username, {
@@ -239,27 +248,14 @@ export default {
             if (info) {
               this.notify.username = "格式不正确";
               this.loading = false;
-              break;
+              return;
             }
           }
-          this.$refs.captcha.execute();
+          this.handleReset();
           break;
       }
     },
-    captchaResolve(token) {
-      switch (this.mode) {
-        case 0:
-          this.handleLogin(token);
-          break;
-        case 1:
-          this.handleRegister(token);
-          break;
-        case 2:
-          this.handleReset(token);
-          break;
-      }
-    },
-    handleLogin(token) {
+    handleLogin() {
       let isEmail = true;
       let info = validate.single(this.forms.username, {
         presence: true,
@@ -269,7 +265,7 @@ export default {
         isEmail = false;
       }
       const data = {
-        "h-captcha-response": token,
+        "turnstile-response": this.captchaToken,
         password: this.forms.password,
       };
       if (isEmail) {
@@ -302,9 +298,9 @@ export default {
           this.loading = false;
         });
     },
-    handleRegister(token) {
+    handleRegister() {
       const data = {
-        "h-captcha-response": token,
+        "turnstile-response": this.captchaToken,
         username: this.forms.username,
         password: this.forms.password,
         email: this.forms.email,
@@ -329,7 +325,7 @@ export default {
           this.loading = false;
         });
     },
-    handleReset(token) {
+    handleReset() {
       let isEmail = true;
       let info = validate.single(this.forms.username, {
         presence: true,
@@ -339,7 +335,7 @@ export default {
         isEmail = false;
       }
       const data = {
-        "h-captcha-response": token,
+        "turnstile-response": this.captchaToken,
       };
       if (isEmail) {
         data["email"] = this.forms.username;
@@ -365,6 +361,38 @@ export default {
           });
           this.loading = false;
         });
+    },
+    renderCaptcha() {
+      if (this.captchaRendered) {
+        return;
+      }
+      this.captchaToken = "";
+      try {
+        window.turnstile?.render("#turnstile", {
+          sitekey: CONFIG.CAPTCHA_SITEKEY,
+          callback: this.onCaptchaResponse,
+          "expired-callback": this.onCaptchaExpired,
+          "error-callback": this.onCaptchaFailed,
+        });
+      } catch (e) {
+        console.error("Failed to init turnstile.");
+        this.onCaptchaFailed();
+        return;
+      }
+      this.captchaRendered = true;
+    },
+    onCaptchaResponse(res) {
+      this.captchaToken = res;
+    },
+    onCaptchaExpired() {
+      // if necessary, rerender captcha here
+      this.captchaToken = "";
+      this.captchaRendered = false;
+    },
+    onCaptchaFailed() {
+      // if necessary, rerender captcha here
+      this.captchaToken = "";
+      this.captchaRendered = false;
     },
     toNotify(info) {
       for (const [key, value] of Object.entries(info)) {
