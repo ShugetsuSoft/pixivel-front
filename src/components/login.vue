@@ -95,7 +95,12 @@
           <a @click="mode = 0">登录</a> <a @click="mode = 1">注册</a>
         </div>
       </template>
-      <div id="turnstile"></div>
+      <Turnstile
+        :sitekey="sitekey"
+        v-on:verify="onCaptchaResponse"
+        v-on:expire="onCaptchaExpired"
+        v-on:fail="onCaptchaFailed"
+      />
     </section>
     <footer class="modal-card-foot" style="justify-content: flex-end">
       <b-button label="关闭" @click="$emit('close')" />
@@ -112,6 +117,7 @@
 <script>
 import validate from "validate.js";
 import CONFIG from "@/config.json";
+import Turnstile from "@/components/turnstile";
 import qs from "qs";
 import {
   setAccessToken,
@@ -127,13 +133,16 @@ validate.validators.password = function (value, options) {
 
 export default {
   name: "Login",
+  components: {
+    Turnstile,
+  },
   data() {
     return {
       mode: 0,
       titles: ["登录", "注册", "重设密码"],
       loading: false,
       captchaToken: "",
-      captchaRendered: false,
+      sitekey: CONFIG.CAPTCHA_SITEKEY,
       forms: {
         username: "",
         password: "",
@@ -176,19 +185,12 @@ export default {
       this.clearNotify();
     },
   },
-  created() {
-    window.addEventListener("turnstile-loaded", this.renderCaptcha);
-  },
-  mounted() {
-    this.renderCaptcha();
-  },
-  beforeDestroy() {
-    window.removeEventListener("turnstile-loaded", this.renderCaptcha);
-  },
+  created() {},
+  mounted() {},
+  beforeDestroy() {},
   methods: {
     handle() {
       if (!this.captchaToken) {
-        // captcha token is empty
         this.$buefy.toast.open({
           message: "未完成验证码，请检查你的页面是否完成了加载。",
           duration: 10000,
@@ -362,37 +364,14 @@ export default {
           this.loading = false;
         });
     },
-    renderCaptcha() {
-      if (this.captchaRendered) {
-        return;
-      }
-      this.captchaToken = "";
-      try {
-        window.turnstile?.render("#turnstile", {
-          sitekey: CONFIG.CAPTCHA_SITEKEY,
-          callback: this.onCaptchaResponse,
-          "expired-callback": this.onCaptchaExpired,
-          "error-callback": this.onCaptchaFailed,
-        });
-      } catch (e) {
-        console.error("Failed to init turnstile.");
-        this.onCaptchaFailed();
-        return;
-      }
-      this.captchaRendered = true;
-    },
     onCaptchaResponse(res) {
       this.captchaToken = res;
     },
     onCaptchaExpired() {
-      // if necessary, rerender captcha here
       this.captchaToken = "";
-      this.captchaRendered = false;
     },
     onCaptchaFailed() {
-      // if necessary, rerender captcha here
       this.captchaToken = "";
-      this.captchaRendered = false;
     },
     toNotify(info) {
       for (const [key, value] of Object.entries(info)) {
