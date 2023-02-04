@@ -166,7 +166,7 @@ export default {
   },
   data() {
     return {
-      backgroundImg: "https://api.daihan.top/api/acg",
+      backgroundImg: CONFIG.RAND_IMG,
       defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
       sampleIllusts: [],
       sampleIllustsPage: 0,
