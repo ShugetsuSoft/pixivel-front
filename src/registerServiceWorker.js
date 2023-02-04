@@ -22,8 +22,14 @@ if (
     updatefound() {
       console.log("New content is downloading.");
     },
-    updated() {
+    updated(reg) {
       console.log("New content is available; please refresh.");
+
+      let newWorker = reg.installing;
+      window.addEventListener("skip-waiting", () => {
+        newWorker.skipWaiting();
+      });
+      window.dispatchEvent(new Event("new-content-available"));
     },
     offline() {
       console.log(
@@ -34,4 +40,14 @@ if (
       console.error("Error during service worker registration:", error);
     },
   });
+
+  let refreshing;
+  window.navigator.serviceWorker.addEventListener(
+    "controllerchange",
+    function () {
+      if (refreshing) return;
+      window.location.reload();
+      refreshing = true;
+    }
+  );
 }

@@ -42,6 +42,10 @@ export default {
     this.announceShow();
     this.addDownloadNotify();
     await this.syncHook();
+    window.addEventListener(
+      "new-content-available",
+      this.showNewContentAvailable
+    );
   },
   methods: {
     async syncHook() {
@@ -95,6 +99,22 @@ export default {
           return true;
         }
         return false;
+      });
+    },
+    showNewContentAvailable() {
+      this.$buefy.snackbar.open({
+        message: "网站有更新啦，来加载新内容吧！",
+        type: "is-warning",
+        actionText: "更新",
+        indefinite: true,
+        onAction: () => {
+          this.$buefy.toast.open({
+            message: "准备更新",
+            type: "is-success",
+            queue: false,
+          });
+          window.dispatchEvent(new Event("skip-waiting"));
+        },
       });
     },
   },
