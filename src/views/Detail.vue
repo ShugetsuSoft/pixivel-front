@@ -30,6 +30,9 @@
               <template v-if="illust">
                 <h1 class="title is-2 no-bottom-margin">{{ illust.title }}</h1>
                 <small>{{ illust.altTitle }}</small>
+                <template v-if="illust.aiType === 2">
+                  <br /><b-tag type="is-warning"> 此图片由AI生成 </b-tag>
+                </template>
               </template>
               <template v-else>
                 <b-skeleton width="20%" height="2rem"></b-skeleton>
