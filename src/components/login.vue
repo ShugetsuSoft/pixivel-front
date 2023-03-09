@@ -192,7 +192,7 @@ export default {
     handle() {
       if (!this.captchaToken) {
         this.$buefy.toast.open({
-          message: "未完成验证码，请检查你的页面是否完成了加载。",
+          message: "未完成验人机交互验证，请检查你的页面是否完成了加载。",
           duration: 10000,
           type: "is-success",
         });
@@ -311,7 +311,7 @@ export default {
         .post(CONFIG.SHUGETSU_SOFT_API + "user/register", qs.stringify(data))
         .then(() => {
           this.$buefy.toast.open({
-            message: "注册成功！请查收您的邮件~",
+            message: "注册成功！请查看您的收件箱，按指示激活账户后再次登录。",
             duration: 10000,
             type: "is-success",
           });
@@ -348,7 +348,7 @@ export default {
         .post(CONFIG.SHUGETSU_SOFT_API + "user/reset", qs.stringify(data))
         .then(() => {
           this.$buefy.toast.open({
-            message: "重设密码请求已经发送到邮箱！请查收您的邮件~",
+            message: "重设密码请求已经发送！请查看您的收件箱，按指示进行操作。",
             duration: 10000,
             type: "is-success",
           });
