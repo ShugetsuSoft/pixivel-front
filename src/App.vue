@@ -270,4 +270,14 @@ h6 {
   align-items: center;
   justify-content: space-between;
 }
+
+.taginput-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  .input {
+    z-index: inherit !important;
+  }
+}
 </style>
