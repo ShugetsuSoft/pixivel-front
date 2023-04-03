@@ -160,6 +160,7 @@ export default {
           preloader.onload = () => {
             this.imgWidth = preloader.naturalWidth;
             this.imgHeight = preloader.naturalHeight;
+            preloader.remove();
           };
         }
         this.CurrentImgUrl = loaded;
@@ -184,10 +185,15 @@ export default {
           preloader.onload = () => {
             this.imgWidth = preloader.naturalWidth;
             this.imgHeight = preloader.naturalHeight;
+            preloader.remove();
           };
           this.CurrentImgUrl = uri;
           this.loading = false;
           this.$emit("progress", 1);
+
+          if (this.CurrentPage < this.pageCount) {
+            this.triggerPreload();
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -198,6 +204,25 @@ export default {
           this.loading = false;
           this.$emit("progress", 1);
         });
+    },
+    triggerPreload() {
+      let url = this.urlList[this.CurrentPage];
+      let preloader = new Image();
+      preloader.crossOrigin = "anonymous";
+      preloader.src = url;
+      preloader.onload = () => {
+        let canvas = document.createElement("canvas");
+        canvas.width = preloader.naturalWidth;
+        canvas.height = preloader.naturalHeight;
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(preloader, 0, 0);
+        canvas.toBlob((b) => {
+          this.$store.commit("Pic/setCacheImg", url);
+          let uri = URL.createObjectURL(b);
+          this.loadedList[this.CurrentPage - 1] = uri;
+          preloader.remove();
+        });
+      };
     },
     loadUgoira() {
       if (this.ugoiraFrames.length < 1) {
