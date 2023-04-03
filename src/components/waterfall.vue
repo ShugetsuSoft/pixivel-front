@@ -118,7 +118,9 @@ export default {
       }
     },
     heightGetter(item) {
-      return (item.height / item.width) * this.width;
+      let resizedHeight = (item.height / item.width) * this.width;
+      if (resizedHeight > 900) return 900;
+      return resizedHeight;
     },
     containerResized(entry) {
       this.containerWidth = Math.floor(entry.contentRect.width);
