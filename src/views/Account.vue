@@ -197,7 +197,7 @@
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"
-            @click="jump(services.link)"
+            @click="jump(service.link)"
             v-for="service in services"
             :key="service.name"
           >
