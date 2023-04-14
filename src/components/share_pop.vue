@@ -121,8 +121,7 @@ export default {
     });
     this.clipboard.on("error", () => {
       this.$buefy.snackbar.open({
-        message:
-          "您的浏览器不支持由页面发起的复制。可以手动复制链接进行分享。",
+        message: "您的浏览器不支持由页面发起的复制。可以手动复制链接进行分享。",
         type: "is-error",
         position: "is-top",
       });

@@ -37,7 +37,8 @@ export default {
         try {
           (window.adsbygoogle || []).push({});
         } catch (error) {
-          this.$refs.adbanner.innerText = "请考虑对本站点解除您的AdBlock以支持本站点长期发展。";
+          this.$refs.adbanner.innerText =
+            "请考虑对本站点解除您的AdBlock以支持本站点长期发展。";
           console.error(error);
         }
       };

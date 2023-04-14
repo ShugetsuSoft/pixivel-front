@@ -18,13 +18,7 @@
         </div>
         <div class="column is-one-quarter">
           <div
-            class="
-              container
-              is-fluid
-              no-padding-comp
-              top-padding-phone
-              img-info
-            "
+            class="container is-fluid no-padding-comp top-padding-phone img-info"
           >
             <div>
               <template v-if="illust">
