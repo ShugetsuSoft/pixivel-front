@@ -37,13 +37,13 @@ export default {
         try {
           (window.adsbygoogle || []).push({});
         } catch (error) {
-          this.$refs.adbanner.innerText = "是ADBLOCK好耶";
+          this.$refs.adbanner.innerText = "请考虑对本站点解除您的AdBlock以支持本站点长期发展。";
           console.error(error);
         }
       };
       adscript.onerror = () => {
         this.$refs.adbanner.innerText =
-          "唔，虽然这里本该有个广告，但是既然阁下不愿意的话，我也就不展示了。可以考虑捐赠支持开发者哦";
+          "我们理解您对互联网广告的厌恶，我们也在不断探索更加用户友好的运营策略；但目前，我们依然依赖于广告收入支撑服务运行。请考虑对本站点解除您的AdBlock，或者选择捐赠以支持本站点长期发展。";
       };
       adscript["data-ad-client"] = "ca-pub-7564284646329791";
       adscript.src =

@@ -25,9 +25,9 @@
 
                 <div class="content" v-else>
                   <p>
-                    <strong>还没登录喵！</strong>
+                    <strong>游客身份</strong>
                     <br />
-                    登录以后可以启用收藏和关注功能
+                    注册用户可以使用收藏和关注功能。
                   </p>
                 </div>
               </div>
@@ -94,7 +94,7 @@
       </section>
       <section v-else-if="tabNow == 1">
         <div class="notification" v-if="!hasDownloadTask">
-          没有正在进行的下载任务喵！
+          没有正在进行的下载任务。
         </div>
         <div class="columns set-list">
           <div

@@ -30,7 +30,7 @@ export async function addFollow(user) {
     if (!(await syncFollow())) {
       Snackbar.open({
         duration: 2000,
-        message: "关注列表拉取失败，请检查网络",
+        message: "关注列表同步失败，请检查网络",
         type: "is-danger",
         queue: false,
       });
@@ -67,7 +67,7 @@ export async function clearFollow() {
   await db[FOLLOW_DATABASE_NAME].clear();
   Snackbar.open({
     duration: 2000,
-    message: "关注列表被清空。。。呜呜",
+    message: "关注列表已清空。",
     queue: false,
   });
   syncFollowDEBU();

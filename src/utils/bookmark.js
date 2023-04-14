@@ -30,7 +30,7 @@ export async function addBookMark(illust) {
     if (!(await syncBookMark())) {
       Snackbar.open({
         duration: 2000,
-        message: "关注列表拉取失败，请检查网络",
+        message: "关注列表同步失败，请检查网络。",
         type: "is-danger",
         queue: false,
       });
@@ -75,7 +75,7 @@ export async function clearBookMark() {
   await db[BOOKMARK_DATABASE_NAME].clear();
   Snackbar.open({
     duration: 2000,
-    message: "收藏夹，无了。。。呜呜",
+    message: "收藏夹已清空。",
     queue: false,
   });
   syncBookmarkDEBU();

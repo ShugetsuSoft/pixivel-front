@@ -51,7 +51,7 @@
       <WaterFall :illusts="userIllusts" />
       <infinite-loading @infinite="illustsPageNext" spinner="spiral">
         <div slot="no-more">加载完毕</div>
-        <div slot="no-results">没结果</div>
+        <div slot="no-results">记录为空</div>
         <div slot="error" slot-scope="{ trigger }">
           <div class="notification is-danger">
             <div class="buttons">
@@ -64,7 +64,7 @@
         </div>
       </infinite-loading>
       <LongLoadingBadage ref="longloading_badage"
-        >可能是第一次加载..需要获取全部插画请耐心等待</LongLoadingBadage
+        >可能是第一次加载...正在获取全部插画，请耐心等待...</LongLoadingBadage
       >
     </div>
   </section>

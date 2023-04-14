@@ -69,7 +69,7 @@
             ref="infload"
           >
             <div slot="no-more">加载完毕</div>
-            <div slot="no-results">没结果</div>
+            <div slot="no-results">记录为空</div>
             <div slot="error" slot-scope="{ trigger }">
               <div class="notification is-danger">
                 <div class="buttons">

@@ -159,7 +159,7 @@ export default {
             presence: true,
             format: {
               pattern: "^[a-zA-Z0-9]+$",
-              message: "用户名必须只包含英文和数字",
+              message: "用户名格式有误，应仅包含英文和数字",
             },
           },
           password: {
@@ -169,7 +169,7 @@ export default {
           email: {
             presence: true,
             email: {
-              message: "邮箱不正确",
+              message: "邮箱格式有误，请检查修正后再次尝试",
             },
           },
         },
@@ -192,7 +192,7 @@ export default {
     handle() {
       if (!this.captchaToken) {
         this.$buefy.toast.open({
-          message: "未完成验人机交互验证，请检查你的页面是否完成了加载。",
+          message: "未完成人机交互验证，请检查你的页面是否完成了加载。",
           duration: 10000,
           type: "is-success",
         });
@@ -212,7 +212,7 @@ export default {
               format: { pattern: "^[a-zA-Z0-9]+$" },
             });
             if (info) {
-              this.notify.username = "格式不正确";
+              this.notify.username = "格式有误，应仅包含英文和数字";
               this.loading = false;
               return;
             }
@@ -248,7 +248,7 @@ export default {
               format: { pattern: "^[a-zA-Z0-9]+$" },
             });
             if (info) {
-              this.notify.username = "格式不正确";
+              this.notify.username = "格式有误，应仅包含英文和数字";
               this.loading = false;
               return;
             }
@@ -282,7 +282,7 @@ export default {
           setRefreshToken(response.data.refresh_token);
           setAccessToken(response.data.access_token);
           this.$buefy.toast.open({
-            message: "登录成功！耶！",
+            message: "登录成功。",
             duration: 10000,
             type: "is-success",
           });
@@ -311,7 +311,7 @@ export default {
         .post(CONFIG.SHUGETSU_SOFT_API + "user/register", qs.stringify(data))
         .then(() => {
           this.$buefy.toast.open({
-            message: "注册成功！请查看您的收件箱，按指示激活账户后再次登录。",
+            message: "注册成功。请查看您的收件箱，按指示激活账户后再次登录。",
             duration: 10000,
             type: "is-success",
           });
@@ -348,7 +348,7 @@ export default {
         .post(CONFIG.SHUGETSU_SOFT_API + "user/reset", qs.stringify(data))
         .then(() => {
           this.$buefy.toast.open({
-            message: "重设密码请求已经发送！请查看您的收件箱，按指示进行操作。",
+            message: "重设密码请求已经发送。请查看您的收件箱，按指示进行操作。",
             duration: 10000,
             type: "is-success",
           });

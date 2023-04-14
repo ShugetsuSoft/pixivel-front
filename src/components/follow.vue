@@ -62,13 +62,13 @@ export default {
     clearAll() {
       this.$buefy.dialog.confirm({
         message: "真的要清空所有关注吗！此操作不可恢复！",
-        cancelText: "点错了",
-        confirmText: "真的",
+        cancelText: "返回",
+        confirmText: "确定",
         onConfirm: () => {
           this.$buefy.dialog.confirm({
-            message: "红豆泥？！",
-            cancelText: "NO",
-            confirmText: "嗯",
+            message: "请再次确认是否要清空所有收藏。此操作不可恢复。",
+            cancelText: "返回",
+            confirmText: "确定",
             onConfirm: async () => {
               await clearFollow();
             },

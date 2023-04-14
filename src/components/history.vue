@@ -16,7 +16,7 @@
       ref="infload"
     >
       <div slot="no-more">加载完毕</div>
-      <div slot="no-results">没结果</div>
+      <div slot="no-results">记录为空</div>
     </infinite-loading>
   </div>
 </template>

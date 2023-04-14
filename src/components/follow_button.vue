@@ -3,7 +3,7 @@
     :type="{ 'is-primary': !isFollowed, 'is-danger': isFollowed }"
     size="is-small"
     @click.native="onclick"
-    >{{ isFollowed ? "已经关注" : "关注!" }}</b-button
+    >{{ isFollowed ? "已经关注" : "关注" }}</b-button
   >
 </template>
 

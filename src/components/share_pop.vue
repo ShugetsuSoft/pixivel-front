@@ -122,7 +122,7 @@ export default {
     this.clipboard.on("error", () => {
       this.$buefy.snackbar.open({
         message:
-          "好像，浏览器都不支持复制？不过没关系，可以全选框里面的链接然后复制哦",
+          "您的浏览器不支持由页面发起的复制。可以手动复制链接进行分享。",
         type: "is-error",
         position: "is-top",
       });

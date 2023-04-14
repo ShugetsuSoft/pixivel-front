@@ -70,7 +70,7 @@
               <b-dropdown-item @click="deleteToken">退出登录</b-dropdown-item>
             </template>
             <template v-else>
-              <div class="dropdown-item"><b-tag>还没登录呀！</b-tag></div>
+              <div class="dropdown-item"><b-tag>游客身份</b-tag></div>
               <b-dropdown-item @click="showLoginPanel = true"
                 >登录或者注册</b-dropdown-item
               >
@@ -120,7 +120,7 @@
         ref="infload"
       >
         <div slot="no-more">加载完毕</div>
-        <div slot="no-results">没结果</div>
+        <div slot="no-results">记录为空</div>
         <div slot="error" slot-scope="{ trigger }">
           <div class="notification is-danger">
             <div class="buttons">
@@ -217,16 +217,16 @@ export default {
     onDeveloping() {
       this.$buefy.notification.open({
         duration: 5000,
-        message: "功能还正在开发中...",
+        message: "功能正在开发...",
         type: "is-info",
       });
     },
     deleteToken() {
       this.$buefy.dialog.confirm({
         title: "退出登录",
-        message: `确定要退出登录嘛?<br>退出登录后本地将无法访问你的数据，需要重新登录才可以`,
-        cancelText: "算了",
-        confirmText: "嗯",
+        message: `确定要退出登录?<br>退出登录后本地将无法访问你的关注和收藏数据，需要重新登录。`,
+        cancelText: "返回",
+        confirmText: "确定",
         type: "is-success",
         onConfirm: () => {
           deleteToken();
@@ -303,9 +303,9 @@ export default {
         if (/^[\d]+$/.test(key)) {
           this.$buefy.dialog.confirm({
             title: "跳转ID",
-            message: "检测到数字的输入，将会跳转到对应的插画或画师界面，请选择",
-            confirmText: "去插画界面",
-            cancelText: "去画师界面",
+            message: "检测到ID输入，将会跳转到对应的插画或画师界面，请选择",
+            confirmText: "输入的是插画ID",
+            cancelText: "输入的是画师ID",
             onCancel: () => {
               this.$router.push({ name: "User", params: { id: key } });
             },
