@@ -71,18 +71,11 @@
                 <li :class="{ 'link-active': tabNow == 2 }" @click="tabNow = 2">
                   <a>设置</a>
                 </li>
-
                 <li :class="{ 'link-active': tabNow == 6 }" @click="tabNow = 6">
+                  <a>本站服务</a>
+                </li>
+                <li :class="{ 'link-active': tabNow == 7 }" @click="tabNow = 7">
                   <a>友情链接</a>
-                </li>
-                <li>
-                  <a href="https://forum.pixivel.moe/" target="_blank">论坛</a>
-                </li>
-                <li>
-                  <a href="https://nekonya.fun/" target="_blank">图站</a>
-                </li>
-                <li>
-                  <a href="https://ultra.pixivel.moe/" target="_blank">超分</a>
                 </li>
               </ul>
             </div>
@@ -200,8 +193,31 @@
       <section v-else-if="tabNow == 5">
         <History />
       </section>
-
       <section v-if="tabNow == 6">
+        <div class="columns set-list">
+          <div
+            class="column is-one-third-desktop is-half-tablet hover-up"
+            @click="jump(services.link)"
+            v-for="service in services"
+            :key="service.name"
+          >
+            <b-notification :closable="false" class="is-clickable">
+              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
+                <figure class="image is-64x64 media-left">
+                  <img class="is-rounded" :src="service.ava" />
+                </figure>
+                <div class="content">
+                  <strong>{{ service.name }}</strong>
+                  <p>
+                    {{ service.desc }}
+                  </p>
+                </div>
+              </div>
+            </b-notification>
+          </div>
+        </div>
+      </section>
+      <section v-if="tabNow == 7">
         <div class="columns set-list">
           <div
             class="column is-one-third-desktop is-half-tablet hover-up"
@@ -217,7 +233,7 @@
                 <div class="content">
                   <strong>{{ link.name }}</strong>
                   <p>
-                    {{ link.desc }}<a>{{ link.link }}</a>
+                    {{ link.desc }}
                   </p>
                 </div>
               </div>
@@ -266,6 +282,26 @@ export default {
       showLoginPanel: false,
       announce: window.JSON.parse(storage.get(AnnounceKey, "{}")),
       defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
+      services: [
+        {
+          name: "论坛",
+          ava: "/favicon.ico",
+          desc: "任何关于Pixivel的疑问以及建议都可以在此提出！哦对了聊几句也是允许的哦~",
+          link: "https://forum.pixivel.moe/",
+        },
+        {
+          name: "UltraRESO 超分酱",
+          ava: "/favicon.ico",
+          desc: "一个快速好用的插画放大服务",
+          link: "https://ultra.pixivel.moe",
+        },
+        {
+          name: "Nekonya 插画分享站",
+          ava: "https://bucket.nekonya.fun/nekonya/2022/09/cropped-nekonya_logo-192x192.png",
+          desc: "可爱的插画聚集地",
+          link: "https://nekonya.fun",
+        },
+      ],
       links: [
         {
           name: "Rorical",
