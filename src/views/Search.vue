@@ -16,7 +16,21 @@
             <b-dropdown-item value="user"> 搜索作者 </b-dropdown-item>
           </b-dropdown>
         </p>
+        <b-taginput
+          v-model="tags"
+          :data="suggestList"
+          autocomplete
+          :allow-new="true"
+          icon="uil-label"
+          icon-pack="uil"
+          @typing="suggestdebu"
+          placeholder="输入标签 半角逗号来添加"
+          @keyup.enter.native="search()"
+          v-if="mode == 'tag'"
+        >
+        </b-taginput>
         <b-autocomplete
+          v-else
           v-model="keyword"
           :data="suggestList"
           placeholder="试着输入些内容吧.."
@@ -110,6 +124,7 @@ export default {
     return {
       keyword: "",
       finalKeyword: "",
+      tags: [],
       suggestList: [],
       suggestdebu: null,
       errorMsg: "",
@@ -123,6 +138,10 @@ export default {
     };
   },
   watch: {
+    tags() {
+      if (this.tags.length < 1) return;
+      this.keyword = this.tags.join(",");
+    },
     finalKeyword() {
       this.refresh(false);
     },
@@ -133,7 +152,7 @@ export default {
         query: {
           keyword: this.keyword,
           mode: this.mode,
-          features: this.queryFeatures.join(","),
+          features: this.queryFeatures?.join(","),
         },
       });
     },
@@ -144,7 +163,7 @@ export default {
         query: {
           keyword: this.keyword,
           mode: this.mode,
-          features: this.queryFeatures.join(","),
+          features: this.queryFeatures.filter((n) => n).join(","),
         },
       });
     },
@@ -152,8 +171,9 @@ export default {
       this.keyword = this.$route.query.keyword;
       this.finalKeyword = this.$route.query.keyword;
       this.mode = this.$route.query.mode;
-      this.queryFeatures = this.$route.query.features.split(",");
+      this.queryFeatures = this.$route.query.features?.split(",") || [];
       if (!this.mode) this.mode = "illust";
+      if (this.mode == "tag") this.tags = this.keyword.split(",");
     },
   },
   created() {
@@ -161,7 +181,8 @@ export default {
     if (!this.mode) this.mode = "illust";
     this.keyword = this.$route.query.keyword;
     this.finalKeyword = this.$route.query.keyword;
-    this.queryFeatures = this.$route.query.features.split(",");
+    this.queryFeatures = this.$route.query.features?.split(",") || [];
+    if (this.mode == "tag") this.tags = this.keyword.split(",");
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.keyword != "") {
         this.suggest();
@@ -188,7 +209,7 @@ export default {
       if (total) {
         this.finalKeyword = this.$route.query.keyword;
         this.keyword = this.$route.query.keyword;
-        this.queryFeatures = this.$route.query.features.split(",");
+        this.queryFeatures = this.$route.query.features?.split(",") || [];
       }
       this.$store.commit("CancelRequests/clearCancelToken");
     },
@@ -199,7 +220,7 @@ export default {
           query: {
             keyword: keywd,
             mode: this.mode,
-            features: this.queryFeatures.join(","),
+            features: this.queryFeatures?.join(","),
           },
         });
       }
@@ -375,6 +396,9 @@ export default {
   .field {
     min-width: 20rem;
     .autocomplete {
+      flex: 1;
+    }
+    .taginput {
       flex: 1;
     }
   }

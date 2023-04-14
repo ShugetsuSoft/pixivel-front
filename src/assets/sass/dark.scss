@@ -63,8 +63,7 @@
     filter: brightness(0.9);
   }
 
-  .taginput .taginput-container.is-focusable {
-    background: transparent;
-    border: none;
+  .taginput {
+    background-color: #0a0a0a;
   }
 }
