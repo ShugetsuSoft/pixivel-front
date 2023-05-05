@@ -2,9 +2,17 @@
   <footer class="footer">
     <div class="content has-text-centered">
       <p>
-        <strong>Pixivel</strong> by
+        <strong>&copy; Pixivel</strong> by
         <a href="https://shugetsu.dev/" target="_blank">Shugetsu Soft</a>. Not
         affiliated with pixiv Inc. .
+        <br />
+        <a href="https://policy.shugetsu.dev/terms.html" target="_blank"
+          >Terms</a
+        >
+        |
+        <a href="https://policy.shugetsu.dev/privacy.html" target="_blank"
+          >Privacy</a
+        >
       </p>
       <p ref="adbanner">这里应该会有个广告用来支持运营</p>
       <ins
