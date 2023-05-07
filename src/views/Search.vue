@@ -192,8 +192,10 @@ export default {
   mounted() {
     if (this.finalKeyword) {
       setTimeout(() => {
-        this.$refs.infload.$emit("$InfiniteLoading:reset");
-        this.$refs.infload.attemptLoad();
+        if (this.$refs.infload) {
+          this.$refs.infload.$emit("$InfiniteLoading:reset");
+          this.$refs.infload.attemptLoad();
+        }
       }, 1500);
     }
   },
@@ -360,7 +362,7 @@ export default {
           if (!response.data.data.has_next) {
             this.usersLoad = false;
           }
-          this.users = this.illusts.concat(
+          this.users = this.users.concat(
             response.data.data.users.map((user, i) => {
               if (response.data.data.highlight[i] != null)
                 user["title"] = response.data.data.highlight[i];
