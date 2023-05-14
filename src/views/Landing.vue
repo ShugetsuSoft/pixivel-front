@@ -167,7 +167,7 @@ export default {
   data() {
     return {
       backgroundImg: CONFIG.RAND_IMG,
-      defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
+      defaultAvatar: "img/defaultAva.jpg",
       sampleIllusts: [],
       sampleIllustsPage: 0,
       loadid: +new Date(),

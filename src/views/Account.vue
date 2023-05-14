@@ -281,7 +281,7 @@ export default {
       tabNow: 0,
       showLoginPanel: false,
       announce: window.JSON.parse(storage.get(AnnounceKey, "{}")),
-      defaultAvatar: "https://bucket.nekonya.fun/others/pixivel/defaultAva.jpg",
+      defaultAvatar: "img/defaultAva.jpg",
       services: [
         {
           name: "论坛",
