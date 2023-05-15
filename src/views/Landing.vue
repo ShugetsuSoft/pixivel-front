@@ -182,17 +182,14 @@ export default {
       sampleUsersLoadFlag: true,
       showLoginPanel: false,
       keysPressed: [],
-      saveSequence: ["s", "a", "v", "e", "b", "g", "ArrowUp", "ArrowUp"],
+      saveSequence: "savebgArrowUpArrowUp",
     };
   },
   created() {
     (async () => {
-      const response = await fetch(
-        "https://cors-redirect.shugetsu.workers.dev/" + CONFIG.RAND_IMG,
-        {
-          redirect: "follow",
-        }
-      );
+      const response = await fetch(CONFIG.RAND_IMG, {
+        redirect: "follow",
+      });
       const arrayBuffer = await response.arrayBuffer();
       const blob = new Blob([arrayBuffer], {
         type: response.headers.get("content-type"),
@@ -243,7 +240,10 @@ export default {
     },
     bgDownload(event) {
       this.keysPressed.push(event.key);
-      if (this.keysPressed.join("") === this.saveSequence.join("")) {
+      if (this.keysPressed.length > 50) {
+        this.keysPressed.shift();
+      }
+      if (this.saveSequence.includes(this.keysPressed.join(""))) {
         console.log("Background Image Download");
 
         const link = document.createElement("a");
