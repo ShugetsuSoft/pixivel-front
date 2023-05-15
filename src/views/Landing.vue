@@ -166,7 +166,7 @@ export default {
   },
   data() {
     return {
-      backgroundImg: CONFIG.RAND_IMG,
+      backgroundImg: "",
       defaultAvatar: "img/defaultAva.jpg",
       sampleIllusts: [],
       sampleIllustsPage: 0,
@@ -181,9 +181,24 @@ export default {
       sampleUsersPage: 0,
       sampleUsersLoadFlag: true,
       showLoginPanel: false,
+      keysPressed: [],
+      saveSequence: ["s", "a", "v", "e", "b", "g", "ArrowUp", "ArrowUp"],
     };
   },
   created() {
+    (async () => {
+      const response = await fetch(
+        "https://cors-redirect.shugetsu.workers.dev/" + CONFIG.RAND_IMG,
+        {
+          redirect: "follow",
+        }
+      );
+      const arrayBuffer = await response.arrayBuffer();
+      const blob = new Blob([arrayBuffer], {
+        type: response.headers.get("content-type"),
+      });
+      this.backgroundImg = URL.createObjectURL(blob);
+    })();
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.searchKeyword != "") {
         this.axios
@@ -201,7 +216,12 @@ export default {
       }
     }, 800);
   },
-  mounted() {},
+  mounted() {
+    window.addEventListener("keydown", this.bgDownload);
+  },
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.bgDownload);
+  },
   computed: {
     isLoggedIn() {
       return isLoggedIn();
@@ -220,6 +240,20 @@ export default {
         message: "功能正在开发...",
         type: "is-info",
       });
+    },
+    bgDownload(event) {
+      this.keysPressed.push(event.key);
+      if (this.keysPressed.join("") === this.saveSequence.join("")) {
+        console.log("Background Image Download");
+
+        const link = document.createElement("a");
+        link.href = this.backgroundImg;
+        link.download = "background-image.png";
+        link.click();
+
+        // Reset the array after the sequence has been detected
+        this.keysPressed = [];
+      }
     },
     deleteToken() {
       this.$buefy.dialog.confirm({
@@ -386,9 +420,11 @@ export default {
     width: 100%;
     height: 38rem;
     object-position: center;
+
     @media screen and (max-width: 975px) {
       object-fit: contain;
     }
+
     object-fit: cover;
     filter: brightness(1.03);
     opacity: 0;
@@ -434,13 +470,16 @@ export default {
     left: 0.75rem;
     right: 0.75rem;
   }
+
   margin: {
     top: -2rem;
     bottom: 2rem;
   }
+
   .userlist {
     height: 187px;
   }
+
   .notification {
     padding: {
       top: 1.25rem;
@@ -458,9 +497,11 @@ export default {
   height: 4rem;
   z-index: 40;
   background: transparent;
+
   img {
     margin-left: 7px;
   }
+
   input {
     box-shadow: none !important;
     border: none;
@@ -468,13 +509,16 @@ export default {
     min-width: 20rem;
     color: #2f2f2f;
   }
+
   .title-container {
     display: flex;
     align-items: center;
+
     .title {
       color: #ffffff;
     }
   }
+
   .icon {
     color: #4a4a4a !important;
   }
