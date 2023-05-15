@@ -214,10 +214,10 @@ export default {
     }, 800);
   },
   mounted() {
-    window.addEventListener("keydown", this.bgDownload);
+    document.addEventListener("keydown", this.bgDownload);
   },
   beforeDestroy() {
-    window.removeEventListener("keydown", this.bgDownload);
+    document.removeEventListener("keydown", this.bgDownload);
   },
   computed: {
     isLoggedIn() {
@@ -243,7 +243,7 @@ export default {
       if (this.keysPressed.length > 50) {
         this.keysPressed.shift();
       }
-      if (this.saveSequence.includes(this.keysPressed.join(""))) {
+      if (this.keysPressed.join("").includes(this.saveSequence)) {
         console.log("Background Image Download");
 
         const link = document.createElement("a");
