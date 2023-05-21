@@ -5,7 +5,7 @@
 	"API_HOST": "https://api.pixivel.moe/v2/pixiv/",
 	"USER_API": "https://api-user.pixivel.moe/",
 	"ANNOUNCE_API": "https://api.shugetsu.dev/announce/fetch/pixivel",
-	"RAND_IMG":"https://cors-redirect.shugetsu.workers.dev/https://www.loliapi.com/acg/",
+	"RAND_IMG":"https://index.api.pixivel.moe/https://www.loliapi.com/acg/",
 	"DOWNLOAD_DEFAULT": {
 		"TASK_MESSAGES": ["下载这些对我来说还是小菜一碟嘛！", "存这些图！你肯定会自己偷偷prpr的！", "欸，是我不够好看吗，为什么要去看别的女人", "行！包在我身上！", "阁下，你磁盘空间快不够了呀~", "任务已添加~", "下载这么多，服务器娘会被玩坏的"]
 	},
