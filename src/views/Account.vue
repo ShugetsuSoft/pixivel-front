@@ -290,12 +290,6 @@ export default {
           link: "https://forum.pixivel.moe/",
         },
         {
-          name: "UltraRESO 超分酱",
-          ava: "/favicon.ico",
-          desc: "一个快速好用的插画放大服务",
-          link: "https://ultra.pixivel.moe",
-        },
-        {
           name: "Nekonya 插画分享站",
           ava: "https://bucket.nekonya.fun/nekonya/2022/09/cropped-nekonya_logo-192x192.png",
           desc: "可爱的插画聚集地",
