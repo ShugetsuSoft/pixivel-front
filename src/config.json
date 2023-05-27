@@ -14,7 +14,8 @@
 		"download.filename": "{title}-{id}-{page}",
 		"sample.sanity_filter": 4,
 		"global.sanity_filter": 5,
-		"recommend.quality": 3000
+		"recommend.quality": 3000,
+		"global.ai_filter": false
 	},
 	"CAPTCHA_SITEKEY": "0x4AAAAAAABJmE0EBrdePmmR",
 	"GRAVATAR_PROXY": "https://gravatar.loli.net/avatar/",

@@ -182,6 +182,11 @@
               ></b-numberinput>
             </b-field>
           </div>
+          <div class="column is-one-third-desktop is-full-mobile">
+            <b-field label="过滤所有AI作品">
+              <b-switch @input="setaifilter" :value="getaifilter"></b-switch>
+            </b-field>
+          </div>
         </div>
       </section>
       <section v-else-if="tabNow == 3">
@@ -382,6 +387,9 @@ export default {
     getrecommendquality() {
       return this.$store.getters["Settings/get"]("recommend.quality");
     },
+    getaifilter() {
+      return this.$store.getters["Settings/get"]("global.ai_filter");
+    },
   },
   methods: {
     removeTask(index) {
@@ -409,6 +417,12 @@ export default {
       this.$store.commit("Settings/set", {
         key: "recommend.quality",
         value: parseInt(e.target.value),
+      });
+    },
+    setaifilter(v) {
+      this.$store.commit("Settings/set", {
+        key: "global.ai_filter",
+        value: v,
       });
     },
     logInOrOut() {
