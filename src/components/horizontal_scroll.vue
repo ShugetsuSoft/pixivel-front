@@ -80,9 +80,16 @@ export default {
   computed: {
     illustsFiltered() {
       let sanity = this.$store.getters["Settings/get"]("global.sanity_filter");
-      return this.illusts.filter((item) => {
+      let ban_ai = this.$store.getters["Settings/get"]("global.ai_filter");
+      let illusts = this.illusts.filter((item) => {
         return item.sanity < sanity;
       });
+      if (ban_ai === true) {
+        illusts = this.illusts.filter((item) => {
+          return item.aiType === 0;
+        });
+      }
+      return illusts;
     },
   },
   beforeDestroy() {
