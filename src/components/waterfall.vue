@@ -104,7 +104,10 @@ export default {
       });
       if (ban_ai === true) {
         illusts = this.illusts.filter((item) => {
-          return item.aiType === 0;
+          if (item.aiType != undefined) {
+            return item.aiType === 0;
+          }
+          return true;
         });
       }
       if (this.showAd !== -1 && illusts.length > this.showAd) {
