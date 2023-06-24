@@ -286,6 +286,9 @@ export default {
         message: message,
         type: "is-danger",
       });
+      setTimeout(() => {
+        this.$router.push("/");
+      }, 2000);
     },
     loadUgoira(force) {
       let params = {};
