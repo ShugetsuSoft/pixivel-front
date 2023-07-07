@@ -86,7 +86,7 @@ export default {
       });
       if (ban_ai === true) {
         illusts = this.illusts.filter((item) => {
-          return item.aiType === 0;
+          return item.aiType !== 2;
         });
       }
       return illusts;
