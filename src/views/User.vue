@@ -133,6 +133,7 @@ export default {
           });
         })
         .catch((error) => {
+          console.error(error);
           this.error(error.response.data.message);
           this.loading.close();
         });
@@ -197,7 +198,8 @@ export default {
           });
         })
         .catch((error) => {
-          this.error(error);
+          console.error(error);
+          this.error(error.response.data.message);
           $state.error();
           this.$refs.longloading_badage.stop();
         });
