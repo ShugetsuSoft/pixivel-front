@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Banned from "@/assets/infos/ban.json";
+import Banned from "@/assets/info/ban.json";
 
 export default {
   name: "Footer",
