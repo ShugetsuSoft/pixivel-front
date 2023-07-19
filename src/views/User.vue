@@ -142,6 +142,7 @@ export default {
   },
   methods: {
     error(message) {
+      this.bus.emit("block");
       this.$buefy.notification.open({
         duration: 5000,
         message: message,

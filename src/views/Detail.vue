@@ -18,7 +18,13 @@
         </div>
         <div class="column is-one-quarter">
           <div
-            class="container is-fluid no-padding-comp top-padding-phone img-info"
+            class="
+              container
+              is-fluid
+              no-padding-comp
+              top-padding-phone
+              img-info
+            "
           >
             <div>
               <template v-if="illust">
@@ -281,6 +287,7 @@ export default {
   },
   methods: {
     error(message) {
+      this.bus.emit("block");
       this.$buefy.notification.open({
         duration: 5000,
         message: message,

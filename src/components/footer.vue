@@ -34,7 +34,14 @@ export default {
   mounted() {
     this.initAna();
     if (Banned.indexOf(window.location.href) == -1) {
-      this.initAds();
+      const cancel = setTimeout(() => {
+        this.initAds();
+      }, 5000);
+      const cancelAdsLoadHook = () => {
+        clearTimeout(cancel);
+        this.bus.off("block", cancelAdsLoadHook);
+      };
+      this.bus.on("block", cancelAdsLoadHook);
     }
   },
   methods: {

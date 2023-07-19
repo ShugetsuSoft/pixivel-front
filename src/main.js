@@ -17,6 +17,9 @@ Vue.prototype.Lodash = Lodash;
 import moment from "moment";
 moment.locale("zh-cn");
 Vue.prototype.moment = moment;
+import mitt from "mitt";
+Vue.prototype.bus = mitt();
+
 Vue.filter("dateFormat", function (daraStr, pattern = "YYYY-MM-DD HH:mm:ss") {
   return moment(daraStr).format(pattern);
 });
