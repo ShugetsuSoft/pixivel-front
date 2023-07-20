@@ -36,7 +36,7 @@ export default {
     if (Banned.indexOf(window.location.href) == -1) {
       const cancel = setTimeout(() => {
         this.initAds();
-      }, 5000);
+      }, 3000);
       const cancelAdsLoadHook = () => {
         clearTimeout(cancel);
         this.bus.off("block", cancelAdsLoadHook);
@@ -64,10 +64,7 @@ export default {
       adscript["data-ad-client"] = "ca-pub-7564284646329791";
       adscript.src =
         "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7564284646329791";
-      document.currentScript.parentNode.insertBefore(
-        adscript,
-        document.currentScript
-      );
+      document.head.appendChild(adscript);
     },
     initAna() {
       let analyticscript = document.createElement("script");
@@ -82,10 +79,7 @@ export default {
       };
       analyticscript.src =
         "https://www.googletagmanager.com/gtag/js?id=UA-159010258-1";
-      document.currentScript.parentNode.insertBefore(
-        analyticscript,
-        document.currentScript
-      );
+      document.head.appendChild(analyticscript);
     },
   },
 };

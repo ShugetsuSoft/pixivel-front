@@ -147,14 +147,15 @@ export default {
       this.switchPage();
     },
     switchPage() {
-      let url = this.urlList[this.CurrentPage - 1];
-      let loaded = this.loadedList[this.CurrentPage - 1];
-      if (this.CurrentPage == 1) {
+      const page = this.CurrentPage;
+      let url = this.urlList[page - 1];
+      let loaded = this.loadedList[page - 1];
+      if (page == 1) {
         this.imgWidth = this.initialWidth;
         this.imgHeight = this.initialHeight;
       }
       if (loaded) {
-        if (this.CurrentPage != 1) {
+        if (page != 1) {
           let preloader = new Image();
           preloader.src = loaded;
           preloader.onload = () => {
@@ -166,7 +167,6 @@ export default {
         this.CurrentImgUrl = loaded;
         return;
       }
-
       this.loading = true;
       this.$emit("progress", 0);
       this.axios
@@ -179,7 +179,7 @@ export default {
         .then((response) => {
           this.$store.commit("Pic/setCacheImg", url);
           let uri = URL.createObjectURL(response.data);
-          this.loadedList[this.CurrentPage - 1] = uri;
+          this.loadedList[page - 1] = uri;
           let preloader = new Image();
           preloader.src = uri;
           preloader.onload = () => {
@@ -191,8 +191,8 @@ export default {
           this.loading = false;
           this.$emit("progress", 1);
 
-          if (this.CurrentPage < this.pageCount) {
-            this.triggerPreload();
+          if (page < this.pageCount) {
+            this.triggerPreload(page);
           }
         })
         .catch((error) => {
@@ -205,8 +205,8 @@ export default {
           this.$emit("progress", 1);
         });
     },
-    triggerPreload() {
-      let url = this.urlList[this.CurrentPage];
+    triggerPreload(currentPage) {
+      let url = this.urlList[currentPage];
       let preloader = new Image();
       preloader.crossOrigin = "anonymous";
       preloader.src = url;
@@ -219,7 +219,7 @@ export default {
         canvas.toBlob((b) => {
           this.$store.commit("Pic/setCacheImg", url);
           let uri = URL.createObjectURL(b);
-          this.loadedList[this.CurrentPage - 1] = uri;
+          this.loadedList[currentPage] = uri;
           preloader.remove();
         });
       };
