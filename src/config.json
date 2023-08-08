@@ -1,6 +1,7 @@
 {
 	"IMAGE_PROXY_HOSTS":[
-		"https://proxy.pixivel.moe/"
+		"https://proxy.pixivel.moe/",
+		"https://proxy-s.pixivel.moe/"
 	],
 	"API_HOST": "https://api.pixivel.moe/v2/pixiv/",
 	"USER_API": "https://api-user.pixivel.moe/",
