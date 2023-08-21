@@ -1,9 +1,9 @@
 {
 	"IMAGE_PROXY_HOSTS":[
-		"https://proxy.pixivel.moe/",
-		"https://proxy-s.pixivel.moe/"
+		"https://proxy.pixivel.moe/"
 	],
 	"API_HOST": "https://api.pixivel.moe/v2/pixiv/",
+	"PIXGRID_API_HOST": "https://pixgrid-api.pixivel.moe/api/",
 	"USER_API": "https://api-user.pixivel.moe/",
 	"ANNOUNCE_API": "https://api.shugetsu.dev/announce/fetch/pixivel",
 	"RAND_IMG":"https://index.api.pixivel.moe/https://www.loliapi.com/acg/",
