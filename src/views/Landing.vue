@@ -181,8 +181,6 @@ export default {
       sampleUsersPage: 0,
       sampleUsersLoadFlag: true,
       showLoginPanel: false,
-      keysPressed: [],
-      saveSequence: "savebgArrowUpArrowUp",
     };
   },
   created() {
@@ -214,10 +212,10 @@ export default {
     }, 800);
   },
   mounted() {
-    document.addEventListener("keydown", this.bgDownload);
+    this.bus.on("bgDownload", this.bgDownload);
   },
   beforeDestroy() {
-    document.removeEventListener("keydown", this.bgDownload);
+    this.bus.off("bgDownload", this.bgDownload);
   },
   computed: {
     isLoggedIn() {
@@ -238,22 +236,11 @@ export default {
         type: "is-info",
       });
     },
-    bgDownload(event) {
-      this.keysPressed.push(event.key);
-      if (this.keysPressed.length > 50) {
-        this.keysPressed.shift();
-      }
-      if (this.keysPressed.join("").includes(this.saveSequence)) {
-        console.log("Background Image Download");
-
-        const link = document.createElement("a");
-        link.href = this.backgroundImg;
-        link.download = "background-image.png";
-        link.click();
-
-        // Reset the array after the sequence has been detected
-        this.keysPressed = [];
-      }
+    bgDownload() {
+      const link = document.createElement("a");
+      link.href = this.backgroundImg;
+      link.download = "背景图.png";
+      link.click();
     },
     deleteToken() {
       this.$buefy.dialog.confirm({

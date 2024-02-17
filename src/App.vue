@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Nav />
+    <ToTopButton />
     <keep-alive>
       <transition name="fade">
         <router-view />
@@ -24,10 +25,12 @@ import storage from "store2";
 import { clearAccountInformation, isLoggedIn } from "@/utils/account";
 import { syncBookMark } from "@/utils/bookmark";
 import { syncFollow } from "@/utils/follow";
+import ToTopButton from "@/components/toTopButton";
 
 export default {
   name: "App",
   components: {
+    ToTopButton,
     Nav,
     Footer,
     Sponsor,
