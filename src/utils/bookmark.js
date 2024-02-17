@@ -17,6 +17,9 @@ const syncBookmarkDEBU = Lodash.debounce(
       message: "收藏夹上传中...",
       queue: false,
     });
+    if ((await countBookMark()) === 0) {
+      return;
+    }
     await uploadBookMark();
   },
   2000,

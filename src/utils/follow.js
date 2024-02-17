@@ -17,6 +17,9 @@ const syncFollowDEBU = Lodash.debounce(
       message: "关注列表上传中...",
       queue: false,
     });
+    if ((await countFollow()) === 0) {
+      return;
+    }
     await uploadFollow();
   },
   2000,
