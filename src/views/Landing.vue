@@ -96,7 +96,8 @@
               @load="loadRankIllusts"
               :has-load="rankIllustsContinue"
               ref="userIllusts"
-            ></HScroll>
+            >
+            </HScroll>
           </div>
         </div>
         <div class="column">
@@ -131,6 +132,14 @@
           </div>
         </div>
       </infinite-loading>
+    </div>
+    <div class="to-top-button" v-if="showToTopButton" @click="toTopCheck()">
+      <b-icon
+        pack="uil"
+        :key="toTopicon"
+        :icon="toTopicon"
+        type="is-dark"
+      ></b-icon>
     </div>
 
     <b-modal
@@ -181,8 +190,9 @@ export default {
       sampleUsersPage: 0,
       sampleUsersLoadFlag: true,
       showLoginPanel: false,
-      keysPressed: [],
-      saveSequence: "savebgArrowUpArrowUp",
+      showToTopButton: true,
+      toTopicon: "uil-import",
+      lastScrollY: 0,
     };
   },
   created() {
@@ -214,10 +224,10 @@ export default {
     }, 800);
   },
   mounted() {
-    document.addEventListener("keydown", this.bgDownload);
+    window.addEventListener("scroll", this.handleScroll);
   },
   beforeDestroy() {
-    document.removeEventListener("keydown", this.bgDownload);
+    window.removeEventListener("scroll", this.handleScroll);
   },
   computed: {
     isLoggedIn() {
@@ -238,22 +248,49 @@ export default {
         type: "is-info",
       });
     },
-    bgDownload(event) {
-      this.keysPressed.push(event.key);
-      if (this.keysPressed.length > 50) {
-        this.keysPressed.shift();
+    getScrollDirection() {
+      if (window.scrollY > this.lastScrollY) {
+        return "down";
+      } else if (window.scrollY < this.lastScrollY) {
+        return "up";
       }
-      if (this.keysPressed.join("").includes(this.saveSequence)) {
-        console.log("Background Image Download");
-
-        const link = document.createElement("a");
-        link.href = this.backgroundImg;
-        link.download = "background-image.png";
-        link.click();
-
-        // Reset the array after the sequence has been detected
-        this.keysPressed = [];
+      return "";
+    },
+    handleScroll() {
+      const scrollThreshold = window.innerHeight;
+      const scrollDirection = this.getScrollDirection();
+      if (
+        scrollDirection === "up" &&
+        window.scrollY < this.lastScrollY - scrollThreshold
+      ) {
+        this.showToTopButton = true;
+      } else if (
+        scrollDirection === "down" &&
+        window.scrollY > this.lastScrollY + scrollThreshold
+      ) {
+        this.showToTopButton = false;
       }
+      this.lastScrollY = window.scrollY;
+      if (window.scrollY === 0) {
+        this.toTopicon = "uil-import";
+      } else {
+        this.toTopicon = "uil-arrow-up";
+      }
+    },
+    toTopCheck() {
+      if (window.scrollY < 50) {
+        this.bgDownload();
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    },
+    bgDownload() {
+      console.log("Background Image Download");
+
+      const link = document.createElement("a");
+      link.href = this.backgroundImg;
+      link.download = "background-image.png";
+      link.click();
     },
     deleteToken() {
       this.$buefy.dialog.confirm({
@@ -521,6 +558,67 @@ export default {
 
   .icon {
     color: #4a4a4a !important;
+  }
+}
+
+@media screen and (min-width: 790px) {
+  .to-top-button {
+    position: fixed;
+    border-radius: 50%;
+    bottom: 20px;
+    margin: 0 auto;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    left: 0;
+    right: 0;
+    background: #00dab9;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+
+    &:hover {
+      background-color: rgb(240, 240, 240);
+    }
+
+    &:active {
+      background-color: rgb(240, 240, 240);
+    }
+
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .to-top-button {
+    position: fixed;
+    border-radius: 50%;
+    bottom: 20px;
+    right: 20px;
+    margin: 0 auto;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #00dab9;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+
+    &:hover {
+      background-color: rgb(240, 240, 240);
+    }
+
+    &:active {
+      background-color: rgb(240, 240, 240);
+    }
+
+    transition: all 0.2s ease-in-out;
   }
 }
 </style>
