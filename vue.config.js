@@ -1,15 +1,23 @@
 const path = require("path");
+const { sentryWebpackPlugin } = require("@sentry/webpack-plugin");
 
 module.exports = {
-  productionSourceMap: false,
-  configureWebpack: () => ({
-    devtool: "source-map",
+  configureWebpack: {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
     },
-  }),
+    devtool: "source-map", // Source map generation must be turned on
+    plugins: [
+      sentryWebpackPlugin({
+        org: "shugetsu-dev",
+        project: "pixivel",
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+      }),
+    ],
+  },
+  productionSourceMap: true,
   pwa: {
     name: "Pixivel",
     themeColor: "#00e2bc",

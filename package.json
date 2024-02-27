@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@iconscout/unicons": "^4.0.1",
+    "@sentry/vue": "^7.103.0",
     "axios": "^0.21.1",
     "bloom-filters": "^1.3.8",
     "buefy": "^0.9.8",
@@ -36,6 +37,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@sentry/webpack-plugin": "^2.14.2",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-pwa": "~4.5.0",
