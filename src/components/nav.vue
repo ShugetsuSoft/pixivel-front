@@ -26,9 +26,11 @@ export default {
   methods: {
     routerChange(name) {
       if (name != this.$route.name) {
-        this.$router.push({
-          name,
-        });
+        this.$router
+          .push({
+            name,
+          })
+          .catch(() => {});
       }
     },
   },

@@ -166,7 +166,8 @@ export default {
   },
   data() {
     return {
-      backgroundImg: "",
+      backgroundImg:
+        "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
       defaultAvatar: "img/defaultAva.jpg",
       sampleIllusts: [],
       sampleIllustsPage: 0,
@@ -185,14 +186,19 @@ export default {
   },
   created() {
     (async () => {
-      const response = await fetch(CONFIG.RAND_IMG, {
-        redirect: "follow",
-      });
-      const arrayBuffer = await response.arrayBuffer();
-      const blob = new Blob([arrayBuffer], {
-        type: response.headers.get("content-type"),
-      });
-      this.backgroundImg = URL.createObjectURL(blob);
+      try {
+        const response = await fetch(CONFIG.RAND_IMG, {
+          redirect: "follow",
+        });
+        const arrayBuffer = await response.arrayBuffer();
+        const blob = new Blob([arrayBuffer], {
+          type: response.headers.get("content-type"),
+        });
+        this.backgroundImg = URL.createObjectURL(blob);
+      } catch (e) {
+        this.backgroundImg = "img/defaultBg.png";
+        return;
+      }
     })();
     this.suggestdebu = this.Lodash.debounce(() => {
       if (this.searchKeyword != "") {

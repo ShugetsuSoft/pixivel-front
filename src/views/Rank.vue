@@ -160,18 +160,22 @@ export default {
   watch: {
     mode() {
       this.refresh();
-      this.$router.push({
-        name: "Rank",
-        query: { mode: this.mode, content: this.content },
-      });
+      this.$router
+        .push({
+          name: "Rank",
+          query: { mode: this.mode, content: this.content },
+        })
+        .catch(() => {});
     },
     content() {
       this.mode = "daily";
       this.refresh();
-      this.$router.push({
-        name: "Rank",
-        query: { mode: this.mode, content: this.content },
-      });
+      this.$router
+        .push({
+          name: "Rank",
+          query: { mode: this.mode, content: this.content },
+        })
+        .catch(() => {});
     },
     date() {
       this.refresh();

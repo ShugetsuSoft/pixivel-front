@@ -294,7 +294,7 @@ export default {
         type: "is-danger",
       });
       setTimeout(() => {
-        this.$router.push("/");
+        this.$router.push("/").catch(() => {});
       }, 2000);
     },
     loadUgoira(force) {
@@ -489,10 +489,12 @@ export default {
         });
     },
     searchtag(name) {
-      this.$router.push({
-        name: "Search",
-        query: { keyword: name, mode: "tag" },
-      });
+      this.$router
+        .push({
+          name: "Search",
+          query: { keyword: name, mode: "tag" },
+        })
+        .catch(() => {});
     },
     saveDirect() {
       if (this.illust.type == 2) {

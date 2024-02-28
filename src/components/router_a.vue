@@ -50,7 +50,7 @@ export default {
         if (handle) {
           handle();
         }
-        router.push(location);
+        router.push(location).catch(() => {});
         return false;
       }
     };

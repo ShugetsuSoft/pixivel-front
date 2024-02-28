@@ -79,9 +79,9 @@ export default {
     this.createInit();
   },
   mounted() {
-    var parentNode = this.$refs.presentation.parentNode;
+    let parentNode = this.$refs.presentation.parentNode;
     this.parentObserver = new window.ResizeObserver((entries) => {
-      var entry = entries[0];
+      let entry = entries[0];
       this.containerResized(entry);
     });
     this.parentObserver.observe(parentNode);
