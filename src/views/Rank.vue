@@ -232,6 +232,8 @@ export default {
         .catch((error) => {
           if (error?.response?.data) {
             this.error(error?.response?.data?.message);
+          } else {
+            this.error(error.message);
           }
           $state.error();
         });

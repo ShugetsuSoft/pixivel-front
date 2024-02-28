@@ -134,7 +134,11 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.error(error.response.data.message);
+          if (error?.response?.data) {
+            this.error(error?.response?.data?.message);
+          } else {
+            this.error(error.message);
+          }
           this.loading.close();
         });
     }
@@ -200,7 +204,11 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.error(error.response.data.message);
+          if (error?.response?.data) {
+            this.error(error?.response?.data?.message);
+          } else {
+            this.error(error.message);
+          }
           $state.error();
           this.$refs.longloading_badage.stop();
         });
