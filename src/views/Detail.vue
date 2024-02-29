@@ -225,6 +225,7 @@ export default {
     userIllustsShowLoading: true,
     imgprogress: 100,
     islogin: isLoggedIn(),
+    disableForceFetch: false,
   }),
   watch: {
     $route() {
@@ -248,6 +249,7 @@ export default {
       this.userIllustsPage = 0;
       this.userIllustsLoading = false;
       this.refreshRecommend();
+      this.disableForceFetch = false;
     },
     illust() {
       if (this.illust) {
@@ -325,7 +327,7 @@ export default {
     load(force) {
       this.loading = this.$buefy.loading.open();
       let params = {};
-      if (force) params["forcefetch"] = "true";
+      if (!this.disableForceFetch && force) params["forcefetch"] = "true";
       this.axios
         .get(CONFIG.API_HOST + `illust/${this.id}`, {
           params: params,
@@ -337,6 +339,9 @@ export default {
             return;
           }
           this.illust = response.data.data;
+          if (force) {
+            this.disableForceFetch = true;
+          }
           if (this.illust.type == 2) {
             this.loadUgoira(force);
           } else {
