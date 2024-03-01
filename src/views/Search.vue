@@ -200,11 +200,10 @@ export default {
         .catch(() => {});
     },
     $route() {
-      this.keyword = this.$route.query.keyword;
-      this.finalKeyword = this.$route.query.keyword;
-      this.mode = this.$route.query.mode;
+      this.keyword = this.$route.query.keyword ? this.$route.query.keyword : "";
+      this.finalKeyword = this.keyword;
+      this.mode = this.$route.query.mode ? this.$route.query.mode : "illust";
       this.queryFeatures = this.$route.query.features?.split(",") || [];
-      if (!this.mode) this.mode = "illust";
       if (this.mode == "tag") this.tags = this.keyword.split(",");
     },
 
