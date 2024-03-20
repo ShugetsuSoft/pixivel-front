@@ -21,5 +21,6 @@
 	"CAPTCHA_SITEKEY": "0x4AAAAAAABJmE0EBrdePmmR",
 	"GRAVATAR_PROXY": "https://gravatar.loli.net/avatar/",
 	"AFDIAN_API": "https://api-user.pixivel.moe/afdian/list",
-	"SHARE_LINK": "https://akizu.cc/"
+	"SHARE_LINK": "https://akizu.cc/",
+	"MAINTENANCE": "依据有关部门要求我们正在整改网站内容<br>关站期间，所有依附网站的本站服务均无法访问，敬请谅解。"
 }

@@ -8,6 +8,7 @@ import Search from "@/views/Search.vue";
 import Rank from "@/views/Rank.vue";
 import Account from "@/views/Account.vue";
 import oldRedirect from "@/views/oldRedirect.vue";
+import Maintenance from "@/views/Maintenance.vue";
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,11 @@ const routes = [
   {
     path: "/detail",
     component: oldRedirect,
+  },
+  {
+    path: "/maintenance",
+    component: Maintenance,
+    name: "Maintenance",
   },
 ];
 

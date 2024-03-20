@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Nav />
+    <Nav v-if="showNav" />
     <ToTopButton />
     <keep-alive>
       <transition name="fade">
@@ -26,6 +26,7 @@ import { clearAccountInformation, isLoggedIn } from "@/utils/account";
 import { syncBookMark } from "@/utils/bookmark";
 import { syncFollow } from "@/utils/follow";
 import ToTopButton from "@/components/toTopButton";
+import CONFIG from "@/config.json";
 
 export default {
   name: "App",
@@ -38,9 +39,14 @@ export default {
   data() {
     return {
       showSponsor: false,
+      showNav: true,
     };
   },
   async mounted() {
+    if (CONFIG.MAINTENANCE) {
+      this.showNav = false;
+      await this.$router.push({ name: "Maintenance" });
+    }
     this.sponsorShow();
     this.announceShow();
     this.addDownloadNotify();
