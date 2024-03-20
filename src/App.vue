@@ -43,6 +43,10 @@ export default {
     };
   },
   async mounted() {
+    window.addEventListener(
+      "new-content-available",
+      this.showNewContentAvailable
+    );
     if (CONFIG.MAINTENANCE) {
       this.showNav = false;
       await this.$router.push({ name: "Maintenance" });
@@ -52,10 +56,6 @@ export default {
     this.announceShow();
     this.addDownloadNotify();
     await this.syncHook();
-    window.addEventListener(
-      "new-content-available",
-      this.showNewContentAvailable
-    );
   },
   methods: {
     async syncHook() {
