@@ -49,7 +49,7 @@ export default {
     );
     if (CONFIG.MAINTENANCE) {
       this.showNav = false;
-      await this.$router.push({ name: "Maintenance" });
+      await this.$router.replace({ name: "Maintenance" });
       return;
     }
     this.sponsorShow();
