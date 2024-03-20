@@ -74,9 +74,6 @@
                 <li :class="{ 'link-active': tabNow == 6 }" @click="tabNow = 6">
                   <a>本站服务</a>
                 </li>
-                <li :class="{ 'link-active': tabNow == 7 }" @click="tabNow = 7">
-                  <a>友情链接</a>
-                </li>
               </ul>
             </div>
           </nav>
@@ -222,30 +219,6 @@
           </div>
         </div>
       </section>
-      <section v-if="tabNow == 7">
-        <div class="columns set-list">
-          <div
-            class="column is-one-third-desktop is-half-tablet hover-up"
-            @click="jump(link.link)"
-            v-for="link in links"
-            :key="link.name"
-          >
-            <b-notification :closable="false" class="is-clickable">
-              <div class="is-flex is-flex-wrap-nowrap is-align-items-center">
-                <figure class="image is-64x64 media-left">
-                  <img class="is-rounded" :src="link.ava" />
-                </figure>
-                <div class="content">
-                  <strong>{{ link.name }}</strong>
-                  <p>
-                    {{ link.desc }}
-                  </p>
-                </div>
-              </div>
-            </b-notification>
-          </div>
-        </div>
-      </section>
     </div>
     <b-modal
       :active="showLoginPanel"
@@ -299,38 +272,6 @@ export default {
           ava: "https://bucket.nekonya.fun/nekonya/2022/09/cropped-nekonya_logo-192x192.png",
           desc: "可爱的插画聚集地",
           link: "https://nekonya.fun",
-        },
-      ],
-      links: [
-        {
-          name: "Rorical",
-          ava: "https://avatars.githubusercontent.com/u/46294886?v=4",
-          desc: "开发者，是白毛萌妹（雾）",
-          link: "https://rorical.blue",
-        },
-        {
-          name: "Matrew File",
-          ava: "https://avatars.githubusercontent.com/u/28867264?v=4",
-          desc: "运维，已经变成蓝毛萌妹力（大雾）",
-          link: "https://elfile4138.moe",
-        },
-        {
-          name: "墨影",
-          ava: "https://doc.kmf.com/ke-feedback/2022/09/01/15/47/25/20220901154722.png",
-          desc: "管理，NekoNya 编辑，可食用猪猪",
-          link: "https://space.bilibili.com/36999062/",
-        },
-        {
-          name: "Project Shugetsu",
-          ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
-          desc: "秋月计划。The forseeable future.",
-          link: "https://shugetsu.org/",
-        },
-        {
-          name: "Shugetsu Soft",
-          ava: "https://avatars.githubusercontent.com/u/79077644?s=200&v=4",
-          desc: "秋月的软件部！Where no magic happens.",
-          link: "https://shugetsu.dev/",
         },
       ],
     };
