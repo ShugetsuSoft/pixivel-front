@@ -46,6 +46,7 @@ export default {
     if (CONFIG.MAINTENANCE) {
       this.showNav = false;
       await this.$router.push({ name: "Maintenance" });
+      return;
     }
     this.sponsorShow();
     this.announceShow();
