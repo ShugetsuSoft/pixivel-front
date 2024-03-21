@@ -18,6 +18,12 @@ export default {
   data: () => ({
     message: CONFIG.MAINTENANCE,
   }),
+  mounted() {
+    if (!CONFIG.MAINTENANCE) {
+      this.$router.replace({ name: "Landing" });
+      return;
+    }
+  },
 };
 </script>
 
