@@ -9,9 +9,12 @@
     </keep-alive>
     <Footer />
     <b-modal v-model="showSponsor" has-modal-card trap-focus>
-      <template>
-        <Sponsor @close="showSponsor = false" />
-      </template>
+      <Sponsor @close="showSponsor = false" />
+    </b-modal>
+    <b-modal v-model="showMainAnno" has-model-card trap-focus>
+      <AnnoModal :title="annoData['title']" @close="showMainAnno = false">
+        <p v-html="annoData['content']"></p>
+      </AnnoModal>
     </b-modal>
   </div>
 </template>
@@ -26,6 +29,7 @@ import { clearAccountInformation, isLoggedIn } from "@/utils/account";
 import { syncBookMark } from "@/utils/bookmark";
 import { syncFollow } from "@/utils/follow";
 import ToTopButton from "@/components/toTopButton";
+import AnnoModal from "@/components/anno_modal";
 import CONFIG from "@/config.json";
 
 export default {
@@ -35,11 +39,14 @@ export default {
     Nav,
     Footer,
     Sponsor,
+    AnnoModal,
   },
   data() {
     return {
       showSponsor: false,
       showNav: true,
+      showMainAnno: false,
+      annoData: {},
     };
   },
   async mounted() {
@@ -89,6 +96,11 @@ export default {
             message: infoshow,
             type: "is-primary",
           });
+        }
+        console.log(Anno);
+        if (Anno[2]["title"]) {
+          this.annoData = Anno[2];
+          this.showMainAnno = true;
         }
       });
     },
