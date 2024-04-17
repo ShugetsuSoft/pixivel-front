@@ -148,7 +148,7 @@
             <b-field label="首页推荐敏感度过滤">
               <b-numberinput
                 :controls="false"
-                :value="getsamplesanityfilter"
+                :value="isLoggedIn ? getsamplesanityfilter : 2"
                 :min="2"
                 :max="8"
                 @blur="setsamplesanityfilter"
@@ -159,7 +159,7 @@
             <b-field label="全局敏感度过滤">
               <b-numberinput
                 :controls="false"
-                :value="getglobalsanityfilter"
+                :value="isLoggedIn ? getglobalsanityfilter : 2"
                 :min="2"
                 :max="8"
                 @blur="setglobalsanityfilter"

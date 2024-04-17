@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-    <div class="container">
+    <div class="container" v-if="isLoggedIn">
       <WaterFall :illusts="sampleIllusts" :identifier="loadid" />
       <infinite-loading
         @infinite="sampleIllustsPageNext"
@@ -131,6 +131,10 @@
           </div>
         </div>
       </infinite-loading>
+    </div>
+    <div v-else>
+      <p class="content has-text-centered">请登陆后查看</p>
+      <br />
     </div>
 
     <b-modal

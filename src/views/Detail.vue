@@ -338,6 +338,14 @@ export default {
             this.loading.close();
             return;
           }
+          if (
+            response.data.data.sanity >=
+            this.$store.getters["Settings/get"]("global.sanity_filter")
+          ) {
+            this.error("此图片按照您设定的规则被屏蔽");
+            this.loading.close();
+            return;
+          }
           this.illust = response.data.data;
           if (force) {
             this.disableForceFetch = true;

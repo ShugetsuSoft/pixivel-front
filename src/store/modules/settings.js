@@ -1,5 +1,6 @@
 import storage from "store2";
 import CONFIG from "@/config.json";
+import { isLoggedIn } from "@/utils/account";
 
 const NAMESPACE = "settings";
 
@@ -22,6 +23,11 @@ const mutations = {
 
 const getters = {
   get: (state) => (key) => {
+    if (key == "global.sanity_filter") {
+      if (!isLoggedIn()) {
+        return 2;
+      }
+    }
     if (state.settings[key]) {
       return state.settings[key];
     }
