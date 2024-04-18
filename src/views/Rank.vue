@@ -73,7 +73,7 @@
         :identifier="loadid"
         ref="infload"
       >
-        <div slot="no-more">加载完毕</div>
+        <div slot="no-more">{{ NOMORE }}</div>
         <div slot="no-results">记录为空</div>
         <div slot="error" slot-scope="{ trigger }">
           <div class="notification is-danger">
@@ -109,6 +109,7 @@ export default {
       illusts: [],
       loadid: +new Date(),
       illustsPage: 0,
+      NOMORE: "加载完毕",
       rankLable: {
         daily: "日榜",
         weekly: "周榜",
@@ -231,6 +232,8 @@ export default {
           if (!isLoggedIn()) {
             $state.complete();
             this.errorMsg = "登录后查看更多内容";
+            this.NOMORE = "登录后查看更多内容";
+            return;
           }
           $state.loaded();
         })
