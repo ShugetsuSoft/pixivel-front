@@ -25,7 +25,7 @@ const getters = {
   get: (state) => (key) => {
     if (key == "global.sanity_filter") {
       if (!isLoggedIn()) {
-        return 2;
+        return 3;
       }
     }
     if (state.settings[key]) {
