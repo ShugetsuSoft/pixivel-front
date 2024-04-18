@@ -339,7 +339,7 @@ export default {
             return;
           }
           if (
-            response.data.data.sanity >=
+            response.data.data.sanity >
             this.$store.getters["Settings/get"]("global.sanity_filter")
           ) {
             this.error("此图片按照您设定的规则被屏蔽");

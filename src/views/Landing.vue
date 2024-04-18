@@ -353,6 +353,9 @@ export default {
       }
     },
     loadRankIllusts() {
+      if (!isLoggedIn() && this.rankIllustsPage > 0) {
+        return;
+      }
       let params = {
         mode: "daily",
         content: "all",

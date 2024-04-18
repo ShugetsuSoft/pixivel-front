@@ -93,6 +93,7 @@
 <script>
 import CONFIG from "@/config.json";
 import WaterFall from "@/components/waterfall";
+import { isLoggedIn } from "@/utils/account";
 
 export default {
   name: "Rank",
@@ -227,6 +228,10 @@ export default {
           }
           this.illusts = this.illusts.concat(response.data.data.illusts);
           this.illustsPage += 1;
+          if (!isLoggedIn()) {
+            $state.complete();
+            this.errorMsg = "登录后查看更多内容";
+          }
           $state.loaded();
         })
         .catch((error) => {
