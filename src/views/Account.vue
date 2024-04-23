@@ -273,6 +273,18 @@ export default {
           desc: "可爱的插画聚集地",
           link: "https://nekonya.fun",
         },
+        {
+          name: "Android App",
+          ava: "/favicon.ico",
+          desc: "Pixivel Android App（测试版）",
+          link: "https://forum.pixivel.moe/d/230-pixivel-de-android-ke-hu-duan-fa-bu",
+        },
+        {
+          name: "PixGRID",
+          ava: "https://pixgrid.pixivel.moe/favicon.ico",
+          desc: "实用好用的以图搜图工具，基于 Pixivel 数据库（测试版）",
+          link: "https://pixgrid.pixivel.moe/",
+        },
       ],
     };
   },
