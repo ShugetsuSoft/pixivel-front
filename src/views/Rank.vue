@@ -24,6 +24,7 @@
           </b-dropdown>
         </p>
         <b-radio-button
+          v-show="isLoggedIn"
           v-model="mode"
           :native-value="val"
           :type="'is-' + rankType[val] + ' is-light is-outlined'"
@@ -143,6 +144,7 @@ export default {
         manga: "仅漫画",
         ugoira: "仅动图",
       },
+      isLoggedIn: isLoggedIn(),
       rankContentModes: {
         all: [
           "daily",
@@ -161,6 +163,10 @@ export default {
   },
   watch: {
     mode() {
+      if (!isLoggedIn()) {
+        this.error("登录后查看更多内容");
+        return;
+      }
       this.refresh();
       this.$router
         .push({
