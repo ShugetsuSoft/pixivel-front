@@ -6,43 +6,23 @@
           <b-dropdown v-model="mode">
             <template #trigger>
               <b-button
-                :label="
-                  { illust: '插画', tag: '标签', user: '作者', image: '溯源' }[
-                    mode
-                  ]
-                "
+                :label="{ illust: '插画', user: '作者', image: '溯源' }[mode]"
                 type="is-success"
                 icon-right="uil uil-angle-down"
               />
             </template>
             <b-dropdown-item value="illust"> 关键字搜索插画 </b-dropdown-item>
-            <b-dropdown-item value="tag"> 标签搜索插画 </b-dropdown-item>
             <b-dropdown-item value="user"> 搜索作者 </b-dropdown-item>
             <!--<b-dropdown-item value="image"> 以图搜图（溯源） </b-dropdown-item>-->
           </b-dropdown>
         </p>
-        <b-taginput
-          v-model="tags"
-          :data="suggestList"
-          autocomplete
-          :allow-new="true"
-          icon="uil-label"
-          icon-pack="uil"
-          @typing="suggestdebu"
-          placeholder="输入标签 半角逗号来添加"
-          @keyup.enter.native="search()"
-          v-if="mode == 'tag'"
-        >
-        </b-taginput>
         <b-autocomplete
           v-if="mode == 'illust' || mode == 'user'"
           v-model="keyword"
-          :data="suggestList"
           placeholder="试着输入些内容吧.."
           @select="searchonselect"
           icon="uil-search"
           icon-pack="uil"
-          @typing="suggestdebu"
           @keyup.enter.native="search()"
           open-on-focus
         >
@@ -66,7 +46,7 @@
           <b-button class="button is-info" @click="search()">搜索</b-button>
         </p>
       </b-field>
-      <b-field v-if="mode == 'illust' || mode == 'tag'">
+      <b-field v-if="mode == 'illust'">
         <b-checkbox-button
           v-model="queryFeatures"
           native-value="sortpop"
@@ -94,7 +74,7 @@
     <section>
       <div class="container">
         <template v-if="finalKeyword">
-          <template v-if="mode == 'illust' || mode == 'tag'">
+          <template v-if="mode == 'illust'">
             <WaterFall :illusts="illusts" />
             <infinite-loading
               @infinite="illustsPageNext"
@@ -151,9 +131,6 @@ export default {
     return {
       keyword: "",
       finalKeyword: "",
-      suggestList: [],
-      tags: [],
-      suggestdebu: null,
       errorMsg: "",
       mode: "illust",
       illustsPage: 0,
@@ -167,10 +144,6 @@ export default {
     };
   },
   watch: {
-    tags() {
-      if (this.tags.length < 1) return;
-      this.keyword = this.tags.join(",");
-    },
     finalKeyword() {
       this.refresh(false);
     },
@@ -198,13 +171,18 @@ export default {
           },
         })
         .catch(() => {});
+      this.illusts = [];
+      this.illustsPage = 0;
+      this.$refs.infload.$emit("$InfiniteLoading:reset");
+      this.$refs.infload.attemptLoad();
+
+      //.refresh(true);
     },
     $route() {
       this.keyword = this.$route.query.keyword ? this.$route.query.keyword : "";
       this.finalKeyword = this.keyword;
       this.mode = this.$route.query.mode ? this.$route.query.mode : "illust";
       this.queryFeatures = this.$route.query.features?.split(",") || [];
-      if (this.mode == "tag") this.tags = this.keyword.split(",");
     },
 
     imageFile() {
@@ -221,12 +199,6 @@ export default {
     this.queryFeatures = this.$route.query.features?.split(",") || [];
     this.imageFile = null;
     this.previewImageSearch = null;
-    if (this.mode == "tag") this.tags = this.keyword.split(",");
-    this.suggestdebu = this.Lodash.debounce(() => {
-      if (this.keyword != "") {
-        this.suggest();
-      }
-    }, 800);
   },
   mounted() {
     if (this.finalKeyword) {
@@ -246,7 +218,6 @@ export default {
       this.usersLoad = true;
       this.illustsPage = 0;
       this.errorMsg = "";
-      this.suggestList = [];
       this.loadid += 1;
       this.previewImageSearch = null;
       this.imageFile = null;
@@ -289,7 +260,7 @@ export default {
           method: "POST",
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             return;
           }
@@ -322,95 +293,25 @@ export default {
           .catch(() => {});
       }
     },
-    suggest() {
-      if (this.mode == "illust") {
-        this.axios
-          .get(CONFIG.API_HOST + `illust/search/${this.keyword}/suggest`)
-          .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              return;
-            }
-            this.suggestList = response.data.data.suggest_words;
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
-      } else if (this.mode == "tag") {
-        this.axios
-          .get(CONFIG.API_HOST + `tag/search/${this.keyword}/suggest`)
-          .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              return;
-            }
-            this.suggestList = response.data.data.suggest_words;
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
-      } else if (this.mode == "user") {
-        this.axios
-          .get(CONFIG.API_HOST + `user/search/${this.keyword}/suggest`)
-          .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              return;
-            }
-            this.suggestList = response.data.data.suggest_words;
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
-      }
-    },
     illustsPageNext($state) {
       if (this.mode == "illust") {
+        let sort = "relevent";
+        if (this.queryFeatures.includes("sortpop")) {
+          sort = "popular";
+        } else if (this.queryFeatures.includes("sortdate")) {
+          sort = "time";
+        }
         let params = {
           page: this.illustsPage,
-          sortpop: this.queryFeatures.includes("sortpop"),
-          sortdate: this.queryFeatures.includes("sortdate"),
+          sort: sort,
         };
         let keyword = this.finalKeyword;
         this.axios
-          .get(CONFIG.API_HOST + `illust/search/${keyword}`, {
+          .get(CONFIG.API_HOST + `search/illust/${keyword}`, {
             params,
           })
           .then((response) => {
-            if (response.data.error) {
-              this.error(response.data.message);
-              $state.error();
-              return;
-            }
-            if (!response.data.data.has_next) {
-              $state.complete();
-            }
-            this.illusts = this.illusts.concat(
-              response.data.data.illusts.map((illust, i) => {
-                if (response.data.data.highlight[i] != null)
-                  illust["title"] = response.data.data.highlight[i];
-                return illust;
-              })
-            );
-            this.illustsPage += 1;
-            $state.loaded();
-          })
-          .catch((error) => {
-            this.error(error.message);
-          });
-      } else if (this.mode == "tag") {
-        let params = {
-          page: this.illustsPage,
-          sortpop: this.queryFeatures.includes("sortpop"),
-          sortdate: this.queryFeatures.includes("sortdate"),
-        };
-        let keyword = this.finalKeyword;
-        this.axios
-          .get(CONFIG.API_HOST + `tag/search/${keyword}`, {
-            params,
-          })
-          .then((response) => {
-            if (response.data.error) {
+            if (response.data.status !== 0) {
               this.error(response.data.message);
               $state.error();
               return;
@@ -433,11 +334,11 @@ export default {
       };
       let keyword = this.finalKeyword;
       this.axios
-        .get(CONFIG.API_HOST + `user/search/${keyword}`, {
+        .get(CONFIG.API_HOST + `search/illustrator/${keyword}`, {
           params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             this.usersLoad = false;
             return;
@@ -445,13 +346,7 @@ export default {
           if (!response.data.data.has_next) {
             this.usersLoad = false;
           }
-          this.users = this.users.concat(
-            response.data.data.users.map((user, i) => {
-              if (response.data.data.highlight[i] != null)
-                user["title"] = response.data.data.highlight[i];
-              return user;
-            })
-          );
+          this.users = this.users.concat(response.data.data.users);
           this.illustsPage += 1;
         })
         .catch((error) => {
@@ -481,9 +376,6 @@ export default {
   .field {
     min-width: 20rem;
     .autocomplete {
-      flex: 1;
-    }
-    .taginput {
       flex: 1;
     }
   }

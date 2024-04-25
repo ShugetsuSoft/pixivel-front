@@ -86,57 +86,6 @@
       ></div>
       <img class="logo" src="../assets/images/logo.svg" />
     </div>
-    <div class="container landing-info">
-      <div class="columns">
-        <div class="column is-two-thirds">
-          <div class="notification">
-            <h2>排行榜</h2>
-            <HScroll
-              :illusts="rankIllusts"
-              @load="loadRankIllusts"
-              :has-load="rankIllustsContinue"
-              ref="userIllusts"
-            ></HScroll>
-          </div>
-        </div>
-        <div class="column">
-          <div class="notification">
-            <h2>推荐画师</h2>
-            <UserList
-              :users="sampleUsers"
-              :has-load="sampleUsersLoadFlag"
-              @load="loadSampleUsers"
-            ></UserList>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container" v-if="isLoggedIn">
-      <WaterFall :illusts="sampleIllusts" :identifier="loadid" />
-      <infinite-loading
-        @infinite="sampleIllustsPageNext"
-        spinner="spiral"
-        :identifier="loadid"
-        ref="infload"
-      >
-        <div slot="no-more">加载完毕</div>
-        <div slot="no-results">记录为空</div>
-        <div slot="error" slot-scope="{ trigger }">
-          <div class="notification is-danger">
-            <div class="buttons">
-              <b-button type="is-primary" inverted @click="trigger"
-                >重试</b-button
-              >
-            </div>
-          </div>
-        </div>
-      </infinite-loading>
-    </div>
-    <div v-else>
-      <p class="content has-text-centered">请登陆后查看</p>
-      <br />
-    </div>
-
     <b-modal
       :active="showLoginPanel"
       has-modal-card
@@ -153,9 +102,6 @@
 
 <script>
 import CONFIG from "@/config.json";
-import WaterFall from "@/components/waterfall";
-import HScroll from "@/components/horizontal_scroll";
-import UserList from "@/components/user_list";
 import Login from "@/components/login";
 import { getUserInfo, isLoggedIn, deleteToken } from "@/utils/account";
 import md5 from "@/utils/md5";
@@ -163,9 +109,6 @@ import md5 from "@/utils/md5";
 export default {
   name: "Landing",
   components: {
-    WaterFall,
-    HScroll,
-    UserList,
     Login,
   },
   data() {
@@ -209,7 +152,7 @@ export default {
         this.axios
           .get(CONFIG.API_HOST + `illust/search/${this.searchKeyword}/suggest`)
           .then((response) => {
-            if (response.data.error) {
+            if (response.data.status !== 0) {
               this.error(response.data.message);
               return;
             }
@@ -274,7 +217,7 @@ export default {
           params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             $state.error();
             return;
@@ -308,7 +251,7 @@ export default {
           params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             return;
           }
@@ -367,7 +310,7 @@ export default {
           params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             return;
           }

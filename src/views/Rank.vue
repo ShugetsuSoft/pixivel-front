@@ -215,11 +215,11 @@ export default {
         page: this.illustsPage,
       };
       this.axios
-        .get(CONFIG.API_HOST + `rank/`, {
+        .get(CONFIG.API_HOST + `rank`, {
           params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             $state.error();
             return;
