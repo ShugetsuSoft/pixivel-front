@@ -96,6 +96,7 @@
         </div>
       </template>
       <Turnstile
+        ref="turnstile"
         :sitekey="sitekey"
         v-on:verify="onCaptchaResponse"
         v-on:expire="onCaptchaExpired"
@@ -183,6 +184,7 @@ export default {
       });
       this.loading = false;
       this.clearNotify();
+      this.$refs.turnstile.reload();
     },
   },
   created() {},

@@ -33,6 +33,17 @@ export default {
         });
       };
     },
+    reload() {
+      this.$refs.turnstileBox.childNodes.forEach((child) => {
+        this.$refs.turnstileBox.removeChild(child);
+      });
+      window.turnstile.render("#turnstile-box", {
+        sitekey: this.sitekey,
+        callback: (response) => this.$emit("verify", response),
+        "expired-callback": this.$emit("expire"),
+        "error-callback": this.$emit("fail"),
+      });
+    },
   },
 };
 </script>
