@@ -14,14 +14,14 @@
           >Privacy</a
         >
       </p>
-      <p ref="adbanner">这里应该会有个广告用来支持运营</p>
+      <!--<p ref="adbanner">这里应该会有个广告用来支持运营</p>
       <ins
         class="adsbygoogle"
         style="display: block"
         data-ad-client="ca-pub-7564284646329791"
         data-ad-slot="6050058983"
         data-ad-format="auto"
-      ></ins>
+      ></ins>-->
     </div>
   </footer>
 </template>
@@ -32,10 +32,9 @@ import Banned from "@/assets/info/ban.json";
 export default {
   name: "Footer",
   mounted() {
-    this.initAna();
     if (Banned.indexOf(window.location.href) == -1) {
       const cancel = setTimeout(() => {
-        this.initAds();
+        //this.initAds();
       }, 3000);
       const cancelAdsLoadHook = () => {
         clearTimeout(cancel);
@@ -65,21 +64,6 @@ export default {
       adscript.src =
         "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7564284646329791";
       document.head.appendChild(adscript);
-    },
-    initAna() {
-      let analyticscript = document.createElement("script");
-      analyticscript.type = "text/javascript";
-      analyticscript.onload = () => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          window.dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "UA-159010258-1");
-      };
-      analyticscript.src =
-        "https://www.googletagmanager.com/gtag/js?id=UA-159010258-1";
-      document.head.appendChild(analyticscript);
     },
   },
 };
