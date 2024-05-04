@@ -53,7 +53,7 @@ export default {
   mounted() {},
   computed: {
     url() {
-      if (this.illust.image.length === 8) {
+      if (this.illust.image.length === 14) {
         return this.calcImgNew(
           this.illust.id,
           this.illust.type === 2 ? -1 : 0,
