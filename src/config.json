@@ -3,6 +3,7 @@
 		"https://proxy.pixivel.moe/"
 	],
 	"API_HOST": "https://api.pixivel.moe/v2/pixiv/",
+	"API_V3_HOST": "https://api-v3.pixivel.moe/v3/",
 	"PIXGRID_API_HOST": "https://pixgrid-api.pixivel.moe/api/",
 	"USER_API": "https://api-user.pixivel.moe/",
 	"ANNOUNCE_API": "https://api.shugetsu.dev/announce/fetch/pixivel",
