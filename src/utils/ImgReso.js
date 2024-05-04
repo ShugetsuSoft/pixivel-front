@@ -20,6 +20,28 @@ const loadBalance = (list, id) => {
   return list[Math.abs(hash) % list.length];
 };
 
+const calcImgNew = function (id, page, imgDate, reso) {
+  const Y = imgDate.substring(0, 4);
+  const M = imgDate.substring(4, 6);
+  const D = imgDate.substring(6, 8);
+  const h = imgDate.substring(8, 10);
+  const m = imgDate.substring(10, 12);
+  const s = imgDate.substring(12, 14);
+  let url = loadBalance(proxyList, { id: id, page: -1 });
+  url += convertList[reso][0];
+  url += `${Y}/${M}/${D}/${h}/${m}/${s}`;
+  if (page == -1) {
+    url += `/${id}`;
+  } else {
+    url += `/${id}_p${page}`;
+  }
+  url += convertList[reso][1];
+  if (reso != "original") {
+    url += ".jpg";
+  }
+  return url;
+};
+
 const calcImg = function (id, page, imgDate, reso) {
   var date = new Date(imgDate);
   var Y = date.getFullYear().toString();
@@ -44,6 +66,22 @@ const calcImg = function (id, page, imgDate, reso) {
   if (reso != "original") {
     url += ".jpg";
   }
+  return url;
+};
+
+const calcUgoiraNew = function (id, imgDate, reso) {
+  const Y = imgDate.substring(0, 4);
+  const M = imgDate.substring(4, 6);
+  const D = imgDate.substring(6, 8);
+  const h = imgDate.substring(8, 10);
+  const m = imgDate.substring(10, 12);
+  const s = imgDate.substring(12, 14);
+  let url = loadBalance(proxyList, { id: id, page: -1 });
+  url += ugoiraConvertList[reso][0];
+  url += `${Y}/${M}/${D}/${h}/${m}/${s}`;
+  url += `/${id}`;
+  url += ugoiraConvertList[reso][1];
+  url += ".zip";
   return url;
 };
 
@@ -77,4 +115,6 @@ export default {
   calcUgoira,
   imgProxy,
   loadBalance,
+  calcImgNew,
+  calcUgoiraNew,
 };

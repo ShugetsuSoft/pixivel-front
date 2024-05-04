@@ -51,8 +51,10 @@ router.beforeEach((to, from, next) => {
 Vue.use(Buefy);
 Vue.use(VueAxios, axios);
 Vue.prototype.calcImg = ImgReso.calcImg;
+Vue.prototype.calcImgNew = ImgReso.calcImgNew;
 Vue.prototype.imgProxy = ImgReso.imgProxy;
 Vue.prototype.calcUgoira = ImgReso.calcUgoira;
+Vue.prototype.calcUgoiraNew = ImgReso.calcUgoiraNew;
 Vue.prototype.getDownloadMessage = () => {
   return CONFIG.DOWNLOAD_DEFAULT.TASK_MESSAGES[
     Math.floor(Math.random() * CONFIG.DOWNLOAD_DEFAULT.TASK_MESSAGES.length)
