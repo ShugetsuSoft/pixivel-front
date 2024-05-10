@@ -103,7 +103,7 @@ export default {
         return item.sanity < sanity;
       });
       if (ban_ai === true) {
-        illusts = this.illusts.filter((item) => {
+        illusts = illusts.filter((item) => {
           if (item.aiType != undefined) {
             return item.aiType !== 2;
           }
