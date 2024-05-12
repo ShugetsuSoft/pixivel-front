@@ -67,17 +67,13 @@ export default {
     },
     initAna() {
       let analyticscript = document.createElement("script");
-      analyticscript.type = "text/javascript";
-      analyticscript.onload = () => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          window.dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "UA-159010258-1");
-      };
-      analyticscript.src =
-        "https://www.googletagmanager.com/gtag/js?id=UA-159010258-1";
+      analyticscript.src = "https://analytics.rorical.blue/script.js";
+      analyticscript.async = true;
+      analyticscript.defer = true;
+      analyticscript.setAttribute(
+        "data-website-id",
+        "3be74123-a4c6-493e-a059-266c718ac386"
+      );
       document.head.appendChild(analyticscript);
     },
   },
