@@ -16,7 +16,7 @@
       </p>
 
       <p ref="adbanner">这里应该会有个广告用来支持运营</p>
-      <div id="adcontainer"></div>
+      <div id="container-6ed57ff04996ad2c100743494e723de1"></div>
     </div>
   </footer>
 </template>
@@ -41,13 +41,8 @@ export default {
   },
   methods: {
     initAds() {
-      window.atOptions = {
-        key: "5bd04ec1ba9e7d164ae3212efc50d3e8",
-        format: "iframe",
-        height: 50,
-        width: 320,
-        params: {},
-      };
+      //  async="async" data-cfasync="false" src="//pl23293010.highcpmgate.com/6ed57ff04996ad2c100743494e723de1/invoke.js"
+
       let adscript = document.createElement("script");
       adscript.type = "text/javascript";
       adscript.onerror = () => {
@@ -55,8 +50,9 @@ export default {
           "我们理解您对互联网广告的厌恶，我们也在不断探索更加用户友好的运营策略；但目前，我们依然依赖于广告收入支撑服务运行。请考虑对本站点解除您的AdBlock，或者选择捐赠以支持本站点长期发展。";
       };
       adscript.src =
-        "//www.topcreativeformat.com/5bd04ec1ba9e7d164ae3212efc50d3e8/invoke.js";
-      window.document.getElementById("adcontainer").appendChild(adscript);
+        "//pl23293010.highcpmgate.com/6ed57ff04996ad2c100743494e723de1/invoke.js";
+      adscript.setAttribute("data-cfasync", "false");
+      document.body.appendChild(adscript);
     },
     initAna() {
       let analyticscript = document.createElement("script");
