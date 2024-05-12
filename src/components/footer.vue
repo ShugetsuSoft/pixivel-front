@@ -14,14 +14,14 @@
           >Privacy</a
         >
       </p>
-      <p ref="adbanner">这里应该会有个广告用来支持运营</p>
+      <!--<p ref="adbanner">这里应该会有个广告用来支持运营</p>
       <ins
         class="adsbygoogle"
         style="display: block"
         data-ad-client="ca-pub-7564284646329791"
         data-ad-slot="6050058983"
         data-ad-format="auto"
-      ></ins>
+      ></ins>-->
     </div>
   </footer>
 </template>
