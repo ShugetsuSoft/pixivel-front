@@ -521,7 +521,7 @@ export default {
       this.$router
         .push({
           name: "Search",
-          query: { keyword: name, mode: "tag" },
+          query: { keyword: name, mode: "illust" },
         })
         .catch(() => {});
     },
