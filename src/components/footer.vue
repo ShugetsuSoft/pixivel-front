@@ -32,6 +32,7 @@ import Banned from "@/assets/info/ban.json";
 export default {
   name: "Footer",
   mounted() {
+    this.initAna();
     if (Banned.indexOf(window.location.href) == -1) {
       const cancel = setTimeout(() => {
         //this.initAds();
