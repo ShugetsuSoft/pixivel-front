@@ -14,6 +14,7 @@
           >Privacy</a
         >
       </p>
+      <p>追逐梦想的人，最后只会剩死路一条</p>
       <!--<p ref="adbanner">这里应该会有个广告用来支持运营</p>
       <ins
         class="adsbygoogle"
