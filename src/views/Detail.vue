@@ -86,19 +86,19 @@
             </b-taglist>
             <RouterA
               class="media is-vertical-centered"
-              :to="{ name: 'User', params: { id: illust.user.id } }"
-              v-if="illust"
+              :to="{ name: 'User', params: { id: illust.user } }"
+              v-if="user"
             >
               <div class="media-left">
                 <figure class="image is-64x64">
                   <img
-                    :src="imgProxy(illust.user.image.url, illust.user.id)"
+                    :src="imgProxy(user.image.url, user.id)"
                     class="is-rounded full-hw obj-cover"
                   />
                 </figure>
               </div>
               <div>
-                <h1 class="title is-4">{{ illust.user.name }}</h1>
+                <h1 class="title is-4">{{ user.name }}</h1>
               </div>
             </RouterA>
             <HScroll
@@ -226,6 +226,7 @@ export default {
     imgprogress: 100,
     islogin: isLoggedIn(),
     disableForceFetch: false,
+    user: null,
   }),
   watch: {
     $route() {
@@ -295,9 +296,9 @@ export default {
         message: message,
         type: "is-danger",
       });
-      setTimeout(() => {
+      /*setTimeout(() => {
         this.$router.push("/").catch(() => {});
-      }, 2000);
+      }, 2000);*/
     },
     loadUgoira(force) {
       let params = {};
@@ -307,7 +308,7 @@ export default {
           params: params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             return;
           }
@@ -333,7 +334,7 @@ export default {
           params: params,
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             this.loading.close();
             return;
@@ -355,6 +356,16 @@ export default {
           } else {
             this.loading.close();
           }
+          let cached = this.$store.getters["Cache/get"](
+            {
+              type: "user",
+              id: this.illust.user,
+            },
+            null
+          );
+          if (cached) {
+            this.user = cached;
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -373,7 +384,7 @@ export default {
         let cachedUesrIllusts = this.$store.getters["Cache/get"](
           {
             type: "userIllust",
-            id: this.illust.user.id,
+            id: this.illust.user,
           },
           null
         );
@@ -390,17 +401,17 @@ export default {
       }
 
       this.axios
-        .get(CONFIG.API_HOST + `user/${this.illust.user.id}/illusts`, {
+        .get(CONFIG.API_HOST + `illustrator/${this.illust.user}/illusts`, {
           params: {
             page: this.userIllustsPage,
           },
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             return;
           }
-          if (!response.data.data.has_next) {
+          if (!response.data.data.hasNext) {
             this.userIllustsShowLoading = false;
           }
           this.userIllusts = this.userIllusts.concat(
@@ -416,13 +427,21 @@ export default {
           this.$store.commit("Cache/cacheState", {
             key: {
               type: "userIllust",
-              id: this.illust.user.id,
+              id: this.illust.user,
             },
             val: {
               page: this.userIllustsPage,
               illusts: this.userIllusts,
               showloading: this.userIllustsShowLoading,
             },
+          });
+          this.user = response.data.data.user;
+          this.$store.commit("Cache/cacheState", {
+            key: {
+              type: "user",
+              id: this.illust.user,
+            },
+            val: this.user,
           });
         })
         .catch((error) => {
@@ -476,12 +495,12 @@ export default {
           },
         })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             $state.error();
             return;
           }
-          if (!response.data.data.has_next) {
+          if (!response.data.data.hasNext) {
             $state.complete();
           }
           let quality =

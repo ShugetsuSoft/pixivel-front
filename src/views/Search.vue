@@ -307,7 +307,7 @@ export default {
         };
         let keyword = this.finalKeyword;
         this.axios
-          .get(CONFIG.API_V3_HOST + `search/illust/${keyword}`, {
+          .get(CONFIG.API_HOST + `search/illust/${keyword}`, {
             params,
           })
           .then((response) => {
@@ -334,7 +334,7 @@ export default {
       };
       let keyword = this.finalKeyword;
       this.axios
-        .get(CONFIG.API_V3_HOST + `search/illustrator/${keyword}`, {
+        .get(CONFIG.API_HOST + `search/illustrator/${keyword}`, {
           params,
         })
         .then((response) => {

@@ -104,6 +104,7 @@ export default {
     this.loading = this.$buefy.loading.open();
   },
   mounted() {
+    this.illustsInit();
     let cached = this.$store.getters["Cache/get"](
       {
         type: "user",
@@ -116,13 +117,32 @@ export default {
       this.loading.close();
     } else {
       this.axios
-        .get(CONFIG.API_HOST + `user/${this.id}`)
+        .get(CONFIG.API_HOST + `illustrator/${this.id}/illusts`, {
+          params: {
+            page: this.illustsPage,
+          },
+        })
         .then((response) => {
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             return;
           }
-          this.user = response.data.data;
+          this.userIllusts = this.userIllusts.concat(
+            response.data.data.illusts
+          );
+          this.illustsPage = 1;
+          this.$store.commit("Cache/cacheState", {
+            key: {
+              type: "userIllust",
+              id: this.id,
+            },
+            val: {
+              page: this.illustsPage,
+              illusts: this.userIllusts,
+              showloading: response.data.data.hasNext,
+            },
+          });
+          this.user = response.data.data.user;
           this.loading.close();
           this.$store.commit("Cache/cacheState", {
             key: {
@@ -142,7 +162,6 @@ export default {
           this.loading.close();
         });
     }
-    this.illustsInit();
   },
   methods: {
     error(message) {
@@ -170,19 +189,19 @@ export default {
     illustsPageNext($state) {
       this.$refs.longloading_badage.start();
       this.axios
-        .get(CONFIG.API_HOST + `user/${this.id}/illusts`, {
+        .get(CONFIG.API_HOST + `illustrator/${this.id}/illusts`, {
           params: {
             page: this.illustsPage,
           },
         })
         .then((response) => {
           this.$refs.longloading_badage.stop();
-          if (response.data.error) {
+          if (response.data.status !== 0) {
             this.error(response.data.message);
             $state.error();
             return;
           }
-          if (!response.data.data.has_next) {
+          if (!response.data.data.hasNext) {
             $state.complete();
           }
           this.userIllusts = this.userIllusts.concat(
@@ -198,7 +217,7 @@ export default {
             val: {
               page: this.illustsPage,
               illusts: this.userIllusts,
-              showloading: response.data.data.has_next,
+              showloading: response.data.data.hasNext,
             },
           });
         })
