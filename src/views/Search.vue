@@ -256,7 +256,7 @@ export default {
       formdata.append("file", this.imageFile);
 
       this.axios
-        .post(CONFIG.PIXGRID_API_V3_HOST + "search", formdata, {
+        .post(CONFIG.API_HOST + "search", formdata, {
           method: "POST",
         })
         .then((response) => {

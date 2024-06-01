@@ -489,7 +489,7 @@ export default {
     },
     recommendIllustsPageNext($state) {
       this.axios
-        .get(CONFIG.API_V3_HOST + `illust/${this.id}/recommend`, {
+        .get(CONFIG.API_HOST + `illust/${this.id}/recommend`, {
           params: {
             page: this.recommendIllustsPage,
           },
