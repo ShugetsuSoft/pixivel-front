@@ -30,6 +30,40 @@ if (
         newWorker.skipWaiting();
       });
       window.dispatchEvent(new Event("new-content-available"));
+
+      // Invalidate all caches and remove the worker after update
+      newWorker.addEventListener("statechange", (event) => {
+        if (event.target.state === "activated") {
+          // Clear all caches
+          caches.keys().then((cacheNames) => {
+            return Promise.all(
+              cacheNames.map((cacheName) => {
+                return caches.delete(cacheName); // Delete each cache
+              })
+            );
+          }).then(() => {
+            console.log("All caches cleared.");
+            // Clear local storage and indexedDB
+            localStorage.clear();
+            sessionStorage.clear();
+            // Optionally clear IndexedDB if you want
+            indexedDB.databases().then((databases) => {
+              databases.forEach((db) => {
+                indexedDB.deleteDatabase(db.name); // Delete all IndexedDB databases
+              });
+            });
+            console.log("LocalStorage, SessionStorage, and IndexedDB cleared.");
+
+            // Unregister the service worker and remove it
+            reg.unregister().then(() => {
+              console.log("Service worker unregistered.");
+            });
+
+            // Redirect to a new URL after cleanup
+            window.location.replace("https://beta.pixivel.art"); // Replace with your new URL
+          });
+        }
+      });
     },
     offline() {
       console.log(
